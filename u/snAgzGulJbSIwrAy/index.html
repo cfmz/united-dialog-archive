@@ -1,50 +1,182 @@
 <!DOCTYPE html>
-<html lang="ru"><head><meta charset="utf-8">
+<html lang="ru">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>United Dialog — Веб-Архив</title>
 <style>
-*{box-sizing:border-box}
-body{background:#17212b;color:#ffffff;margin:0;padding:20px;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:800px;margin:0 auto}
-h1{text-align:center;color:#64b5f6;margin-bottom:25px;font-size:22px}
-.msg{background:#242f3d;border:1px solid #3e546a;border-radius:12px;
-padding:15px;margin-bottom:12px;box-shadow:0 4px 6px rgba(0,0,0,.3)}
-.head{display:flex;justify-content:space-between;padding-bottom:10px;
-margin-bottom:10px;border-bottom:1px solid #3e546a}
-.name{font-weight:700;color:#64b5f6}
-.time{font-size:12px;color:#8a9bae}
-.body{line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
-.media{display:inline-block;margin-top:10px;padding:6px 12px;
-background:#3e546a;border-radius:6px;font-size:13px}
-</style></head><body><div class="wrap">
-<h1>United Dialog — Веб-Архив</h1>
-        <div class="msg">
-          <div class="head"><span class="name">дыб</span><span class="time">23.09.2026 17:04</span></div>
-          <div class="body">ррр</div>
-        </div>
-        <div class="msg">
-          <div class="head"><span class="name">Илья</span><span class="time">23.09.2026 17:22</span></div>
-          <div class="body">А все она не читает видимо спит</div>
-        </div>
-        <div class="msg">
-          <div class="head"><span class="name">Илья</span><span class="time">23.09.2026 17:22</span></div>
-          <div class="body">Хахаха</div>
-        </div>
-        <div class="msg">
-          <div class="head"><span class="name">симка</span><span class="time">23.09.2026 17:22</span></div>
-          <div class="body">брат</div>
-        </div>
-        <div class="msg">
-          <div class="head"><span class="name">симка</span><span class="time">23.09.2026 17:22</span></div>
-          <div class="body">я покажу</div>
-        </div>
-        <div class="msg">
-          <div class="head"><span class="name">симка</span><span class="time">23.09.2026 17:22</span></div>
-          <div class="body">ща</div>
-        </div>
-        <div class="msg">
-          <div class="head"><span class="name">симка</span><span class="time">23.09.2026 17:22</span></div>
-          <div class="body">ахуено выходит</div>
-        </div>
-</div></body></html>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0e1621; color: #fff; height: 100vh; overflow: hidden;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  display: flex;
+}
+.sidebar {
+  width: 320px; background: #17212b; display: flex; flex-direction: column;
+  border-right: 1px solid #101921;
+}
+.sidebar-header {
+  padding: 12px; border-bottom: 1px solid #101921;
+}
+.sidebar-header h1 {
+  font-size: 15px; font-weight: 600; color: #64b5f6; margin-bottom: 8px;
+}
+.search {
+  width: 100%; padding: 8px 12px; background: #242f3d; border: none;
+  border-radius: 20px; color: #fff; font-size: 14px; outline: none;
+}
+.search::placeholder { color: #6b7c8e; }
+.chats { flex: 1; overflow-y: auto; }
+.chat {
+  padding: 10px 14px; border-bottom: 1px solid #101921; cursor: pointer;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.chat:hover { background: #202b36; }
+.chat.active { background: #2b5278; }
+.chat-name { font-weight: 600; font-size: 14px; color: #fff; }
+.chat-preview { font-size: 12px; color: #7e8f9e; overflow: hidden;
+                text-overflow: ellipsis; white-space: nowrap; }
+.chat-time { font-size: 11px; color: #6b7c8e; float: right; font-weight: normal; }
+.chat-header { display: flex; justify-content: space-between; align-items: center; }
+
+.main {
+  flex: 1; display: flex; flex-direction: column; background: #0e1621;
+}
+.main-header {
+  padding: 12px 20px; background: #17212b; border-bottom: 1px solid #101921;
+  font-weight: 600; font-size: 15px;
+}
+.messages {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.msg {
+  max-width: 65%; padding: 8px 12px; border-radius: 10px;
+  background: #182533; align-self: flex-start;
+  word-wrap: break-word; font-size: 14px; line-height: 1.4;
+}
+.msg-meta {
+  font-size: 11px; color: #6b7c8e; margin-bottom: 4px; font-weight: 600;
+}
+.msg-time {
+  font-size: 10px; color: #6b7c8e; float: right; margin-left: 12px; margin-top: 4px;
+}
+.msg-media {
+  display: inline-block; margin-top: 6px; padding: 4px 8px;
+  background: #2b3e50; border-radius: 6px; font-size: 12px;
+}
+.empty {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  color: #6b7c8e; font-size: 14px;
+}
+@media (max-width: 700px) {
+  .sidebar { width: 100%; position: absolute; z-index: 10; height: 100vh; }
+  .sidebar.hidden { display: none; }
+  .main { width: 100%; }
+  .back { display: inline-block !important; margin-right: 8px; cursor: pointer; }
+}
+.back { display: none; color: #64b5f6; }
+</style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h1>United Dialog — Архив</h1>
+      <input class="search" id="search" placeholder="Поиск по чатам...">
+    </div>
+    <div class="chats" id="chats"></div>
+  </div>
+  <div class="main">
+    <div class="main-header">
+      <span class="back" id="back">←</span>
+      <span id="chat-title">Выберите чат</span>
+    </div>
+    <div class="messages" id="messages">
+      <div class="empty">Выберите чат слева</div>
+    </div>
+  </div>
+
+<script>
+let DATA = [];
+let current = null;
+
+async function load() {
+  const r = await fetch('data.json');
+  DATA = await r.json();
+  renderChats(DATA);
+}
+
+function renderChats(chats) {
+  const box = document.getElementById('chats');
+  box.innerHTML = '';
+  if (!chats.length) {
+    box.innerHTML = '<div style="padding:20px;color:#6b7c8e;text-align:center">Ничего не найдено</div>';
+    return;
+  }
+  chats.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'chat';
+    el.innerHTML = `
+      <div class="chat-header">
+        <span class="chat-name">${esc(c.name)}</span>
+        <span class="chat-time">${esc(c.last_time)}</span>
+      </div>
+      <div class="chat-preview">${esc(c.last_text)}</div>
+    `;
+    el.onclick = () => openChat(c);
+    box.appendChild(el);
+  });
+}
+
+function openChat(c) {
+  current = c;
+  document.getElementById('chat-title').textContent = c.name +
+    (c.username ? ' (@' + c.username + ')' : '');
+  document.getElementById('messages').innerHTML = '';
+  c.messages.forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'msg';
+    let media = '';
+    if (m.media_type) {
+      const labels = {
+        photo:'📷 Фото', video:'🎬 Видео', voice:'🎙 Голосовое',
+        video_note:'⭕ Кружок', sticker:'🌟 Стикер',
+        document:'📎 Файл', audio:'🎵 Аудио', animation:'🎞 GIF'
+      };
+      media = `<div class="msg-media">${labels[m.media_type] || '❔ Вложение'}</div>`;
+    }
+    el.innerHTML = `
+      <div class="msg-meta">${esc(m.from_name)}</div>
+      <div>${esc(m.text)}${media}</div>
+      <div class="msg-time">${esc(m.time)}</div>
+    `;
+    document.getElementById('messages').appendChild(el);
+  });
+  document.getElementById('messages').scrollTop = 999999;
+  document.querySelectorAll('.chat').forEach(e => e.classList.remove('active'));
+  document.getElementById('sidebar').classList.add('hidden');
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s == null ? '' : s;
+  return d.innerHTML;
+}
+
+document.getElementById('search').oninput = (e) => {
+  const q = e.target.value.toLowerCase();
+  renderChats(DATA.filter(c =>
+    c.name.toLowerCase().includes(q) ||
+    (c.username && c.username.toLowerCase().includes(q)) ||
+    c.messages.some(m => (m.text || '').toLowerCase().includes(q))
+  ));
+};
+
+document.getElementById('back').onclick = () => {
+  document.getElementById('sidebar').classList.remove('hidden');
+};
+
+load();
+</script>
+</body>
+</html>
