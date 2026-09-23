@@ -3,8 +3,8 @@
     "id": 5194433280,
     "name": "Чат",
     "username": null,
-    "last_time": "23.09 20:08",
-    "last_text": ".afk проаерка",
+    "last_time": "23.09 20:24",
+    "last_text": ".afk доброе утро илья,напиши мне когда проснешься я проверю ",
     "messages": [
       {
         "from_name": "азат адеев",
@@ -85,6 +85,38 @@
         "media_type": null,
         "is_owner": true,
         "time": "23.09.2026 20:08"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:23"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk проверка",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:23"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".unafk",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:23"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk доброе утро илья,напиши мне когда проснешься я проверю бота",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:24"
       }
     ]
   }
