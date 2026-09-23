@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "id": 5194433280,
+    "name": "Чат",
+    "username": null,
+    "last_time": "23.09 20:02",
+    "last_text": ".afk",
+    "messages": [
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:02"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afl",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:02"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:02"
+      }
+    ]
+  }
+]
