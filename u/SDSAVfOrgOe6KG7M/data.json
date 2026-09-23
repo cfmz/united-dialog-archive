@@ -1,0 +1,27 @@
+[
+  {
+    "id": 7113397602,
+    "name": "Чат",
+    "username": null,
+    "last_time": "23.09 18:35",
+    "last_text": "офойойой",
+    "messages": [
+      {
+        "from_name": "Seyam Rana",
+        "from_username": null,
+        "text": "jdfj",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 18:35"
+      },
+      {
+        "from_name": "Seyam Rana",
+        "from_username": null,
+        "text": "офойойой",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 18:35"
+      }
+    ]
+  }
+]
