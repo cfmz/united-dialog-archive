@@ -3,8 +3,8 @@
     "id": 5194433280,
     "name": "Чат",
     "username": null,
-    "last_time": "23.09 20:02",
-    "last_text": ".afk",
+    "last_time": "23.09 20:08",
+    "last_text": ".afk проаерка",
     "messages": [
       {
         "from_name": "азат адеев",
@@ -29,6 +29,62 @@
         "media_type": null,
         "is_owner": true,
         "time": "23.09.2026 20:02"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".sjd",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:05"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".help",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:05"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:05"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:07"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".d",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:07"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:07"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk проаерка",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 20:08"
       }
     ]
   }
