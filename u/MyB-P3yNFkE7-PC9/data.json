@@ -1,278 +1,10 @@
 [
   {
-    "id": 8596425768,
-    "name": "ксеникс 🥷",
-    "username": "parnavasya",
-    "last_time": "23.09 18:46",
-    "last_text": "тит",
-    "messages": [
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "алслс",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 18:46"
-      },
-      {
-        "from_name": "ксеникс 🥷",
-        "from_username": "parnavasya",
-        "text": "салам дарова",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:46"
-      },
-      {
-        "from_name": "ксеникс 🥷",
-        "from_username": "parnavasya",
-        "text": "сзаха",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:46"
-      },
-      {
-        "from_name": "ксеникс 🥷",
-        "from_username": "parnavasya",
-        "text": "тит",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:46"
-      }
-    ]
-  },
-  {
-    "id": 8515623927,
-    "name": "Seyam Rana",
-    "username": null,
-    "last_time": "23.09 18:35",
-    "last_text": "офойойой",
-    "messages": [
-      {
-        "from_name": "Seyam Rana",
-        "from_username": null,
-        "text": "ааа",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 17:53"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "ппп",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 17:53"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "ааа",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 17:54"
-      },
-      {
-        "from_name": "Seyam Rana",
-        "from_username": null,
-        "text": "тчочлыы",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 17:54"
-      },
-      {
-        "from_name": "Seyam Rana",
-        "from_username": null,
-        "text": "ЯАХВХА",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:15"
-      },
-      {
-        "from_name": "Seyam Rana",
-        "from_username": null,
-        "text": "jdfj",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:35"
-      },
-      {
-        "from_name": "Seyam Rana",
-        "from_username": null,
-        "text": "офойойой",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:35"
-      }
-    ]
-  },
-  {
-    "id": 8208528068,
-    "name": "дыб",
-    "username": "realmeui_6",
-    "last_time": "23.09 18:33",
-    "last_text": "ро",
-    "messages": [
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "hvv",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 14:17"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "исьслсл",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 14:23"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "ааhh",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 14:23"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "ррр",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 17:04"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "gg",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:22"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "cbdhdd",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:26"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "аааа",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:33"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "ооо",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:33"
-      },
-      {
-        "from_name": "дыб",
-        "from_username": "realmeui_6",
-        "text": "сигма",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 18:33"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "ааа",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 18:33"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "ро",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 18:33"
-      }
-    ]
-  },
-  {
-    "id": 7114114699,
-    "name": "Лукин Николай",
-    "username": "kolyafjj",
-    "last_time": "23.09 17:53",
-    "last_text": "но полина в позу встала и отказывается менять",
-    "messages": [
-      {
-        "from_name": "Лукин Николай",
-        "from_username": "kolyafjj",
-        "text": "Глеб",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 14:35"
-      },
-      {
-        "from_name": "Лукин Николай",
-        "from_username": "kolyafjj",
-        "text": "Мож я завтра с Михой вместо тебя встану",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 14:35"
-      },
-      {
-        "from_name": "Лукин Николай",
-        "from_username": "kolyafjj",
-        "text": "А ты послезавтра вместо меня",
-        "media_type": null,
-        "is_owner": false,
-        "time": "23.09.2026 14:36"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "даров коль",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 17:53"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "я уроки не сделал уже",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 17:53"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "ч бы сам не против с ильей в столовой дежкрить",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 17:53"
-      },
-      {
-        "from_name": "симка",
-        "from_username": "cf_mz",
-        "text": "но полина в позу встала и отказывается менять",
-        "media_type": null,
-        "is_owner": true,
-        "time": "23.09.2026 17:53"
-      }
-    ]
-  },
-  {
     "id": 5194433280,
     "name": "Илья",
     "username": "keqax",
-    "last_time": "23.09 17:22",
-    "last_text": "ахуено выходит",
+    "last_time": "23.09 19:31",
+    "last_text": ".rps камень",
     "messages": [
       {
         "from_name": "симка",
@@ -1217,6 +949,290 @@
         "media_type": null,
         "is_owner": true,
         "time": "23.09.2026 17:22"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": ".rps",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 19:31"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": ".rps камень",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 19:31"
+      }
+    ]
+  },
+  {
+    "id": 8596425768,
+    "name": "ксеникс 🥷",
+    "username": "parnavasya",
+    "last_time": "23.09 18:46",
+    "last_text": "тит",
+    "messages": [
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "алслс",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 18:46"
+      },
+      {
+        "from_name": "ксеникс 🥷",
+        "from_username": "parnavasya",
+        "text": "салам дарова",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:46"
+      },
+      {
+        "from_name": "ксеникс 🥷",
+        "from_username": "parnavasya",
+        "text": "сзаха",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:46"
+      },
+      {
+        "from_name": "ксеникс 🥷",
+        "from_username": "parnavasya",
+        "text": "тит",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:46"
+      }
+    ]
+  },
+  {
+    "id": 8515623927,
+    "name": "Seyam Rana",
+    "username": null,
+    "last_time": "23.09 18:35",
+    "last_text": "офойойой",
+    "messages": [
+      {
+        "from_name": "Seyam Rana",
+        "from_username": null,
+        "text": "ааа",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 17:53"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "ппп",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 17:53"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "ааа",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 17:54"
+      },
+      {
+        "from_name": "Seyam Rana",
+        "from_username": null,
+        "text": "тчочлыы",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 17:54"
+      },
+      {
+        "from_name": "Seyam Rana",
+        "from_username": null,
+        "text": "ЯАХВХА",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:15"
+      },
+      {
+        "from_name": "Seyam Rana",
+        "from_username": null,
+        "text": "jdfj",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:35"
+      },
+      {
+        "from_name": "Seyam Rana",
+        "from_username": null,
+        "text": "офойойой",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:35"
+      }
+    ]
+  },
+  {
+    "id": 8208528068,
+    "name": "дыб",
+    "username": "realmeui_6",
+    "last_time": "23.09 18:33",
+    "last_text": "ро",
+    "messages": [
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "hvv",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 14:17"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "исьслсл",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 14:23"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "ааhh",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 14:23"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "ррр",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 17:04"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "gg",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:22"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "cbdhdd",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:26"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "аааа",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:33"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "ооо",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:33"
+      },
+      {
+        "from_name": "дыб",
+        "from_username": "realmeui_6",
+        "text": "сигма",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 18:33"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "ааа",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 18:33"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "ро",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 18:33"
+      }
+    ]
+  },
+  {
+    "id": 7114114699,
+    "name": "Лукин Николай",
+    "username": "kolyafjj",
+    "last_time": "23.09 17:53",
+    "last_text": "но полина в позу встала и отказывается менять",
+    "messages": [
+      {
+        "from_name": "Лукин Николай",
+        "from_username": "kolyafjj",
+        "text": "Глеб",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 14:35"
+      },
+      {
+        "from_name": "Лукин Николай",
+        "from_username": "kolyafjj",
+        "text": "Мож я завтра с Михой вместо тебя встану",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 14:35"
+      },
+      {
+        "from_name": "Лукин Николай",
+        "from_username": "kolyafjj",
+        "text": "А ты послезавтра вместо меня",
+        "media_type": null,
+        "is_owner": false,
+        "time": "23.09.2026 14:36"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "даров коль",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 17:53"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "я уроки не сделал уже",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 17:53"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "ч бы сам не против с ильей в столовой дежкрить",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 17:53"
+      },
+      {
+        "from_name": "симка",
+        "from_username": "cf_mz",
+        "text": "но полина в позу встала и отказывается менять",
+        "media_type": null,
+        "is_owner": true,
+        "time": "23.09.2026 17:53"
       }
     ]
   }
