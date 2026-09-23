@@ -1,8 +1,8 @@
 [
   {
     "id": 5194433280,
-    "name": "симка",
-    "username": "cf_mz",
+    "name": "Илья",
+    "username": "keqax",
     "last_time": "23.09 17:22",
     "last_text": "ахуено выходит",
     "messages": [
@@ -11,6 +11,7 @@
         "from_username": "keqax",
         "text": "А все она не читает видимо спит",
         "media_type": null,
+        "is_owner": false,
         "time": "23.09.2026 17:22"
       },
       {
@@ -18,6 +19,7 @@
         "from_username": "keqax",
         "text": "Хахаха",
         "media_type": null,
+        "is_owner": false,
         "time": "23.09.2026 17:22"
       },
       {
@@ -25,6 +27,7 @@
         "from_username": "cf_mz",
         "text": "брат",
         "media_type": null,
+        "is_owner": true,
         "time": "23.09.2026 17:22"
       },
       {
@@ -32,6 +35,7 @@
         "from_username": "cf_mz",
         "text": "я покажу",
         "media_type": null,
+        "is_owner": true,
         "time": "23.09.2026 17:22"
       },
       {
@@ -39,6 +43,7 @@
         "from_username": "cf_mz",
         "text": "ща",
         "media_type": null,
+        "is_owner": true,
         "time": "23.09.2026 17:22"
       },
       {
@@ -46,6 +51,7 @@
         "from_username": "cf_mz",
         "text": "ахуено выходит",
         "media_type": null,
+        "is_owner": true,
         "time": "23.09.2026 17:22"
       }
     ]
@@ -62,6 +68,7 @@
         "from_username": "realmeui_6",
         "text": "ррр",
         "media_type": null,
+        "is_owner": false,
         "time": "23.09.2026 17:04"
       }
     ]

@@ -15,12 +15,8 @@ body {
   width: 320px; background: #17212b; display: flex; flex-direction: column;
   border-right: 1px solid #101921;
 }
-.sidebar-header {
-  padding: 12px; border-bottom: 1px solid #101921;
-}
-.sidebar-header h1 {
-  font-size: 15px; font-weight: 600; color: #64b5f6; margin-bottom: 8px;
-}
+.sidebar-header { padding: 12px; border-bottom: 1px solid #101921; }
+.sidebar-header h1 { font-size: 15px; font-weight: 600; color: #64b5f6; margin-bottom: 8px; }
 .search {
   width: 100%; padding: 8px 12px; background: #242f3d; border: none;
   border-radius: 20px; color: #fff; font-size: 14px; outline: none;
@@ -39,9 +35,7 @@ body {
 .chat-time { font-size: 11px; color: #6b7c8e; float: right; font-weight: normal; }
 .chat-header { display: flex; justify-content: space-between; align-items: center; }
 
-.main {
-  flex: 1; display: flex; flex-direction: column; background: #0e1621;
-}
+.main { flex: 1; display: flex; flex-direction: column; background: #0e1621; }
 .main-header {
   padding: 12px 20px; background: #17212b; border-bottom: 1px solid #101921;
   font-weight: 600; font-size: 15px;
@@ -51,24 +45,25 @@ body {
   display: flex; flex-direction: column; gap: 8px;
 }
 .msg {
-  max-width: 65%; padding: 8px 12px; border-radius: 10px;
+  max-width: 70%; padding: 8px 12px; border-radius: 12px;
   background: #182533; align-self: flex-start;
   word-wrap: break-word; font-size: 14px; line-height: 1.4;
+  position: relative;
+}
+.msg.own {
+  background: #2b5278; align-self: flex-end;
 }
 .msg-meta {
-  font-size: 11px; color: #6b7c8e; margin-bottom: 4px; font-weight: 600;
+  font-size: 11px; color: #64b5f6; margin-bottom: 4px; font-weight: 600;
 }
-.msg-time {
-  font-size: 10px; color: #6b7c8e; float: right; margin-left: 12px; margin-top: 4px;
-}
+.msg.own .msg-meta { color: #a8c8ec; }
+.msg-time { font-size: 10px; color: #6b7c8e; float: right; margin-left: 12px; margin-top: 4px; }
 .msg-media {
   display: inline-block; margin-top: 6px; padding: 4px 8px;
   background: #2b3e50; border-radius: 6px; font-size: 12px;
 }
-.empty {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  color: #6b7c8e; font-size: 14px;
-}
+.empty { flex: 1; display: flex; align-items: center; justify-content: center;
+         color: #6b7c8e; font-size: 14px; }
 @media (max-width: 700px) {
   .sidebar { width: 100%; position: absolute; z-index: 10; height: 100vh; }
   .sidebar.hidden { display: none; }
@@ -132,10 +127,11 @@ function openChat(c) {
   current = c;
   document.getElementById('chat-title').textContent = c.name +
     (c.username ? ' (@' + c.username + ')' : '');
-  document.getElementById('messages').innerHTML = '';
+  const box = document.getElementById('messages');
+  box.innerHTML = '';
   c.messages.forEach(m => {
     const el = document.createElement('div');
-    el.className = 'msg';
+    el.className = 'msg' + (m.is_owner ? ' own' : '');
     let media = '';
     if (m.media_type) {
       const labels = {
@@ -150,9 +146,9 @@ function openChat(c) {
       <div>${esc(m.text)}${media}</div>
       <div class="msg-time">${esc(m.time)}</div>
     `;
-    document.getElementById('messages').appendChild(el);
+    box.appendChild(el);
   });
-  document.getElementById('messages').scrollTop = 999999;
+  box.scrollTop = 999999;
   document.querySelectorAll('.chat').forEach(e => e.classList.remove('active'));
   document.getElementById('sidebar').classList.add('hidden');
 }
