@@ -3,8 +3,8 @@
     "id": 5194433280,
     "name": "Илья",
     "username": "keqax",
-    "last_time": "24.09 09:42",
-    "last_text": "Алее",
+    "last_time": "24.09 10:13",
+    "last_text": ".unafk",
     "messages": [
       {
         "from_name": "азат адеев",
@@ -957,6 +957,22 @@
         "media_type": null,
         "is_owner": false,
         "time": "24.09.2026 09:42"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".afk ghbdtn",
+        "media_type": null,
+        "is_owner": true,
+        "time": "24.09.2026 10:13"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": ".unafk",
+        "media_type": null,
+        "is_owner": true,
+        "time": "24.09.2026 10:13"
       }
     ]
   },
