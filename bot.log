@@ -83,5 +83,20 @@ nohup: ignoring input
 2026-09-24 18:54:19,501 [INFO] united_dialog: archive: Готово: 14 архивов
 2026-09-24 18:55:08,840 [INFO] united_dialog: archive: pushed to web
 2026-09-24 19:00:14,331 [INFO] united_dialog: archive: Готово: 14 архивов
-d_dialog: archive: pushed to web
-2026-09-24 19:00:14,331 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-24 19:00:39,494 [INFO] united_dialog: archive: pushed to web
+2026-09-24 19:03:09,561 [INFO] aiogram.event: Update id=82900331 is not handled. Duration 21 ms by bot id=8824105826
+2026-09-24 19:03:16,282 [INFO] aiogram.event: Update id=82900332 is not handled. Duration 8 ms by bot id=8824105826
+2026-09-24 19:03:32,937 [WARNING] united_dialog: type action: HTTP Client says - ServerDisconnectedError: Server disconnected
+2026-09-24 19:03:32,946 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2026-09-24 19:03:32,948 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8824105826)
+2026-09-24 19:03:34,187 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [None]
+2026-09-24 19:03:34,187 [WARNING] aiogram.dispatcher: Sleep for 1.413862 seconds and try again... (tryings = 1, bot id = 8824105826)
+2026-09-24 19:03:35,823 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [None]
+2026-09-24 19:03:35,824 [WARNING] aiogram.dispatcher: Sleep for 1.759384 seconds and try again... (tryings = 2, bot id = 8824105826)
+2026-09-24 19:03:37,882 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [None]
+2026-09-24 19:03:37,883 [WARNING] aiogram.dispatcher: Sleep for 2.294550 seconds and try again... (tryings = 3, bot id = 8824105826)
+2026-09-24 19:03:40,399 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [None]
+2026-09-24 19:03:40,399 [WARNING] aiogram.dispatcher: Sleep for 2.890859 seconds and try again... (tryings = 4, bot id = 8824105826)
+2026-09-24 19:03:41,015 [INFO] united_dialog: archive: Готово: 14 архивов
+:40,399 [WARNING] aiogram.dispatcher: Sleep for 2.890859 seconds and try again... (tryings = 4, bot id = 8824105826)
+2026-09-24 19:03:41,015 [INFO] united_dialog: archive: Готово: 14 архивов
