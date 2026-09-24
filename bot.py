@@ -1817,6 +1817,67 @@ async def mutes_watcher():
         except Exception as e:
             log.warning(f"mutes_watcher: {e}")
 
+# ============ СКАЧИВАНИЕ МЕДИА ДЛЯ АРХИВА ============
+MEDIA_EXT = {
+    "photo": "jpg", "video": "mp4", "video_note": "mp4", "voice": "ogg",
+    "audio": "mp3", "document": "bin", "sticker": "webp", "animation": "mp4",
+}
+MEDIA_MAX_SIZE = 50 * 1024 * 1024  # 50 МБ — чтобы не раздувать репо
+
+async def download_missing_media():
+    """Скачивает медиа, которых нет локально."""
+    c = db()
+    rows = c.execute("""
+        SELECT owner_id, message_id, media_type, file_id, connection_id
+        FROM saved_messages
+        WHERE media_type IS NOT NULL AND file_id IS NOT NULL
+        ORDER BY id DESC LIMIT 500
+    """).fetchall()
+    # Токены владельцев
+    tokens = {}
+    for t in c.execute("SELECT DISTINCT user_id, web_token FROM connections WHERE web_token IS NOT NULL").fetchall():
+        tokens[t["user_id"]] = t["web_token"]
+    c.close()
+
+    downloaded = 0
+    for r in rows:
+        tok = tokens.get(r["owner_id"])
+        if not tok: continue
+        ext = MEDIA_EXT.get(r["media_type"], "bin")
+        media_dir = os.path.join(ARCHIVE_DIR, "u", tok, "media")
+        os.makedirs(media_dir, exist_ok=True)
+        target = os.path.join(media_dir, f"{r['message_id']}.{ext}")
+        # Уже скачано?
+        if os.path.exists(target): continue
+        # Может с другим расширением?
+        found = False
+        for f in os.listdir(media_dir):
+            if f.startswith(f"{r['message_id']}."):
+                found = True; break
+        if found: continue
+
+        # Скачиваем
+        try:
+            tg_file = await bot.get_file(r["file_id"])
+            if tg_file.file_size and tg_file.file_size > MEDIA_MAX_SIZE:
+                log.info(f"[media skip] {r['message_id']} — слишком большой ({tg_file.file_size} байт)")
+                # Ставим заглушку-маркер, чтобы не пытаться повторно
+                open(target + ".skip", "w").close()
+                continue
+            await bot.download_file(tg_file.file_path, destination=target)
+            downloaded += 1
+            if downloaded % 10 == 0:
+                log.info(f"[media] скачано {downloaded}...")
+        except TelegramAPIError as e:
+            log.warning(f"[media fail] {r['message_id']}: {e}")
+            # маркер, чтобы не пытаться снова в этом цикле
+            try: open(target + ".skip", "w").close()
+            except: pass
+    if downloaded:
+        log.info(f"[media] всего скачано за прогон: {downloaded}")
+    return downloaded
+
+
 # ============ АВТООБНОВЛЕНИЕ ВЕБ-АРХИВА ============
 import subprocess
 
@@ -1824,7 +1885,13 @@ ARCHIVE_DIR = os.path.dirname(os.path.abspath(__file__))
 ARCHIVE_INTERVAL = 600  # 10 минут
 
 async def _archive_generate():
-    """Запускает generate_site.py и делает git push."""
+    """Скачивает медиа, генерирует страницы, пушит."""
+    # 0) Скачиваем медиа
+    try:
+        await download_missing_media()
+    except Exception as e:
+        log.warning(f"download media: {e}")
+
     # 1) генерация страниц
     proc = await asyncio.create_subprocess_exec(
         sys.executable, os.path.join(ARCHIVE_DIR, "generate_site.py"),
