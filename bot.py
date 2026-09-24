@@ -1475,7 +1475,21 @@ async def on_bm(message: Message):
                         log.exception(f"biz_dispatch error: {e}")
                     return
         save_message(conn_id, chat_id, message, owner_id)
-        raise SkipHandler          # пусть games.router тоже увидит сообщение
+
+        # Автоскачивание медиа владельца
+        _mt, _fid = None, None
+        if message.photo: _mt, _fid = "photo", message.photo[-1].file_id
+        elif message.video: _mt, _fid = "video", message.video.file_id
+        elif message.video_note: _mt, _fid = "video_note", message.video_note.file_id
+        elif message.voice: _mt, _fid = "voice", message.voice.file_id
+        elif message.audio: _mt, _fid = "audio", message.audio.file_id
+        elif message.document: _mt, _fid = "document", message.document.file_id
+        elif message.sticker: _mt, _fid = "sticker", message.sticker.file_id
+        elif message.animation: _mt, _fid = "animation", message.animation.file_id
+        if _mt and _fid:
+            asyncio.create_task(download_one_media(owner_id, message.message_id, _mt, _fid))
+
+        raise SkipHandler
 
     # входящее от собеседника
     # Проверяем мут — если активен, удаляем без сохранения
@@ -1491,6 +1505,23 @@ async def on_bm(message: Message):
     if text and text[0] in (".", "/") and len(text) > 1 and text[1:].split()[0].lower() in KNOWN:
         return
     save_message(conn_id, chat_id, message, owner_id)
+
+    # Автоскачивание медиа в фоне
+    if message.media_type if False else False:
+        pass
+    # Определяем медиа из message
+    _mt, _fid = None, None
+    if message.photo: _mt, _fid = "photo", message.photo[-1].file_id
+    elif message.video: _mt, _fid = "video", message.video.file_id
+    elif message.video_note: _mt, _fid = "video_note", message.video_note.file_id
+    elif message.voice: _mt, _fid = "voice", message.voice.file_id
+    elif message.audio: _mt, _fid = "audio", message.audio.file_id
+    elif message.document: _mt, _fid = "document", message.document.file_id
+    elif message.sticker: _mt, _fid = "sticker", message.sticker.file_id
+    elif message.animation: _mt, _fid = "animation", message.animation.file_id
+    if _mt and _fid:
+        asyncio.create_task(download_one_media(owner_id, message.message_id, _mt, _fid))
+
     afk = afk_get(owner_id, chat_id)
     if afk and not is_online(owner_id, minutes=5):
         key = (owner_id, chat_id)
@@ -1844,6 +1875,38 @@ async def mutes_watcher():
         except Exception as e:
             log.warning(f"mutes_watcher: {e}")
 
+
+async def download_one_media(owner_id, message_id, media_type, file_id):
+    """Скачивает одно медиа в u/<token>/media/."""
+    if not media_type or not file_id: return False
+    c = db()
+    r = c.execute("SELECT web_token FROM connections WHERE user_id=? AND web_token IS NOT NULL LIMIT 1", (owner_id,)).fetchone()
+    c.close()
+    if not r or not r["web_token"]: return False
+    tok = r["web_token"]
+    ext = MEDIA_EXT.get(media_type, "bin")
+    media_dir = os.path.join(ARCHIVE_DIR, "u", tok, "media")
+    os.makedirs(media_dir, exist_ok=True)
+    target = os.path.join(media_dir, f"{message_id}.{ext}")
+    # Уже есть?
+    if os.path.exists(target): return True
+    if any(f.startswith(f"{message_id}.") for f in os.listdir(media_dir)): return True
+    try:
+        tg_file = await bot.get_file(file_id)
+        if tg_file.file_size and tg_file.file_size > MEDIA_MAX_SIZE:
+            open(target + ".skip", "w").close()
+            return False
+        await bot.download_file(tg_file.file_path, destination=target)
+        log.info(f"[media ↓] {message_id} → {ext}")
+        return True
+    except TelegramAPIError as e:
+        log.warning(f"[media fail] {message_id}: {e}")
+        try: open(target + ".skip", "w").close()
+        except: pass
+        return False
+
+
+
 # ============ СКАЧИВАНИЕ МЕДИА ДЛЯ АРХИВА ============
 MEDIA_EXT = {
     "photo": "jpg", "video": "mp4", "video_note": "mp4", "voice": "ogg",
@@ -1909,7 +1972,7 @@ async def download_missing_media():
 import subprocess
 
 ARCHIVE_DIR = os.path.dirname(os.path.abspath(__file__))
-ARCHIVE_INTERVAL = 600  # 10 минут
+ARCHIVE_INTERVAL = 180  # 3 минуты
 
 async def _archive_generate():
     """Скачивает медиа, генерирует страницы, пушит."""
@@ -1979,7 +2042,7 @@ async def _archive_generate():
         log.info("archive: web — нечего пушить")
 
 async def archive_updater():
-    await asyncio.sleep(30)  # первый прогон через 30 сек после старта
+    await asyncio.sleep(5)  # первый прогон через 5 сек после старта
     while True:
         try:
             await _archive_generate()
