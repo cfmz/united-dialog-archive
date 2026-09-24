@@ -709,3 +709,11 @@ NameError: name 'out' is not defined. Did you mean: 'oct'?
 2026-09-24 17:57:28,180 [INFO] aiogram.event: Update id=82900253 is not handled. Duration 109 ms by bot id=8824105826
 2026-09-24 17:57:30,272 [INFO] united_dialog: [media] всего скачано за прогон: 1
 2026-09-24 17:57:30,611 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-24 17:57:38,615 [INFO] united_dialog: archive: pushed
+2026-09-24 18:05:34,117 [INFO] aiogram.event: Update id=82900254 is handled. Duration 161 ms by bot id=8824105826
+2026-09-24 18:07:11,387 [INFO] aiogram.event: Update id=82900255 is not handled. Duration 324 ms by bot id=8824105826
+2026-09-24 18:07:29,123 [INFO] united_dialog: [cmd .type]
+2026-09-24 18:07:29,150 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='подарок' chat=8114487221
+2026-09-24 18:07:29,372 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 18:07:29,531 [INFO] aiogram.event: Update id=82900256 is handled. Duration 650 ms by bot id=8824105826
+2026-09-24 18:07:43,926 [INFO] united_dialog: archive: Готово: 14 архивов

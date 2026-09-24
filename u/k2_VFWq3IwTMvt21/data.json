@@ -3,8 +3,8 @@
     "id": 8114487221,
     "name": "Ronight",
     "username": "ronightme",
-    "last_time": "24.09 17:57",
-    "last_text": "до блен",
+    "last_time": "24.09 18:07",
+    "last_text": "отказана",
     "messages": [
       {
         "from_name": "Ronight",
@@ -23,6 +23,24 @@
         "media_url": null,
         "is_owner": true,
         "time": "24.09.2026 17:57"
+      },
+      {
+        "from_name": "Ronight",
+        "from_username": "ronightme",
+        "text": "кидай",
+        "media_type": null,
+        "media_url": null,
+        "is_owner": false,
+        "time": "24.09.2026 18:05"
+      },
+      {
+        "from_name": "азат адеев",
+        "from_username": "cf_mz",
+        "text": "отказана",
+        "media_type": null,
+        "media_url": null,
+        "is_owner": true,
+        "time": "24.09.2026 18:07"
       }
     ]
   },
