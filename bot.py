@@ -217,13 +217,20 @@ def get_connection(conn_id):
 
 def ensure_web_token(conn_id):
     c = db()
-    r = c.execute("SELECT web_token FROM connections WHERE id=?", (conn_id,)).fetchone()
-    if r and r["web_token"]:
+    r = c.execute("SELECT web_token, web_password FROM connections WHERE id=?", (conn_id,)).fetchone()
+    if r and r["web_token"] and r["web_password"]:
         c.close(); return r["web_token"]
-    tok = secrets.token_urlsafe(12)
-    c.execute("UPDATE connections SET web_token=? WHERE id=?", (tok, conn_id))
+    tok = r["web_token"] if (r and r["web_token"]) else secrets.token_urlsafe(12)
+    pwd = r["web_password"] if (r and r["web_password"]) else secrets.token_urlsafe(9)
+    c.execute("UPDATE connections SET web_token=?, web_password=? WHERE id=?", (tok, pwd, conn_id))
     c.commit(); c.close()
     return tok
+
+def get_web_password(uid):
+    c = db()
+    r = c.execute("SELECT web_password FROM connections WHERE user_id=? AND web_password IS NOT NULL LIMIT 1", (uid,)).fetchone()
+    c.close()
+    return r["web_password"] if r else None
 
 def archive_url(conn_id):
     c = db()
@@ -1904,24 +1911,52 @@ async def _archive_generate():
     log.info(f"archive: {out.decode().strip().split(chr(10))[-1]}")
 
     # 2) git add -A
-    async def _git(*args):
+    async def _git(*args, cwd=None):
         p = await asyncio.create_subprocess_exec(
-            "git", *args, cwd=ARCHIVE_DIR,
+            "git", *args, cwd=cwd or ARCHIVE_DIR,
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
         o, e = await p.communicate()
         return p.returncode, o.decode().strip(), e.decode().strip()
 
     await _git("add", "-A")
     rc, out, err = await _git("status", "--porcelain")
-    if not out:
-        return  # нечего коммитить
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-    await _git("commit", "-m", f"auto: {ts}")
-    rc, out, err = await _git("push")
-    if rc != 0:
-        log.warning(f"git push failed: {err[-200:]}")
+    if out:
+        await _git("commit", "-m", f"auto: {ts}")
+        rc, out, err = await _git("push", "origin", "main")
+        if rc != 0:
+            log.warning(f"git push origin failed: {err[-200:]}")
+
+    # пушим ТОЛЬКО папку u/ и index.html в публичный репо
+    import shutil
+    web_dir = os.path.join(ARCHIVE_DIR, "_web_deploy")
+    if os.path.isdir(web_dir):
+        shutil.rmtree(web_dir)
+    os.makedirs(web_dir, exist_ok=True)
+    src_u = os.path.join(ARCHIVE_DIR, "u")
+    if os.path.isdir(src_u):
+        shutil.copytree(src_u, os.path.join(web_dir, "u"))
+    src_idx = os.path.join(ARCHIVE_DIR, "index.html")
+    if os.path.exists(src_idx):
+        shutil.copy(src_idx, os.path.join(web_dir, "index.html"))
+    open(os.path.join(web_dir, ".nojekyll"), "w").close()
+
+    if not os.path.isdir(os.path.join(web_dir, ".git")):
+        await _git("init", cwd=web_dir)
+        await _git("checkout", "-b", "main", cwd=web_dir)
+        await _git("remote", "add", "origin",
+                   "https://github.com/cfmz/united-dialog-web.git", cwd=web_dir)
+    await _git("add", "-A", cwd=web_dir)
+    rc, out, err = await _git("status", "--porcelain", cwd=web_dir)
+    if out:
+        await _git("commit", "-m", f"auto: {ts}", cwd=web_dir)
+        rc, out, err = await _git("push", "-u", "origin", "main", "--force", cwd=web_dir)
+        if rc != 0:
+            log.warning(f"web push failed: {err[-200:]}")
+        else:
+            log.info("archive: pushed to web")
     else:
-        log.info("archive: pushed")
+        log.info("archive: web — нечего пушить")
 
 async def archive_updater():
     await asyncio.sleep(30)  # первый прогон через 30 сек после старта
