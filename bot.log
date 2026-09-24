@@ -1,0 +1,12 @@
+nohup: ignoring input
+Traceback (most recent call last):
+  File "/root/united/bot.py", line 15, in <module>
+    import games
+  File "/root/united/games.py", line 42, in <module>
+    _init_games_table()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/root/united/games.py", line 28, in _init_games_table
+    c = _db()
+  File "/root/united/games.py", line 20, in _db
+    c = sqlite3.connect("/home/maya/united/united_dialog.db")
+sqlite3.OperationalError: unable to open database file

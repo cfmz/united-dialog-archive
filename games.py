@@ -17,7 +17,9 @@ NL = chr(10)
 # ---------- Помощник для БД (импорт из bot.py) ----------
 def _db():
     import sqlite3
-    c = sqlite3.connect("/home/maya/united/united_dialog.db")
+    c = sqlite3.connect("/root/united/united_dialog.db", timeout=30.0, check_same_thread=False)
+    c.execute("PRAGMA busy_timeout=30000")
+    c.execute("PRAGMA journal_mode=WAL")
     c.row_factory = sqlite3.Row
     return c
 
@@ -35,6 +37,15 @@ def _init_games_table():
         state TEXT,
         created TEXT,
         finished INTEGER DEFAULT 0
+    );
+    CREATE TABLE IF NOT EXISTS transactions(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER, amount INTEGER, reason TEXT, created TEXT
+    );
+    CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY, username TEXT, full_name TEXT,
+        joined TEXT, is_premium INTEGER DEFAULT 0,
+        ucoin INTEGER DEFAULT 0, last_seen TEXT, messages INTEGER DEFAULT 0
     );
     """)
     c.commit(); c.close()
@@ -65,13 +76,23 @@ def _finish_game(gid):
 
 def _add_ucoin(uid, amount, reason):
     c = _db()
-    c.execute("UPDATE users SET ucoin = MAX(0, ucoin + ?) WHERE id=?", (amount, uid))
-    c.execute("INSERT INTO transactions(user_id,amount,reason,created) VALUES(?,?,?,?)",
-              (uid, amount, reason, _now().isoformat()))
-    c.commit()
-    r = c.execute("SELECT ucoin FROM users WHERE id=?", (uid,)).fetchone()
-    c.close()
-    return r["ucoin"] if r else 0
+    try:
+        # Гарантируем, что юзер есть
+        r = c.execute("SELECT id FROM users WHERE id=?", (uid,)).fetchone()
+        if not r:
+            c.execute("INSERT INTO users(id,joined,ucoin) VALUES(?,?,0)",
+                      (uid, _now().isoformat()))
+        c.execute("UPDATE users SET ucoin = MAX(0, ucoin + ?) WHERE id=?", (amount, uid))
+        c.execute("INSERT INTO transactions(user_id,amount,reason,created) VALUES(?,?,?,?)",
+                  (uid, amount, reason, _now().isoformat()))
+        c.commit()
+        r = c.execute("SELECT ucoin FROM users WHERE id=?", (uid,)).fetchone()
+        return r["ucoin"] if r else 0
+    except Exception as e:
+        c.rollback()
+        raise
+    finally:
+        c.close()
 
 def B(text, cb, style=None):
     kw = {"text": text, "callback_data": cb}
