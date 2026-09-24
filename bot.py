@@ -886,7 +886,15 @@ async def on_menu_cb(c: CallbackQuery):
         r = _c.execute("SELECT web_password FROM connections WHERE user_id=? AND web_password IS NOT NULL LIMIT 1", (u["id"],)).fetchone()
         _c.close()
         if r and r["web_password"]:
-            await c.answer("🔒 Пароль архива:" + chr(10) + r["web_password"], show_alert=True)
+            kb_pw = InlineKeyboardMarkup(inline_keyboard=[
+                [B("← Назад", "m_archive", style="danger")]])
+            await c.message.answer(
+                "🔒 <b>Пароль архива</b>" + NL + NL
+                + q("Нажми на пароль — он скопируется." + NL + NL
+                    + "<code>" + esc(r["web_password"]) + "</code>" + NL + NL
+                    + "🔗 Ссылка на архив:" + NL
+                    + "<code>" + archive_url_for_user(u["id"]) + "</code>"),
+                reply_markup=kb_pw)
         else:
             await c.answer("Пароль ещё не создан. Перезапусти бота.", show_alert=True)
     elif d == "m_profile":

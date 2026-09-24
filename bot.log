@@ -1,7 +1,10 @@
 nohup: ignoring input
-2026-09-24 18:34:21,480 [INFO] united_dialog: United Dialog запущен.
-2026-09-24 18:34:21,483 [INFO] aiogram.dispatcher: Start polling
-2026-09-24 18:34:21,606 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
-2026-09-24 18:34:53,438 [INFO] united_dialog: archive: Готово: 14 архивов
- id=8824105826 - 'United Dialog'
-2026-09-24 18:34:53,438 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-24 18:35:52,662 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 18:35:52,667 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 18:35:52,801 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 18:36:00,800 [INFO] aiogram.event: Update id=82900274 is handled. Duration 1560 ms by bot id=8824105826
+2026-09-24 18:36:02,683 [INFO] aiogram.event: Update id=82900275 is handled. Duration 861 ms by bot id=8824105826
+2026-09-24 18:36:05,808 [INFO] aiogram.event: Update id=82900276 is handled. Duration 1313 ms by bot id=8824105826
+2026-09-24 18:36:23,371 [INFO] united_dialog: archive: Готово: 14 архивов
+ion 1313 ms by bot id=8824105826
+2026-09-24 18:36:23,371 [INFO] united_dialog: archive: Готово: 14 архивов
