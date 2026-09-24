@@ -17,5 +17,38 @@ nohup: ignoring input
 2026-09-24 18:42:18,847 [INFO] aiogram.event: Update id=82900282 is handled. Duration 589 ms by bot id=8824105826
 2026-09-24 18:42:30,333 [INFO] united_dialog: [media] всего скачано за прогон: 1
 2026-09-24 18:42:31,454 [INFO] united_dialog: archive: Готово: 14 архивов
-�ачано за прогон: 1
-2026-09-24 18:42:31,454 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-24 18:42:49,725 [INFO] united_dialog: archive: pushed to web
+2026-09-24 18:43:40,727 [INFO] aiogram.event: Update id=82900283 is not handled. Duration 205 ms by bot id=8824105826
+2026-09-24 18:43:42,079 [INFO] aiogram.event: Update id=82900284 is not handled. Duration 205 ms by bot id=8824105826
+2026-09-24 18:43:43,030 [INFO] aiogram.event: Update id=82900285 is not handled. Duration 94 ms by bot id=8824105826
+2026-09-24 18:43:43,952 [INFO] aiogram.event: Update id=82900286 is not handled. Duration 5 ms by bot id=8824105826
+2026-09-24 18:43:47,794 [INFO] aiogram.event: Update id=82900287 is not handled. Duration 120 ms by bot id=8824105826
+2026-09-24 18:43:54,692 [INFO] aiogram.event: Update id=82900288 is not handled. Duration 113 ms by bot id=8824105826
+2026-09-24 18:43:58,503 [INFO] aiogram.event: Update id=82900289 is handled. Duration 306 ms by bot id=8824105826
+2026-09-24 18:44:03,605 [INFO] united_dialog: [cmd .type]
+2026-09-24 18:44:03,630 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='геолокация' chat=5194433280
+2026-09-24 18:44:03,937 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 18:44:04,123 [INFO] aiogram.event: Update id=82900290 is handled. Duration 584 ms by bot id=8824105826
+2026-09-24 18:44:10,042 [INFO] aiogram.event: Update id=82900291 is not handled. Duration 8 ms by bot id=8824105826
+2026-09-24 18:44:15,231 [INFO] aiogram.event: Update id=82900292 is not handled. Duration 9 ms by bot id=8824105826
+2026-09-24 18:44:17,110 [INFO] aiogram.event: Update id=82900293 is not handled. Duration 10 ms by bot id=8824105826
+2026-09-24 18:44:21,639 [INFO] aiogram.event: Update id=82900294 is not handled. Duration 18 ms by bot id=8824105826
+2026-09-24 18:44:30,174 [INFO] aiogram.event: Update id=82900295 is not handled. Duration 17 ms by bot id=8824105826
+2026-09-24 18:44:38,067 [INFO] aiogram.event: Update id=82900296 is not handled. Duration 7 ms by bot id=8824105826
+2026-09-24 18:44:47,729 [INFO] aiogram.event: Update id=82900297 is handled. Duration 277 ms by bot id=8824105826
+2026-09-24 18:44:56,424 [INFO] aiogram.event: Update id=82900298 is handled. Duration 419 ms by bot id=8824105826
+2026-09-24 18:45:01,705 [INFO] aiogram.event: Update id=82900299 is handled. Duration 660 ms by bot id=8824105826
+2026-09-24 18:45:28,655 [INFO] aiogram.event: Update id=82900300 is handled. Duration 402 ms by bot id=8824105826
+2026-09-24 18:45:30,153 [INFO] aiogram.event: Update id=82900301 is handled. Duration 345 ms by bot id=8824105826
+2026-09-24 18:45:31,978 [INFO] aiogram.event: Update id=82900302 is handled. Duration 396 ms by bot id=8824105826
+2026-09-24 18:45:33,874 [INFO] aiogram.event: Update id=82900303 is handled. Duration 213 ms by bot id=8824105826
+2026-09-24 18:45:35,232 [INFO] aiogram.event: Update id=82900304 is handled. Duration 287 ms by bot id=8824105826
+2026-09-24 18:45:36,959 [INFO] aiogram.event: Update id=82900305 is handled. Duration 246 ms by bot id=8824105826
+2026-09-24 18:45:38,364 [INFO] aiogram.event: Update id=82900306 is handled. Duration 250 ms by bot id=8824105826
+2026-09-24 18:45:40,239 [INFO] aiogram.event: Update id=82900307 is handled. Duration 296 ms by bot id=8824105826
+2026-09-24 18:45:42,136 [INFO] aiogram.event: Update id=82900308 is handled. Duration 304 ms by bot id=8824105826
+2026-09-24 18:45:43,559 [INFO] aiogram.event: Update id=82900309 is handled. Duration 223 ms by bot id=8824105826
+2026-09-24 18:45:46,775 [INFO] aiogram.event: Update id=82900310 is handled. Duration 343 ms by bot id=8824105826
+2026-09-24 18:45:51,010 [INFO] united_dialog: archive: Готово: 14 архивов
+tion 343 ms by bot id=8824105826
+2026-09-24 18:45:51,010 [INFO] united_dialog: archive: Готово: 14 архивов
