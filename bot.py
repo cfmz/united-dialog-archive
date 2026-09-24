@@ -34,7 +34,7 @@ BRAND = "United Dialog"
 BOT_USERNAME = "UnitedDialogBot"
 ADMIN_ID = 7113397602
 GITHUB_USER = "cfmz"
-REPO = "united-dialog-archive"
+REPO = "united-dialog-web"
 SUPPORT = "https://t.me/UnitedDialogSupport"
 REF_BONUS = 50            # U-Coin за приглашённого друга
 NOTIFY_OWN = True        # уведомлять об удалении/правке СВОИХ сообщений
@@ -872,11 +872,23 @@ async def on_menu_cb(c: CallbackQuery):
 
     if d == "m_main":
         await _edit(c, txt_start_connected() if user_has_active_connection(u["id"]) else txt_start_new(), kb_main())
-    elif d == "m_archive":
+    if d == "m_archive":
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [B("🌐 Открыть архив", url=archive_url_for_user(u["id"]), style="success")],
+            [B("🔒 Показать пароль", "m_archive_pw", style="primary")],
             [B("← Назад", "m_main", style="danger")]])
-        await _edit(c, "🌐 <b>Веб-Архив</b>" + NL + NL + q("Все сохранённые сообщения — на сайте 👇"), kb)
+        await _edit(c, "🌐 <b>Веб-Архив</b>" + NL + NL
+            + q("Все сохранённые сообщения — на сайте." + NL + NL
+                + "🔒 Архив защищён паролем AES-256" + NL
+                + "Пароль покажется кнопкой ниже."), kb)
+    elif d == "m_archive_pw":
+        _c = db()
+        r = _c.execute("SELECT web_password FROM connections WHERE user_id=? AND web_password IS NOT NULL LIMIT 1", (u["id"],)).fetchone()
+        _c.close()
+        if r and r["web_password"]:
+            await c.answer("🔒 Пароль архива:" + chr(10) + r["web_password"], show_alert=True)
+        else:
+            await c.answer("Пароль ещё не создан. Перезапусти бота.", show_alert=True)
     elif d == "m_profile":
         prof_text, kb = txt_profile(u, count_msgs(u["id"])), kb_profile()
         try: await c.message.delete()
