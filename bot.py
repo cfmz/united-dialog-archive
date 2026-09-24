@@ -23,12 +23,6 @@ try:
 except Exception:
     InputRichMessage = SendRichMessage = None
 
-try:
-    import games
-except Exception as _e:
-    games = None
-    print(f"[warn] games.py не загружен: {_e}")
-
 # ============ НАСТРОЙКИ ============
 # ТОКЕН БОЛЬШЕ НЕ В КОДЕ: export BOT_TOKEN="123:abc"
 TOKEN = os.getenv("BOT_TOKEN", "").strip()
@@ -43,7 +37,7 @@ GITHUB_USER = "cfmz"
 REPO = "united-dialog-archive"
 SUPPORT = "https://t.me/UnitedDialogSupport"
 REF_BONUS = 50            # U-Coin за приглашённого друга
-NOTIFY_OWN = False        # уведомлять об удалении/правке СВОИХ сообщений
+NOTIFY_OWN = True        # уведомлять об удалении/правке СВОИХ сообщений
 GAME_COOLDOWN = 30
 GAME_DAILY_LIMIT = 50
 
@@ -57,6 +51,7 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
 _AFK_LAST = {}
+TYPE_TASKS = {}
 ADMIN_WAIT = {}
 _NOTIFY_TS = {}
 _BOT_DELETED = set()      # сообщения, которые удалил сам бот (команды)
@@ -114,6 +109,11 @@ def init_db():
         user_id INTEGER, amount INTEGER, reason TEXT, created TEXT
     );
     CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT);
+    CREATE TABLE IF NOT EXISTS mutes(
+        owner_id INTEGER, chat_id INTEGER,
+        until_ts TEXT, muted_at TEXT,
+        PRIMARY KEY(owner_id, chat_id)
+    );
     CREATE TABLE IF NOT EXISTS afk(
         owner_id INTEGER, chat_id INTEGER, message TEXT,
         enabled INTEGER DEFAULT 1, created TEXT,
@@ -289,10 +289,14 @@ def save_message(conn_id, chat_id, message, owner_id):
     c.commit(); c.close()
 
 def get_message(owner_id, chat_id, mid):
-    # раньше искали без owner_id -> у разных владельцев id сообщений могли совпасть
+    # Сначала ищем строго по owner_id, потом без него
+    # (у собеседника может быть свой бизнес-бот, который тоже сохраняет)
     c = db()
     r = c.execute("SELECT * FROM saved_messages WHERE owner_id=? AND chat_id=? AND message_id=? ORDER BY id DESC LIMIT 1",
                   (owner_id, chat_id, mid)).fetchone()
+    if not r:
+        r = c.execute("SELECT * FROM saved_messages WHERE chat_id=? AND message_id=? ORDER BY id DESC LIMIT 1",
+                      (chat_id, mid)).fetchone()
     c.close(); return r
 
 async def ensure_connection(conn_id):
@@ -426,6 +430,76 @@ def has_united_love(uid):
         return until > now_utc()
     except Exception:
         return False
+
+TYPE_ACTIONS = {
+    "кружок": "record_video_note",
+    "видео": "record_video",
+    "голосовое": "record_voice",
+    "фото": "upload_photo",
+    "файл": "upload_document",
+    "стикер": "choose_sticker",
+    "геолокация": "find_location",
+    "печатает": "typing",
+    "typing": "typing",
+}
+
+async def _type_loop(owner_id, chat_id, conn_id, action):
+    """Шлёт chat_action каждые 4 сек, пока не отменят."""
+    key = (owner_id, chat_id)
+    try:
+        while True:
+            # проверка: жива ли задача
+            if TYPE_TASKS.get(key, {}).get("action") != action:
+                return
+            try:
+                await bot.send_chat_action(chat_id=chat_id, action=action,
+                                            business_connection_id=conn_id)
+            except TelegramAPIError as e:
+                log.warning(f"type action: {e}")
+                TYPE_TASKS.pop(key, None)
+                return
+            await asyncio.sleep(4)
+    except asyncio.CancelledError:
+        pass
+    except Exception as e:
+        log.warning(f"_type_loop: {e}")
+
+
+def mute_set(owner_id, chat_id, minutes):
+    until = now_utc() + timedelta(minutes=minutes)
+    c = db()
+    c.execute("""INSERT INTO mutes(owner_id,chat_id,until_ts,muted_at)
+                 VALUES(?,?,?,?)
+                 ON CONFLICT(owner_id,chat_id) DO UPDATE SET
+                 until_ts=excluded.until_ts, muted_at=excluded.muted_at""",
+        (owner_id, chat_id, until.isoformat(), now_utc().isoformat()))
+    c.commit(); c.close()
+    return until
+
+def mute_off(owner_id, chat_id):
+    c = db()
+    c.execute("DELETE FROM mutes WHERE owner_id=? AND chat_id=?", (owner_id, chat_id))
+    c.commit(); c.close()
+
+def mute_get(owner_id, chat_id):
+    c = db()
+    r = c.execute("SELECT * FROM mutes WHERE owner_id=? AND chat_id=?",
+                  (owner_id, chat_id)).fetchone()
+    c.close()
+    return r
+
+def mute_active(owner_id, chat_id):
+    r = mute_get(owner_id, chat_id)
+    if not r: return None
+    try:
+        until = datetime.fromisoformat(r["until_ts"])
+        if until.tzinfo is None: until = until.replace(tzinfo=timezone.utc)
+        if until <= now_utc():
+            return None
+        return until
+    except Exception:
+        return None
+
 
 def afk_set(uid, chat_id, text):
     c = db()
@@ -1304,7 +1378,7 @@ async def on_bc(conn):
 # бот удалял такое сообщение и молчал)
 KNOWN = {"ping", "id", "info", "help", "love", "flip", "rps", "kawai", "kub",
          "roast", "anim", "type", "title", "split", "перевод", "translit",
-         "afk", "unafk", "redeem", "balance"}
+         "afk", "unafk", "redeem", "balance", "ttt", "knb", "saper", "slot", "mute", "unmute"}
 
 async def biz_send(chat_id, conn_id, text, owner_id=None):
     try:
@@ -1366,13 +1440,29 @@ async def on_bm(message: Message):
                 if cmd in KNOWN:
                     log.info(f"[cmd .{cmd}]")
                     get_user(owner_id)
-                    await delete_cmd(conn_id, chat_id, message.message_id)
-                    await biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id)
+                    # Сначала выполняем, потом удаляем — если упадёт, сообщение останется
+                    try:
+                        await biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id)
+                        await delete_cmd(conn_id, chat_id, message.message_id)
+                    except Exception as e:
+                        log.exception(f"biz_dispatch error: {e}")
                     return
         save_message(conn_id, chat_id, message, owner_id)
         raise SkipHandler          # пусть games.router тоже увидит сообщение
 
     # входящее от собеседника
+    # Проверяем мут — если активен, удаляем без сохранения
+    until = mute_active(owner_id, chat_id)
+    if until:
+        try:
+            await bot.delete_business_messages(business_connection_id=conn_id,
+                                                message_ids=[message.message_id])
+        except TelegramAPIError as e:
+            log.warning(f"mute del: {e}")
+        return
+    # Не сохраняем, если собеседник написал что-то похожее на команду
+    if text and text[0] in (".", "/") and len(text) > 1 and text[1:].split()[0].lower() in KNOWN:
+        return
     save_message(conn_id, chat_id, message, owner_id)
     afk = afk_get(owner_id, chat_id)
     if afk and not is_online(owner_id, minutes=5):
@@ -1390,15 +1480,60 @@ async def on_bm(message: Message):
                 log.warning(f"afk reply: {e}")
 
 async def biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id):
+    log.info(f"[dispatch ENTER] cmd={cmd!r} arg={arg!r} chat={chat_id}")
     async def out(text):
-        await biz_send(chat_id, conn_id, text, owner_id)
+        try:
+            await bot.send_message(chat_id=chat_id, text=text, business_connection_id=conn_id)
+            log.info(f"[out OK] chat={chat_id}")
+            return
+        except TelegramAPIError as e:
+            log.warning(f"[out conn fail] chat={chat_id}: {e}")
+        try:
+            await bot.send_message(chat_id=chat_id, text=text)
+            log.info(f"[out plain OK] chat={chat_id}")
+        except TelegramAPIError as e2:
+            log.error(f"[out plain fail] chat={chat_id}: {e2}")
 
-    async def private(text):   # приватная информация — только владельцу, не в чат с собеседником
-        try: await bot.send_message(owner_id, text)
-        except TelegramAPIError as e: log.warning(f"private send: {e}")
+    async def private(text):
+        try:
+            await bot.send_message(owner_id, text)
+            log.info(f"[private OK] to={owner_id}")
+        except TelegramAPIError as e:
+            log.error(f"[private fail] to={owner_id}: {e}")
 
-    if cmd == "ping":
-        await out("🏓 <b>Понг!</b> Бот онлайн."); return
+
+    if cmd == "mute":
+        a = (arg or "").strip()
+        minutes = None
+        if a.isdigit():
+            minutes = int(a)
+            if minutes < 1 or minutes > 10080:
+                await out("❌ <b>Время от 1 до 10080 минут</b>"); return
+        if minutes is None:
+            await out(
+                "🔇 <b>Мут</b>" + NL + NL
+                + q("Установи мут собеседнику на N минут." + NL + NL
+                    + "<b>Как использовать:</b>" + NL
+                    + "<code>.mute 15</code> — мут на 15 минут" + NL
+                    + "<code>.mute 60</code> — мут на час" + NL + NL
+                    + "⚡ <i>Пока мут активен — все сообщения собеседника автоматически удаляются.</i>" + NL
+                    + "🔊 Снять досрочно: <code>.unmute</code>"))
+            return
+        mute_set(owner_id, chat_id, minutes)
+        word = "минуту" if minutes == 1 else ("минуты" if minutes in (2,3,4) else "минут")
+        await out(
+            "🔇 <b>Мут активирован</b>" + NL + NL
+            + q(f"👤 Собеседник не сможет писать <b>{minutes}</b> {word}." + NL + NL
+                + "⚡ <i>Все его сообщения будут автоматически удаляться.</i>" + NL
+                + "🔊 Снять: <code>.unmute</code>"))
+        return
+
+    if cmd == "unmute":
+        if not mute_get(owner_id, chat_id):
+            await out("❌ " + q("Сейчас нет активного мута.")); return
+        mute_off(owner_id, chat_id)
+        await out("🔊 <b>Мут снят</b>" + NL + NL + q("Собеседник снова может писать."))
+        return
     if cmd == "id":
         await out("🆔 " + q(f"<b>Чат:</b> <code>{chat_id}</code>" + NL + f"<b>Ты:</b> <code>{owner_id}</code>")); return
     if cmd == "info":
@@ -1492,8 +1627,44 @@ async def biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id):
         l, r = random.choice([("★", "★"), ("『", "』"), ("⚡", "⚡"), ("◤", "◢"), ("✧", "✧")])
         await out("✨ " + q(f"<b>{l} {esc(arg or 'текст')} {r}</b>")); return
     if cmd == "type":
-        if not arg:
-            await out("❌ " + q("Использование: <code>.type текст</code>")); return
+        a = (arg or "").strip().lower()
+        # остановка без аргумента
+        if not a:
+            old_task = TYPE_TASKS.pop((owner_id, chat_id), None)
+            if old_task and old_task.get("task"):
+                old_task["task"].cancel()
+            await private("⏹ " + q("<b>Имитация остановлена</b>"))
+            return
+        # маппинг
+        if a not in TYPE_ACTIONS:
+            await private(
+                "📟 <b>.type</b>" + NL + NL
+                + q("Имитация того, что ты пишешь / отправляешь." + NL
+                    + "<i>Собеседник видит статус, но ничего не получает.</i>") + NL + NL
+                + q("<b>Варианты:</b>" + NL
+                    + "<code>.type печатает</code> — печатает" + NL
+                    + "<code>.type кружок</code> — записывает кружок" + NL
+                    + "<code>.type видео</code> — записывает видео" + NL
+                    + "<code>.type голосовое</code> — записывает голосовое" + NL
+                    + "<code>.type фото</code> — отправляет фото" + NL
+                    + "<code>.type файл</code> — отправляет файл" + NL
+                    + "<code>.type стикер</code> — выбирает стикер" + NL
+                    + "<code>.type геолокация</code> — отправляет геолокацию" + NL + NL
+                    + "<code>.type</code> — остановить"))
+            return
+        action = TYPE_ACTIONS[a]
+        # отменяем предыдущую
+        old_task = TYPE_TASKS.pop((owner_id, chat_id), None)
+        if old_task and old_task.get("task"):
+            old_task["task"].cancel()
+        task = asyncio.create_task(_type_loop(owner_id, chat_id, conn_id, action))
+        TYPE_TASKS[(owner_id, chat_id)] = {"task": task, "action": action}
+        await private(
+            "📟 <b>Имитация включена</b>" + NL + NL
+            + q(f"Тип: <b>{esc(a)}</b>" + NL + NL
+                + "Собеседник видит статус, но ничего не получает." + NL
+                + "<i>Остановить:</i> <code>.type</code>"))
+        return
         l33t = str.maketrans({"a": "4", "e": "3", "i": "1", "o": "0", "s": "5", "t": "7",
                               "A": "4", "E": "3", "I": "1", "O": "0", "S": "5", "T": "7"})
         await out("📝 " + q(f"<code>{esc(arg.translate(l33t))}</code>")); return
@@ -1575,14 +1746,18 @@ async def on_deleted(event):
     conn = await ensure_connection(conn_id)
     if not conn: return
     owner_id = conn["user_id"]
+    log.info(f"[del event] chat={event.chat.id} mids={event.message_ids} owner={owner_id} notify={user_notify_on(owner_id)}")
     if not user_notify_on(owner_id): return
     for mid in event.message_ids:
         key = (event.chat.id, mid)
         if key in _BOT_DELETED:            # это бот сам удалил команду — не уведомляем
             _BOT_DELETED.discard(key); continue
         s = get_message(owner_id, event.chat.id, mid)
+        log.info(f"[del lookup] mid={mid} found={bool(s)}")
         if s:
-            if s["from_id"] == owner_id and not NOTIFY_OWN: continue
+            if s["from_id"] == owner_id and not NOTIFY_OWN:
+                log.info(f"[del skip own] mid={mid}")
+                continue
             name = esc(s["from_name"] or "?")
             uname = s["from_username"]
             uname_txt = f" (@{esc(uname)})" if uname else ""
@@ -1604,10 +1779,96 @@ async def on_error(event):
     log.error(f"Error: {event.exception}", exc_info=event.exception)
     return True
 
+async def mutes_watcher():
+    """Проверяет истёкшие муты и уведомляет."""
+    while True:
+        try:
+            await asyncio.sleep(20)
+            c = db()
+            rows = c.execute("SELECT * FROM mutes").fetchall()
+            c.close()
+            for r in rows:
+                try:
+                    until = datetime.fromisoformat(r["until_ts"])
+                    if until.tzinfo is None: until = until.replace(tzinfo=timezone.utc)
+                except Exception:
+                    continue
+                if until > now_utc():
+                    continue
+                # мут истёк — уведомляем и удаляем
+                owner_id = r["owner_id"]; chat_id = r["chat_id"]
+                c2 = db()
+                conn_row = c2.execute(
+                    "SELECT id FROM connections WHERE user_id=? AND is_enabled=1 ORDER BY created DESC LIMIT 1",
+                    (owner_id,)).fetchone()
+                c2.close()
+                if conn_row:
+                    try:
+                        await bot.send_message(
+                            chat_id=chat_id,
+                            text=("🔊 <b>Время мута вышло</b>" + NL + NL
+                                + q("Собеседник снова может писать в чат.")),
+                            business_connection_id=conn_row["id"])
+                    except TelegramAPIError as e:
+                        log.warning(f"mute expire notify: {e}")
+                c3 = db()
+                c3.execute("DELETE FROM mutes WHERE owner_id=? AND chat_id=?", (owner_id, chat_id))
+                c3.commit(); c3.close()
+        except Exception as e:
+            log.warning(f"mutes_watcher: {e}")
+
+# ============ АВТООБНОВЛЕНИЕ ВЕБ-АРХИВА ============
+import subprocess
+
+ARCHIVE_DIR = os.path.dirname(os.path.abspath(__file__))
+ARCHIVE_INTERVAL = 600  # 10 минут
+
+async def _archive_generate():
+    """Запускает generate_site.py и делает git push."""
+    # 1) генерация страниц
+    proc = await asyncio.create_subprocess_exec(
+        sys.executable, os.path.join(ARCHIVE_DIR, "generate_site.py"),
+        cwd=ARCHIVE_DIR,
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    out, err = await proc.communicate()
+    if proc.returncode != 0:
+        log.warning(f"generate_site failed: {err.decode()[-300:]}")
+        return
+    log.info(f"archive: {out.decode().strip().split(chr(10))[-1]}")
+
+    # 2) git add -A
+    async def _git(*args):
+        p = await asyncio.create_subprocess_exec(
+            "git", *args, cwd=ARCHIVE_DIR,
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        o, e = await p.communicate()
+        return p.returncode, o.decode().strip(), e.decode().strip()
+
+    await _git("add", "-A")
+    rc, out, err = await _git("status", "--porcelain")
+    if not out:
+        return  # нечего коммитить
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    await _git("commit", "-m", f"auto: {ts}")
+    rc, out, err = await _git("push")
+    if rc != 0:
+        log.warning(f"git push failed: {err[-200:]}")
+    else:
+        log.info("archive: pushed")
+
+async def archive_updater():
+    await asyncio.sleep(30)  # первый прогон через 30 сек после старта
+    while True:
+        try:
+            await _archive_generate()
+        except Exception as e:
+            log.warning(f"archive updater: {e}")
+        await asyncio.sleep(ARCHIVE_INTERVAL)
+
 async def main():
     init_db()
-    if games:
-        dp.include_router(games.router)
+    asyncio.create_task(mutes_watcher())
+    asyncio.create_task(archive_updater())
     await bot.delete_webhook(drop_pending_updates=False)
     log.info(f"{BRAND} запущен.")
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())

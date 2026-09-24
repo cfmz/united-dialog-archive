@@ -1,4 +1,14 @@
-<!DOCTYPE html>
+"""Генератор HTML-страниц веб-архива. Читает united_dialog.db рядом с файлом."""
+import sqlite3, html, json, os
+from datetime import datetime
+from collections import defaultdict
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+DB_FILE = os.path.join(BASE, "united_dialog.db")
+OUT_DIR = os.path.join(BASE, "u")
+NL = chr(10)
+
+HTML_TPL = '''<!DOCTYPE html>
 <html lang="ru"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -66,4 +76,55 @@ document.getElementById("search").oninput=e=>{const q=e.target.value.toLowerCase
 render(DATA.filter(c=>c.name.toLowerCase().includes(q)||c.messages.some(m=>(m.text||"").toLowerCase().includes(q))));};
 document.getElementById("back").onclick=()=>document.getElementById("sidebar").classList.remove("hidden");
 load();
-</script></body></html>
+</script></body></html>'''
+
+def group(rows, owner_id):
+    chats = defaultdict(list)
+    for m in rows:
+        chats[m["chat_id"]].append(m)
+    out = []
+    for cid, msgs in chats.items():
+        peer_name, peer_username = "Чат", None
+        for m in reversed(msgs):
+            if m["from_id"] != owner_id and m["from_name"] and m["from_name"] != "?":
+                peer_name = m["from_name"]; peer_username = m["from_username"]; break
+        last = msgs[-1]
+        try: lt = datetime.fromisoformat(last["created"]).strftime("%d.%m %H:%M")
+        except: lt = ""
+        out.append({
+            "id": cid, "name": peer_name, "username": peer_username,
+            "last_time": lt, "last_text": (last["text"] or "")[:60],
+            "messages": [{"from_name": m["from_name"] or "?","from_username": m["from_username"],
+                "text": m["text"] or "","media_type": m["media_type"],
+                "is_owner": m["from_id"] == owner_id,
+                "time": (datetime.fromisoformat(m["created"]).strftime("%d.%m.%Y %H:%M") if m["created"] else "")
+            } for m in msgs]
+        })
+    out.sort(key=lambda c: c["last_time"], reverse=True)
+    return out
+
+def main():
+    if not os.path.exists(DB_FILE):
+        print("Нет БД."); return
+    c = sqlite3.connect(DB_FILE); c.row_factory = sqlite3.Row
+    users = c.execute("SELECT DISTINCT user_id, web_token FROM connections WHERE web_token IS NOT NULL").fetchall()
+    if not users:
+        print("Нет активных архивов."); c.close(); return
+    total = 0
+    for u in users:
+        uid, tok = u["user_id"], u["web_token"]
+        rows = c.execute("SELECT * FROM saved_messages WHERE owner_id=? ORDER BY created ASC", (uid,)).fetchall()
+        chats = group(rows, uid)
+        d = os.path.join(OUT_DIR, tok)
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+            f.write(HTML_TPL)
+        with open(os.path.join(d, "data.json"), "w", encoding="utf-8") as f:
+            json.dump(chats, f, ensure_ascii=False, indent=2)
+        print(f"  u/{tok[:12]}… — {len(chats)} чатов, {len(rows)} сообщений")
+        total += 1
+    c.close()
+    print(f"Готово: {total} архивов")
+
+if __name__ == "__main__":
+    main()

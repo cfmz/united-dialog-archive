@@ -10,3 +10,692 @@ Traceback (most recent call last):
   File "/root/united/games.py", line 20, in _db
     c = sqlite3.connect("/home/maya/united/united_dialog.db")
 sqlite3.OperationalError: unable to open database file
+2026-09-24 16:17:33,743 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 16:17:33,749 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 16:17:33,843 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 16:17:34,018 [INFO] aiogram.event: Update id=82900000 is not handled. Duration 52 ms by bot id=8824105826
+2026-09-24 16:17:34,019 [INFO] aiogram.event: Update id=82900001 is not handled. Duration 52 ms by bot id=8824105826
+2026-09-24 16:17:53,788 [INFO] aiogram.event: Update id=82900002 is not handled. Duration 73 ms by bot id=8824105826
+2026-09-24 16:18:11,264 [INFO] aiogram.event: Update id=82900003 is handled. Duration 1079 ms by bot id=8824105826
+2026-09-24 16:18:27,099 [INFO] aiogram.event: Update id=82900004 is handled. Duration 520 ms by bot id=8824105826
+2026-09-24 16:18:34,186 [INFO] aiogram.event: Update id=82900005 is handled. Duration 515 ms by bot id=8824105826
+2026-09-24 16:18:35,406 [INFO] aiogram.event: Update id=82900006 is handled. Duration 381 ms by bot id=8824105826
+2026-09-24 16:18:37,207 [INFO] aiogram.event: Update id=82900007 is handled. Duration 668 ms by bot id=8824105826
+2026-09-24 16:18:38,654 [INFO] aiogram.event: Update id=82900008 is handled. Duration 400 ms by bot id=8824105826
+2026-09-24 16:18:39,751 [INFO] aiogram.event: Update id=82900009 is handled. Duration 466 ms by bot id=8824105826
+2026-09-24 16:18:40,956 [INFO] aiogram.event: Update id=82900010 is handled. Duration 559 ms by bot id=8824105826
+2026-09-24 16:18:44,841 [INFO] aiogram.event: Update id=82900011 is not handled. Duration 160 ms by bot id=8824105826
+2026-09-24 16:18:49,682 [INFO] aiogram.event: Update id=82900012 is not handled. Duration 153 ms by bot id=8824105826
+2026-09-24 16:18:51,427 [INFO] united_dialog: [cmd .help]
+2026-09-24 16:18:51,557 [WARNING] united_dialog: delete cmd: Telegram server says - Bad Request: BOT_ACCESS_FORBIDDEN
+2026-09-24 16:18:51,675 [WARNING] united_dialog: biz_send: Telegram server says - Bad Request: BUSINESS_PEER_INVALID
+2026-09-24 16:18:51,889 [INFO] aiogram.event: Update id=82900013 is handled. Duration 557 ms by bot id=8824105826
+2026-09-24 16:19:51,255 [INFO] aiogram.event: Update id=82900014 is not handled. Duration 22 ms by bot id=8824105826
+2026-09-24 16:21:09,705 [INFO] aiogram.event: Update id=82900015 is handled. Duration 181 ms by bot id=8824105826
+2026-09-24 16:22:18,100 [INFO] aiogram.event: Update id=82900016 is handled. Duration 90 ms by bot id=8824105826
+2026-09-24 16:22:27,481 [INFO] aiogram.event: Update id=82900017 is handled. Duration 77 ms by bot id=8824105826
+2026-09-24 16:34:40,142 [INFO] aiogram.event: Update id=82900018 is handled. Duration 84 ms by bot id=8824105826
+2026-09-24 16:34:50,606 [INFO] aiogram.event: Update id=82900019 is handled. Duration 91 ms by bot id=8824105826
+2026-09-24 16:34:50,693 [INFO] aiogram.event: Update id=82900020 is handled. Duration 81 ms by bot id=8824105826
+2026-09-24 16:34:54,347 [INFO] aiogram.event: Update id=82900021 is handled. Duration 80 ms by bot id=8824105826
+2026-09-24 16:39:58,215 [INFO] aiogram.event: Update id=82900022 is handled. Duration 70 ms by bot id=8824105826
+2026-09-24 16:39:58,998 [INFO] aiogram.event: Update id=82900023 is handled. Duration 82 ms by bot id=8824105826
+2026-09-24 16:42:23,522 [INFO] aiogram.event: Update id=82900024 is handled. Duration 112 ms by bot id=8824105826
+2026-09-24 16:44:03,081 [INFO] aiogram.event: Update id=82900025 is not handled. Duration 298 ms by bot id=8824105826
+2026-09-24 16:44:15,204 [INFO] aiogram.event: Update id=82900026 is not handled. Duration 164 ms by bot id=8824105826
+2026-09-24 16:44:16,307 [INFO] aiogram.event: Update id=82900027 is not handled. Duration 312 ms by bot id=8824105826
+2026-09-24 16:44:37,310 [INFO] united_dialog: OK conn TAPDT9ZOqUlbGQAArhNuhz-XQIo was=True now=True
+2026-09-24 16:44:37,313 [INFO] aiogram.event: Update id=82900028 is handled. Duration 197 ms by bot id=8824105826
+2026-09-24 16:44:49,186 [INFO] aiogram.event: Update id=82900029 is not handled. Duration 162 ms by bot id=8824105826
+2026-09-24 16:44:55,783 [INFO] aiogram.event: Update id=82900030 is not handled. Duration 134 ms by bot id=8824105826
+2026-09-24 16:44:55,948 [INFO] aiogram.event: Update id=82900031 is handled. Duration 115 ms by bot id=8824105826
+2026-09-24 16:44:58,260 [INFO] united_dialog: [cmd .help]
+2026-09-24 16:44:59,025 [INFO] aiogram.event: Update id=82900032 is handled. Duration 841 ms by bot id=8824105826
+2026-09-24 16:45:00,348 [INFO] aiogram.event: Update id=82900033 is handled. Duration 56 ms by bot id=8824105826
+2026-09-24 16:45:00,470 [INFO] aiogram.event: Update id=82900034 is handled. Duration 121 ms by bot id=8824105826
+2026-09-24 16:45:01,899 [INFO] aiogram.event: Update id=82900035 is handled. Duration 275 ms by bot id=8824105826
+2026-09-24 16:45:03,969 [INFO] aiogram.event: Update id=82900036 is not handled. Duration 112 ms by bot id=8824105826
+2026-09-24 16:45:06,379 [INFO] aiogram.event: Update id=82900037 is not handled. Duration 244 ms by bot id=8824105826
+2026-09-24 16:45:08,674 [INFO] aiogram.event: Update id=82900038 is not handled. Duration 104 ms by bot id=8824105826
+2026-09-24 16:45:35,128 [INFO] aiogram.event: Update id=82900039 is not handled. Duration 315 ms by bot id=8824105826
+2026-09-24 16:45:40,930 [INFO] aiogram.event: Update id=82900040 is not handled. Duration 173 ms by bot id=8824105826
+2026-09-24 16:45:43,277 [INFO] aiogram.event: Update id=82900041 is not handled. Duration 260 ms by bot id=8824105826
+2026-09-24 16:45:44,785 [INFO] aiogram.event: Update id=82900042 is not handled. Duration 237 ms by bot id=8824105826
+2026-09-24 16:45:46,172 [INFO] united_dialog: [cmd .afk]
+2026-09-24 16:45:46,761 [INFO] aiogram.event: Update id=82900043 is handled. Duration 706 ms by bot id=8824105826
+2026-09-24 16:45:52,498 [INFO] aiogram.event: Update id=82900044 is handled. Duration 92 ms by bot id=8824105826
+2026-09-24 16:45:52,589 [INFO] united_dialog: [cmd .afk]
+2026-09-24 16:45:53,084 [INFO] aiogram.event: Update id=82900045 is handled. Duration 585 ms by bot id=8824105826
+2026-09-24 16:48:17,397 [INFO] aiogram.event: Update id=82900046 is handled. Duration 91 ms by bot id=8824105826
+2026-09-24 16:48:17,532 [INFO] aiogram.event: Update id=82900047 is not handled. Duration 131 ms by bot id=8824105826
+2026-09-24 16:48:21,841 [INFO] aiogram.event: Update id=82900048 is not handled. Duration 399 ms by bot id=8824105826
+2026-09-24 16:49:25,889 [INFO] united_dialog: [cmd .unafk]
+2026-09-24 16:49:26,292 [INFO] aiogram.event: Update id=82900049 is handled. Duration 485 ms by bot id=8824105826
+2026-09-24 16:49:38,069 [INFO] aiogram.event: Update id=82900050 is handled. Duration 3084 ms by bot id=8824105826
+2026-09-24 16:49:41,744 [INFO] aiogram.event: Update id=82900051 is handled. Duration 3916 ms by bot id=8824105826
+2026-09-24 16:49:41,965 [INFO] aiogram.event: Update id=82900052 is handled. Duration 778 ms by bot id=8824105826
+2026-09-24 16:49:46,860 [INFO] aiogram.event: Update id=82900053 is handled. Duration 1191 ms by bot id=8824105826
+2026-09-24 16:49:49,541 [INFO] aiogram.event: Update id=82900054 is handled. Duration 617 ms by bot id=8824105826
+2026-09-24 16:49:51,974 [INFO] aiogram.event: Update id=82900055 is handled. Duration 296 ms by bot id=8824105826
+2026-09-24 16:49:58,567 [INFO] aiogram.event: Update id=82900056 is handled. Duration 52 ms by bot id=8824105826
+2026-09-24 16:49:58,662 [INFO] aiogram.event: Update id=82900057 is not handled. Duration 94 ms by bot id=8824105826
+2026-09-24 16:50:00,975 [INFO] aiogram.event: Update id=82900058 is handled. Duration 239 ms by bot id=8824105826
+2026-09-24 16:50:17,461 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 16:50:17,478 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 16:50:17,481 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 16:56:55,788 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 16:56:55,795 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 16:56:55,920 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 16:56:56,324 [INFO] united_dialog: OFF conn TAPDT9ZOqUlbGQAArhNuhz-XQIo was=True now=False
+2026-09-24 16:56:56,397 [INFO] united_dialog: OFF conn TAPDT9ZOqUlbGQAArhNuhz-XQIo was=False now=False
+2026-09-24 16:56:56,398 [INFO] aiogram.event: Update id=82900060 is handled. Duration 71 ms by bot id=8824105826
+2026-09-24 16:56:56,889 [INFO] aiogram.event: Update id=82900059 is handled. Duration 708 ms by bot id=8824105826
+2026-09-24 16:56:57,111 [INFO] aiogram.event: Update id=82900061 is handled. Duration 713 ms by bot id=8824105826
+2026-09-24 16:56:57,274 [INFO] aiogram.event: Update id=82900062 is handled. Duration 875 ms by bot id=8824105826
+2026-09-24 16:57:25,116 [INFO] united_dialog: OK conn g8pTQAIIsUkcHQAAYuRSMYxYUYc was=False now=True
+2026-09-24 16:57:25,299 [INFO] aiogram.event: Update id=82900063 is handled. Duration 449 ms by bot id=8824105826
+2026-09-24 16:57:30,546 [INFO] united_dialog: [cmd .ttt]
+2026-09-24 16:57:30,965 [INFO] aiogram.event: Update id=82900064 is handled. Duration 498 ms by bot id=8824105826
+2026-09-24 16:57:33,431 [INFO] aiogram.event: Update id=82900065 is handled. Duration 300 ms by bot id=8824105826
+2026-09-24 16:57:35,417 [INFO] aiogram.event: Update id=82900066 is handled. Duration 146 ms by bot id=8824105826
+2026-09-24 16:57:42,463 [INFO] aiogram.event: Update id=82900067 is handled. Duration 94 ms by bot id=8824105826
+2026-09-24 16:57:43,169 [INFO] aiogram.event: Update id=82900068 is handled. Duration 705 ms by bot id=8824105826
+2026-09-24 16:57:47,873 [INFO] united_dialog: [cmd .saper]
+2026-09-24 16:57:48,100 [INFO] aiogram.event: Update id=82900069 is handled. Duration 319 ms by bot id=8824105826
+2026-09-24 16:57:59,236 [INFO] aiogram.event: Update id=82900070 is handled. Duration 505 ms by bot id=8824105826
+2026-09-24 16:58:05,755 [INFO] aiogram.event: Update id=82900071 is handled. Duration 58 ms by bot id=8824105826
+2026-09-24 16:58:05,842 [INFO] united_dialog: [cmd .saper]
+2026-09-24 16:58:07,391 [INFO] aiogram.event: Update id=82900072 is handled. Duration 1635 ms by bot id=8824105826
+2026-09-24 17:04:31,587 [INFO] aiogram.event: Update id=82900073 is handled. Duration 77 ms by bot id=8824105826
+2026-09-24 17:04:31,669 [INFO] aiogram.event: Update id=82900074 is handled. Duration 73 ms by bot id=8824105826
+2026-09-24 17:10:31,686 [INFO] aiogram.event: Update id=82900075 is not handled. Duration 513 ms by bot id=8824105826
+2026-09-24 17:10:34,502 [INFO] aiogram.event: Update id=82900076 is not handled. Duration 179 ms by bot id=8824105826
+2026-09-24 17:10:47,147 [INFO] aiogram.event: Update id=82900077 is not handled. Duration 148 ms by bot id=8824105826
+2026-09-24 17:10:48,187 [INFO] aiogram.event: Update id=82900078 is not handled. Duration 125 ms by bot id=8824105826
+2026-09-24 17:10:51,727 [INFO] aiogram.event: Update id=82900079 is not handled. Duration 209 ms by bot id=8824105826
+2026-09-24 17:16:09,283 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:16:09,309 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:16:09,310 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:16:35,365 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:16:35,371 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:16:35,489 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:17:16,065 [INFO] aiogram.event: Update id=82900080 is handled. Duration 179 ms by bot id=8824105826
+2026-09-24 17:17:16,159 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:17:16,705 [ERROR] united_dialog: Error: cannot access local variable 'private' where it is not associated with a value
+Traceback (most recent call last):
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/fsm/middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/dispatcher.py", line 284, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 172, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 164, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 192, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/united/bot.py", line 1411, in on_bm
+    await biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id)
+  File "/root/united/bot.py", line 1458, in biz_dispatch
+    await private(
+          ^^^^^^^
+UnboundLocalError: cannot access local variable 'private' where it is not associated with a value
+2026-09-24 17:17:16,833 [INFO] aiogram.event: Update id=82900081 is handled. Duration 765 ms by bot id=8824105826
+2026-09-24 17:17:17,471 [INFO] aiogram.event: Update id=82900082 is handled. Duration 40 ms by bot id=8824105826
+2026-09-24 17:17:17,703 [INFO] aiogram.event: Update id=82900083 is handled. Duration 231 ms by bot id=8824105826
+2026-09-24 17:17:21,952 [INFO] aiogram.event: Update id=82900084 is handled. Duration 154 ms by bot id=8824105826
+2026-09-24 17:17:22,032 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:17:22,413 [INFO] aiogram.event: Update id=82900085 is handled. Duration 460 ms by bot id=8824105826
+2026-09-24 17:17:23,316 [INFO] aiogram.event: Update id=82900086 is handled. Duration 116 ms by bot id=8824105826
+2026-09-24 17:17:23,756 [INFO] aiogram.event: Update id=82900087 is handled. Duration 439 ms by bot id=8824105826
+2026-09-24 17:18:33,455 [INFO] aiogram.event: Update id=82900089 is not handled. Duration 565 ms by bot id=8824105826
+2026-09-24 17:18:33,457 [INFO] aiogram.event: Update id=82900088 is handled. Duration 1132 ms by bot id=8824105826
+2026-09-24 17:18:34,661 [INFO] aiogram.event: Update id=82900091 is handled. Duration 437 ms by bot id=8824105826
+2026-09-24 17:18:34,680 [INFO] aiogram.event: Update id=82900090 is handled. Duration 858 ms by bot id=8824105826
+2026-09-24 17:18:43,720 [INFO] aiogram.event: Update id=82900092 is handled. Duration 789 ms by bot id=8824105826
+2026-09-24 17:18:43,982 [INFO] aiogram.event: Update id=82900093 is not handled. Duration 254 ms by bot id=8824105826
+2026-09-24 17:18:47,316 [INFO] aiogram.event: Update id=82900095 is not handled. Duration 408 ms by bot id=8824105826
+2026-09-24 17:18:47,322 [INFO] aiogram.event: Update id=82900094 is handled. Duration 607 ms by bot id=8824105826
+2026-09-24 17:18:48,251 [INFO] aiogram.event: Update id=82900097 is handled. Duration 118 ms by bot id=8824105826
+2026-09-24 17:18:48,282 [INFO] aiogram.event: Update id=82900096 is handled. Duration 513 ms by bot id=8824105826
+2026-09-24 17:18:53,186 [INFO] aiogram.event: Update id=82900098 is handled. Duration 352 ms by bot id=8824105826
+2026-09-24 17:18:53,324 [INFO] united_dialog: [cmd .unmute]
+2026-09-24 17:18:54,017 [INFO] aiogram.event: Update id=82900099 is handled. Duration 829 ms by bot id=8824105826
+2026-09-24 17:18:54,428 [INFO] aiogram.event: Update id=82900100 is handled. Duration 143 ms by bot id=8824105826
+2026-09-24 17:18:55,015 [INFO] aiogram.event: Update id=82900101 is handled. Duration 585 ms by bot id=8824105826
+2026-09-24 17:18:57,342 [INFO] aiogram.event: Update id=82900102 is handled. Duration 436 ms by bot id=8824105826
+2026-09-24 17:18:57,597 [INFO] aiogram.event: Update id=82900103 is not handled. Duration 220 ms by bot id=8824105826
+2026-09-24 17:19:21,244 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:19:21,249 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:19:21,250 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:20:31,412 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:20:31,418 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:20:31,547 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:20:39,173 [INFO] aiogram.event: Update id=82900104 is handled. Duration 320 ms by bot id=8824105826
+2026-09-24 17:20:39,272 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:20:39,956 [ERROR] united_dialog: Error: cannot access local variable 'out' where it is not associated with a value
+Traceback (most recent call last):
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/fsm/middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/dispatcher.py", line 284, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 172, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 164, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 192, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/united/bot.py", line 1411, in on_bm
+    await biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id)
+  File "/root/united/bot.py", line 1458, in biz_dispatch
+    await out(
+          ^^^
+UnboundLocalError: cannot access local variable 'out' where it is not associated with a value
+2026-09-24 17:20:39,983 [INFO] aiogram.event: Update id=82900105 is handled. Duration 807 ms by bot id=8824105826
+2026-09-24 17:20:40,887 [INFO] aiogram.event: Update id=82900106 is handled. Duration 37 ms by bot id=8824105826
+2026-09-24 17:20:41,302 [INFO] aiogram.event: Update id=82900107 is handled. Duration 414 ms by bot id=8824105826
+2026-09-24 17:20:46,102 [INFO] aiogram.event: Update id=82900108 is handled. Duration 112 ms by bot id=8824105826
+2026-09-24 17:20:46,207 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:20:46,685 [INFO] aiogram.event: Update id=82900109 is handled. Duration 582 ms by bot id=8824105826
+2026-09-24 17:20:47,173 [INFO] aiogram.event: Update id=82900110 is handled. Duration 33 ms by bot id=8824105826
+2026-09-24 17:20:47,396 [INFO] aiogram.event: Update id=82900111 is handled. Duration 222 ms by bot id=8824105826
+2026-09-24 17:20:52,085 [INFO] aiogram.event: Update id=82900112 is handled. Duration 212 ms by bot id=8824105826
+2026-09-24 17:20:52,167 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:20:52,304 [ERROR] united_dialog: Error: cannot access local variable 'out' where it is not associated with a value
+Traceback (most recent call last):
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/fsm/middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/dispatcher.py", line 284, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 172, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 164, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 192, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/united/bot.py", line 1411, in on_bm
+    await biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id)
+  File "/root/united/bot.py", line 1458, in biz_dispatch
+    await out(
+          ^^^
+UnboundLocalError: cannot access local variable 'out' where it is not associated with a value
+2026-09-24 17:20:52,312 [INFO] aiogram.event: Update id=82900113 is handled. Duration 223 ms by bot id=8824105826
+2026-09-24 17:20:53,145 [INFO] aiogram.event: Update id=82900114 is handled. Duration 66 ms by bot id=8824105826
+2026-09-24 17:20:53,360 [INFO] aiogram.event: Update id=82900115 is handled. Duration 214 ms by bot id=8824105826
+2026-09-24 17:20:54,876 [INFO] aiogram.event: Update id=82900116 is handled. Duration 202 ms by bot id=8824105826
+2026-09-24 17:20:54,969 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:20:55,328 [INFO] aiogram.event: Update id=82900117 is handled. Duration 446 ms by bot id=8824105826
+2026-09-24 17:20:56,051 [INFO] aiogram.event: Update id=82900118 is handled. Duration 99 ms by bot id=8824105826
+2026-09-24 17:20:56,322 [INFO] aiogram.event: Update id=82900119 is handled. Duration 270 ms by bot id=8824105826
+2026-09-24 17:23:03,245 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:23:03,250 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:23:03,251 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:23:27,032 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:23:27,035 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:23:27,156 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:23:38,503 [INFO] aiogram.event: Update id=82900120 is handled. Duration 283 ms by bot id=8824105826
+2026-09-24 17:23:38,638 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:23:40,667 [ERROR] united_dialog: Error: cannot access local variable 'out' where it is not associated with a value
+Traceback (most recent call last):
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/fsm/middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/dispatcher.py", line 284, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 172, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 164, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 192, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/united/bot.py", line 1411, in on_bm
+    await biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id)
+  File "/root/united/bot.py", line 1458, in biz_dispatch
+    await out(
+          ^^^
+UnboundLocalError: cannot access local variable 'out' where it is not associated with a value
+2026-09-24 17:23:40,741 [INFO] aiogram.event: Update id=82900121 is handled. Duration 2228 ms by bot id=8824105826
+2026-09-24 17:23:41,304 [INFO] aiogram.event: Update id=82900122 is handled. Duration 42 ms by bot id=8824105826
+2026-09-24 17:23:42,035 [INFO] aiogram.event: Update id=82900123 is handled. Duration 730 ms by bot id=8824105826
+2026-09-24 17:23:54,718 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:23:54,724 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:23:54,725 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:24:54,488 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:24:54,492 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:24:54,967 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:25:25,084 [INFO] aiogram.event: Update id=82900124 is handled. Duration 347 ms by bot id=8824105826
+2026-09-24 17:25:25,197 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:25:25,710 [INFO] aiogram.event: Update id=82900125 is handled. Duration 624 ms by bot id=8824105826
+2026-09-24 17:25:26,645 [INFO] aiogram.event: Update id=82900126 is handled. Duration 39 ms by bot id=8824105826
+2026-09-24 17:25:27,012 [INFO] aiogram.event: Update id=82900127 is handled. Duration 366 ms by bot id=8824105826
+2026-09-24 17:25:31,919 [INFO] aiogram.event: Update id=82900128 is handled. Duration 183 ms by bot id=8824105826
+2026-09-24 17:25:32,094 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:25:32,858 [INFO] aiogram.event: Update id=82900129 is handled. Duration 938 ms by bot id=8824105826
+2026-09-24 17:25:33,168 [INFO] aiogram.event: Update id=82900130 is handled. Duration 113 ms by bot id=8824105826
+2026-09-24 17:25:34,572 [INFO] aiogram.event: Update id=82900131 is handled. Duration 1403 ms by bot id=8824105826
+2026-09-24 17:25:38,944 [INFO] aiogram.event: Update id=82900132 is handled. Duration 158 ms by bot id=8824105826
+2026-09-24 17:25:39,038 [INFO] united_dialog: [cmd .unmute]
+2026-09-24 17:25:41,320 [INFO] aiogram.event: Update id=82900133 is handled. Duration 2376 ms by bot id=8824105826
+2026-09-24 17:25:42,220 [INFO] aiogram.event: Update id=82900134 is handled. Duration 73 ms by bot id=8824105826
+2026-09-24 17:25:43,118 [INFO] aiogram.event: Update id=82900136 is handled. Duration 153 ms by bot id=8824105826
+2026-09-24 17:25:43,202 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:25:43,311 [INFO] aiogram.event: Update id=82900135 is handled. Duration 1091 ms by bot id=8824105826
+2026-09-24 17:25:45,345 [INFO] aiogram.event: Update id=82900137 is handled. Duration 2226 ms by bot id=8824105826
+2026-09-24 17:25:45,481 [INFO] aiogram.event: Update id=82900138 is handled. Duration 82 ms by bot id=8824105826
+2026-09-24 17:25:46,605 [INFO] aiogram.event: Update id=82900139 is handled. Duration 1124 ms by bot id=8824105826
+2026-09-24 17:26:33,939 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:26:33,945 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:26:33,946 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:26:52,826 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:26:52,831 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:26:52,926 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:26:53,257 [INFO] aiogram.event: Update id=82900140 is handled. Duration 184 ms by bot id=8824105826
+2026-09-24 17:26:53,323 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:26:53,476 [INFO] aiogram.event: Update id=82900142 is handled. Duration 120 ms by bot id=8824105826
+2026-09-24 17:26:53,536 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:26:53,882 [INFO] aiogram.event: Update id=82900141 is handled. Duration 625 ms by bot id=8824105826
+2026-09-24 17:26:54,045 [INFO] aiogram.event: Update id=82900143 is handled. Duration 568 ms by bot id=8824105826
+2026-09-24 17:26:54,686 [INFO] aiogram.event: Update id=82900144 is handled. Duration 35 ms by bot id=8824105826
+2026-09-24 17:26:54,825 [INFO] aiogram.event: Update id=82900146 is handled. Duration 51 ms by bot id=8824105826
+2026-09-24 17:26:54,939 [INFO] aiogram.event: Update id=82900145 is handled. Duration 253 ms by bot id=8824105826
+2026-09-24 17:26:55,023 [INFO] aiogram.event: Update id=82900147 is handled. Duration 197 ms by bot id=8824105826
+2026-09-24 17:26:55,579 [INFO] aiogram.event: Update id=82900148 is handled. Duration 192 ms by bot id=8824105826
+2026-09-24 17:26:55,671 [INFO] united_dialog: [cmd .help]
+2026-09-24 17:26:55,846 [ERROR] united_dialog: Error: name 'out' is not defined
+Traceback (most recent call last):
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/fsm/middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/dispatcher.py", line 284, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 172, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 164, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/router.py", line 192, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venv/lib/python3.13/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/root/united/bot.py", line 1411, in on_bm
+    await biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id)
+  File "/root/united/bot.py", line 1467, in biz_dispatch
+    await out("✏️ <b>Команды</b>" + NL + NL
+          ^^^
+NameError: name 'out' is not defined. Did you mean: 'oct'?
+2026-09-24 17:26:55,892 [INFO] aiogram.event: Update id=82900149 is handled. Duration 312 ms by bot id=8824105826
+2026-09-24 17:26:56,639 [INFO] aiogram.event: Update id=82900150 is handled. Duration 56 ms by bot id=8824105826
+2026-09-24 17:26:56,863 [INFO] aiogram.event: Update id=82900151 is handled. Duration 222 ms by bot id=8824105826
+2026-09-24 17:27:00,815 [INFO] aiogram.event: Update id=82900152 is handled. Duration 136 ms by bot id=8824105826
+2026-09-24 17:27:00,950 [INFO] aiogram.event: Update id=82900153 is not handled. Duration 134 ms by bot id=8824105826
+2026-09-24 17:28:13,292 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:28:13,301 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:28:13,302 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:29:30,137 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:29:30,143 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:29:30,294 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:29:30,570 [INFO] aiogram.event: Update id=82900154 is handled. Duration 111 ms by bot id=8824105826
+2026-09-24 17:29:30,621 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:29:31,244 [INFO] aiogram.event: Update id=82900155 is handled. Duration 674 ms by bot id=8824105826
+2026-09-24 17:29:32,018 [INFO] aiogram.event: Update id=82900156 is handled. Duration 33 ms by bot id=8824105826
+2026-09-24 17:29:32,314 [INFO] aiogram.event: Update id=82900157 is handled. Duration 296 ms by bot id=8824105826
+2026-09-24 17:29:35,484 [INFO] aiogram.event: Update id=82900158 is handled. Duration 139 ms by bot id=8824105826
+2026-09-24 17:29:35,558 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:29:35,721 [INFO] aiogram.event: Update id=82900159 is handled. Duration 236 ms by bot id=8824105826
+2026-09-24 17:29:36,546 [INFO] aiogram.event: Update id=82900160 is handled. Duration 53 ms by bot id=8824105826
+2026-09-24 17:29:36,796 [INFO] aiogram.event: Update id=82900161 is handled. Duration 249 ms by bot id=8824105826
+2026-09-24 17:30:38,733 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:30:38,741 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:30:38,742 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:30:54,213 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:30:54,215 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:30:54,337 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:30:58,724 [INFO] aiogram.event: Update id=82900162 is handled. Duration 276 ms by bot id=8824105826
+2026-09-24 17:30:58,844 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:30:58,888 [INFO] united_dialog: [dispatch ENTER] cmd='mute' arg='' chat=8208528068
+2026-09-24 17:30:59,356 [INFO] aiogram.event: Update id=82900163 is handled. Duration 625 ms by bot id=8824105826
+2026-09-24 17:31:00,161 [INFO] aiogram.event: Update id=82900164 is handled. Duration 47 ms by bot id=8824105826
+2026-09-24 17:31:00,534 [INFO] aiogram.event: Update id=82900165 is handled. Duration 372 ms by bot id=8824105826
+2026-09-24 17:31:55,222 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:31:55,229 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:31:55,231 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:33:03,100 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:33:03,108 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:33:03,252 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:33:03,539 [INFO] aiogram.event: Update id=82900166 is handled. Duration 128 ms by bot id=8824105826
+2026-09-24 17:33:03,571 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:33:03,584 [INFO] united_dialog: [dispatch ENTER] cmd='mute' arg='' chat=8208528068
+2026-09-24 17:33:04,246 [INFO] united_dialog: [out OK] chat=8208528068
+2026-09-24 17:33:04,433 [INFO] aiogram.event: Update id=82900167 is handled. Duration 893 ms by bot id=8824105826
+2026-09-24 17:33:05,201 [INFO] aiogram.event: Update id=82900168 is handled. Duration 66 ms by bot id=8824105826
+2026-09-24 17:33:05,555 [INFO] aiogram.event: Update id=82900169 is handled. Duration 353 ms by bot id=8824105826
+2026-09-24 17:33:15,150 [INFO] aiogram.event: Update id=82900170 is handled. Duration 143 ms by bot id=8824105826
+2026-09-24 17:33:15,222 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:33:15,245 [INFO] united_dialog: [dispatch ENTER] cmd='mute' arg='12' chat=8208528068
+2026-09-24 17:33:15,425 [INFO] united_dialog: [out OK] chat=8208528068
+2026-09-24 17:33:15,647 [INFO] aiogram.event: Update id=82900171 is handled. Duration 492 ms by bot id=8824105826
+2026-09-24 17:33:16,476 [INFO] aiogram.event: Update id=82900172 is handled. Duration 63 ms by bot id=8824105826
+2026-09-24 17:33:17,516 [INFO] aiogram.event: Update id=82900173 is handled. Duration 1039 ms by bot id=8824105826
+2026-09-24 17:33:25,915 [INFO] aiogram.event: Update id=82900174 is handled. Duration 155 ms by bot id=8824105826
+2026-09-24 17:33:26,027 [INFO] aiogram.event: Update id=82900175 is not handled. Duration 106 ms by bot id=8824105826
+2026-09-24 17:33:29,775 [INFO] aiogram.event: Update id=82900176 is handled. Duration 233 ms by bot id=8824105826
+2026-09-24 17:33:29,861 [INFO] united_dialog: [cmd .unmute]
+2026-09-24 17:33:29,891 [INFO] united_dialog: [dispatch ENTER] cmd='unmute' arg='' chat=8208528068
+2026-09-24 17:33:30,086 [INFO] united_dialog: [out OK] chat=8208528068
+2026-09-24 17:33:30,184 [INFO] aiogram.event: Update id=82900177 is handled. Duration 404 ms by bot id=8824105826
+2026-09-24 17:33:31,191 [INFO] aiogram.event: Update id=82900178 is handled. Duration 126 ms by bot id=8824105826
+2026-09-24 17:33:31,615 [INFO] aiogram.event: Update id=82900179 is handled. Duration 423 ms by bot id=8824105826
+2026-09-24 17:33:44,535 [INFO] aiogram.event: Update id=82900180 is handled. Duration 119 ms by bot id=8824105826
+2026-09-24 17:33:44,591 [INFO] united_dialog: [cmd .help]
+2026-09-24 17:33:44,617 [INFO] united_dialog: [dispatch ENTER] cmd='help' arg='' chat=8208528068
+2026-09-24 17:33:44,753 [INFO] united_dialog: [out OK] chat=8208528068
+2026-09-24 17:33:44,937 [INFO] aiogram.event: Update id=82900181 is handled. Duration 402 ms by bot id=8824105826
+2026-09-24 17:33:45,651 [INFO] aiogram.event: Update id=82900182 is handled. Duration 51 ms by bot id=8824105826
+2026-09-24 17:33:45,862 [INFO] aiogram.event: Update id=82900183 is handled. Duration 210 ms by bot id=8824105826
+2026-09-24 17:33:50,681 [INFO] aiogram.event: Update id=82900184 is handled. Duration 161 ms by bot id=8824105826
+2026-09-24 17:33:50,769 [INFO] united_dialog: [cmd .redeem]
+2026-09-24 17:33:50,788 [INFO] united_dialog: [dispatch ENTER] cmd='redeem' arg='КОД' chat=8208528068
+2026-09-24 17:33:50,920 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:33:51,064 [INFO] aiogram.event: Update id=82900185 is handled. Duration 381 ms by bot id=8824105826
+2026-09-24 17:33:51,831 [INFO] aiogram.event: Update id=82900186 is handled. Duration 44 ms by bot id=8824105826
+2026-09-24 17:33:52,035 [INFO] aiogram.event: Update id=82900187 is handled. Duration 203 ms by bot id=8824105826
+2026-09-24 17:34:00,611 [INFO] aiogram.event: Update id=82900188 is handled. Duration 165 ms by bot id=8824105826
+2026-09-24 17:34:00,681 [INFO] united_dialog: [cmd .redeem]
+2026-09-24 17:34:00,710 [INFO] united_dialog: [dispatch ENTER] cmd='redeem' arg='EKONOMIKA' chat=8208528068
+2026-09-24 17:34:01,144 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:34:01,453 [INFO] aiogram.event: Update id=82900189 is handled. Duration 841 ms by bot id=8824105826
+2026-09-24 17:34:02,213 [INFO] aiogram.event: Update id=82900190 is handled. Duration 96 ms by bot id=8824105826
+2026-09-24 17:34:02,838 [INFO] aiogram.event: Update id=82900191 is handled. Duration 624 ms by bot id=8824105826
+2026-09-24 17:35:18,926 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:35:18,948 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:35:18,951 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:36:16,126 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:36:16,138 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:36:16,258 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:36:24,938 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:36:24,941 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:36:24,943 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:37:02,426 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:37:02,431 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:37:02,564 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:37:12,543 [INFO] aiogram.event: Update id=82900192 is handled. Duration 119 ms by bot id=8824105826
+2026-09-24 17:37:12,805 [INFO] united_dialog: [cmd .mute]
+2026-09-24 17:37:12,826 [INFO] united_dialog: [dispatch ENTER] cmd='mute' arg='' chat=8208528068
+2026-09-24 17:37:13,612 [INFO] united_dialog: [out OK] chat=8208528068
+2026-09-24 17:37:13,929 [INFO] aiogram.event: Update id=82900193 is handled. Duration 1247 ms by bot id=8824105826
+2026-09-24 17:37:14,850 [INFO] aiogram.event: Update id=82900194 is handled. Duration 265 ms by bot id=8824105826
+2026-09-24 17:37:15,462 [INFO] aiogram.event: Update id=82900195 is handled. Duration 611 ms by bot id=8824105826
+2026-09-24 17:37:25,622 [INFO] aiogram.event: Update id=82900196 is handled. Duration 205 ms by bot id=8824105826
+2026-09-24 17:37:25,743 [INFO] aiogram.event: Update id=82900197 is not handled. Duration 119 ms by bot id=8824105826
+2026-09-24 17:37:30,203 [INFO] aiogram.event: Update id=82900198 is handled. Duration 161 ms by bot id=8824105826
+2026-09-24 17:37:30,638 [INFO] aiogram.event: Update id=82900199 is handled. Duration 429 ms by bot id=8824105826
+2026-09-24 17:38:22,208 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:38:22,222 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:38:22,224 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:38:53,295 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:38:53,317 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:38:53,454 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:38:53,848 [INFO] aiogram.event: Update id=82900200 is handled. Duration 236 ms by bot id=8824105826
+2026-09-24 17:38:54,007 [INFO] aiogram.event: Update id=82900201 is not handled. Duration 158 ms by bot id=8824105826
+2026-09-24 17:38:54,152 [INFO] aiogram.event: Update id=82900203 is handled. Duration 45 ms by bot id=8824105826
+2026-09-24 17:38:54,221 [INFO] aiogram.event: Update id=82900204 is handled. Duration 68 ms by bot id=8824105826
+2026-09-24 17:38:54,651 [INFO] aiogram.event: Update id=82900202 is handled. Duration 643 ms by bot id=8824105826
+2026-09-24 17:38:54,776 [INFO] aiogram.event: Update id=82900205 is handled. Duration 555 ms by bot id=8824105826
+2026-09-24 17:39:39,166 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:39:39,173 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:39:39,174 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:39:56,977 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:39:56,982 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:39:57,084 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:40:06,674 [INFO] aiogram.event: Update id=82900206 is handled. Duration 320 ms by bot id=8824105826
+2026-09-24 17:40:06,845 [INFO] aiogram.event: Update id=82900207 is not handled. Duration 159 ms by bot id=8824105826
+2026-09-24 17:40:09,021 [INFO] united_dialog: [del event] chat=8208528068 mids=[577537] owner=7113397602 notify=True
+2026-09-24 17:40:09,128 [INFO] united_dialog: [del lookup] mid=577537 found=True
+2026-09-24 17:40:09,128 [INFO] united_dialog: [del skip own] mid=577537
+2026-09-24 17:40:09,128 [INFO] aiogram.event: Update id=82900208 is handled. Duration 219 ms by bot id=8824105826
+2026-09-24 17:40:09,234 [INFO] united_dialog: [del event] chat=7113397602 mids=[2647] owner=8208528068 notify=True
+2026-09-24 17:40:09,296 [INFO] united_dialog: [del lookup] mid=2647 found=True
+2026-09-24 17:40:09,870 [INFO] aiogram.event: Update id=82900209 is handled. Duration 735 ms by bot id=8824105826
+2026-09-24 17:41:30,316 [INFO] aiogram.event: Update id=82900210 is handled. Duration 467 ms by bot id=8824105826
+2026-09-24 17:41:35,322 [INFO] aiogram.event: Update id=82900211 is handled. Duration 1470 ms by bot id=8824105826
+2026-09-24 17:41:35,755 [INFO] aiogram.event: Update id=82900212 is handled. Duration 1329 ms by bot id=8824105826
+2026-09-24 17:41:41,202 [INFO] aiogram.event: Update id=82900213 is handled. Duration 429 ms by bot id=8824105826
+2026-09-24 17:41:42,884 [INFO] aiogram.event: Update id=82900214 is handled. Duration 173 ms by bot id=8824105826
+2026-09-24 17:41:45,325 [INFO] aiogram.event: Update id=82900215 is handled. Duration 650 ms by bot id=8824105826
+2026-09-24 17:41:52,812 [INFO] aiogram.event: Update id=82900216 is handled. Duration 118 ms by bot id=8824105826
+2026-09-24 17:41:52,936 [INFO] aiogram.event: Update id=82900217 is not handled. Duration 122 ms by bot id=8824105826
+2026-09-24 17:41:55,119 [INFO] united_dialog: [del event] chat=8208528068 mids=[577544] owner=7113397602 notify=True
+2026-09-24 17:41:55,241 [INFO] united_dialog: [del lookup] mid=577544 found=True
+2026-09-24 17:41:55,241 [INFO] united_dialog: [del skip own] mid=577544
+2026-09-24 17:41:55,242 [INFO] aiogram.event: Update id=82900218 is handled. Duration 215 ms by bot id=8824105826
+2026-09-24 17:41:55,361 [INFO] united_dialog: [del event] chat=7113397602 mids=[2649] owner=8208528068 notify=True
+2026-09-24 17:41:55,472 [INFO] united_dialog: [del lookup] mid=2649 found=True
+2026-09-24 17:41:55,793 [INFO] aiogram.event: Update id=82900219 is handled. Duration 543 ms by bot id=8824105826
+2026-09-24 17:42:17,184 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:42:17,192 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:42:17,193 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:42:45,109 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:42:45,117 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:42:45,209 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:42:56,783 [INFO] aiogram.event: Update id=82900220 is handled. Duration 464 ms by bot id=8824105826
+2026-09-24 17:42:56,972 [INFO] aiogram.event: Update id=82900221 is not handled. Duration 171 ms by bot id=8824105826
+2026-09-24 17:42:59,263 [INFO] united_dialog: [del event] chat=8208528068 mids=[577546] owner=7113397602 notify=True
+2026-09-24 17:42:59,320 [INFO] united_dialog: [del lookup] mid=577546 found=True
+2026-09-24 17:42:59,474 [INFO] united_dialog: [del event] chat=7113397602 mids=[2651] owner=8208528068 notify=True
+2026-09-24 17:42:59,609 [INFO] united_dialog: [del lookup] mid=2651 found=True
+2026-09-24 17:42:59,962 [INFO] aiogram.event: Update id=82900222 is handled. Duration 797 ms by bot id=8824105826
+2026-09-24 17:43:00,143 [INFO] aiogram.event: Update id=82900223 is handled. Duration 786 ms by bot id=8824105826
+2026-09-24 17:46:05,289 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:46:05,301 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:46:05,303 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:46:25,968 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:46:25,972 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:46:26,070 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:46:27,824 [INFO] aiogram.event: Update id=82900224 is handled. Duration 59 ms by bot id=8824105826
+2026-09-24 17:46:28,013 [INFO] united_dialog: [cmd .type]
+2026-09-24 17:46:28,070 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='кружок' chat=8208528068
+2026-09-24 17:46:28,594 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:46:28,689 [INFO] aiogram.event: Update id=82900225 is handled. Duration 776 ms by bot id=8824105826
+2026-09-24 17:46:29,517 [INFO] united_dialog: [del event] chat=8208528068 mids=[577548] owner=7113397602 notify=True
+2026-09-24 17:46:29,551 [INFO] aiogram.event: Update id=82900226 is handled. Duration 116 ms by bot id=8824105826
+2026-09-24 17:46:29,631 [INFO] united_dialog: [del event] chat=7113397602 mids=[2653] owner=8208528068 notify=True
+2026-09-24 17:46:29,721 [INFO] united_dialog: [del lookup] mid=2653 found=False
+2026-09-24 17:46:29,895 [INFO] aiogram.event: Update id=82900227 is handled. Duration 343 ms by bot id=8824105826
+2026-09-24 17:47:03,211 [INFO] aiogram.event: Update id=82900228 is handled. Duration 145 ms by bot id=8824105826
+2026-09-24 17:47:03,357 [INFO] united_dialog: [cmd .type]
+2026-09-24 17:47:03,399 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='' chat=8208528068
+2026-09-24 17:47:03,524 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:47:03,629 [INFO] aiogram.event: Update id=82900229 is handled. Duration 408 ms by bot id=8824105826
+2026-09-24 17:47:04,441 [INFO] united_dialog: [del event] chat=8208528068 mids=[577550] owner=7113397602 notify=True
+2026-09-24 17:47:04,484 [INFO] aiogram.event: Update id=82900230 is handled. Duration 92 ms by bot id=8824105826
+2026-09-24 17:47:04,563 [INFO] united_dialog: [del event] chat=7113397602 mids=[2655] owner=8208528068 notify=True
+2026-09-24 17:47:04,628 [INFO] united_dialog: [del lookup] mid=2655 found=False
+2026-09-24 17:47:04,819 [INFO] aiogram.event: Update id=82900231 is handled. Duration 334 ms by bot id=8824105826
+2026-09-24 17:47:10,053 [INFO] aiogram.event: Update id=82900232 is handled. Duration 107 ms by bot id=8824105826
+2026-09-24 17:47:10,178 [INFO] united_dialog: [cmd .type]
+2026-09-24 17:47:10,245 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='печатает' chat=8208528068
+2026-09-24 17:47:10,360 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:47:10,473 [INFO] aiogram.event: Update id=82900233 is handled. Duration 419 ms by bot id=8824105826
+2026-09-24 17:47:11,304 [INFO] united_dialog: [del event] chat=8208528068 mids=[577552] owner=7113397602 notify=True
+2026-09-24 17:47:11,327 [INFO] aiogram.event: Update id=82900234 is handled. Duration 78 ms by bot id=8824105826
+2026-09-24 17:47:11,379 [INFO] united_dialog: [del event] chat=7113397602 mids=[2657] owner=8208528068 notify=True
+2026-09-24 17:47:11,445 [INFO] united_dialog: [del lookup] mid=2657 found=False
+2026-09-24 17:47:11,590 [INFO] aiogram.event: Update id=82900235 is handled. Duration 262 ms by bot id=8824105826
+2026-09-24 17:47:17,793 [INFO] aiogram.event: Update id=82900236 is handled. Duration 112 ms by bot id=8824105826
+2026-09-24 17:47:17,950 [INFO] united_dialog: [cmd .type]
+2026-09-24 17:47:17,991 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='голосовое' chat=8208528068
+2026-09-24 17:47:18,134 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:47:18,231 [INFO] aiogram.event: Update id=82900237 is handled. Duration 431 ms by bot id=8824105826
+2026-09-24 17:47:19,096 [INFO] united_dialog: [del event] chat=8208528068 mids=[577554] owner=7113397602 notify=True
+2026-09-24 17:47:19,118 [INFO] aiogram.event: Update id=82900238 is handled. Duration 62 ms by bot id=8824105826
+2026-09-24 17:47:19,163 [INFO] united_dialog: [del event] chat=7113397602 mids=[2659] owner=8208528068 notify=True
+2026-09-24 17:47:19,265 [INFO] united_dialog: [del lookup] mid=2659 found=False
+2026-09-24 17:47:19,482 [INFO] aiogram.event: Update id=82900239 is handled. Duration 363 ms by bot id=8824105826
+2026-09-24 17:47:25,247 [INFO] aiogram.event: Update id=82900240 is handled. Duration 77 ms by bot id=8824105826
+2026-09-24 17:47:25,430 [INFO] united_dialog: [cmd .type]
+2026-09-24 17:47:25,519 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='геолокация' chat=8208528068
+2026-09-24 17:47:25,689 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:47:25,843 [INFO] aiogram.event: Update id=82900241 is handled. Duration 585 ms by bot id=8824105826
+2026-09-24 17:47:26,624 [INFO] united_dialog: [del event] chat=8208528068 mids=[577556] owner=7113397602 notify=True
+2026-09-24 17:47:26,646 [INFO] aiogram.event: Update id=82900242 is handled. Duration 68 ms by bot id=8824105826
+2026-09-24 17:47:26,686 [INFO] united_dialog: [del event] chat=7113397602 mids=[2661] owner=8208528068 notify=True
+2026-09-24 17:47:26,726 [INFO] united_dialog: [del lookup] mid=2661 found=False
+2026-09-24 17:47:26,899 [INFO] aiogram.event: Update id=82900243 is handled. Duration 252 ms by bot id=8824105826
+2026-09-24 17:48:30,854 [INFO] aiogram.event: Update id=82900244 is handled. Duration 55 ms by bot id=8824105826
+2026-09-24 17:48:30,919 [INFO] united_dialog: [cmd .type]
+2026-09-24 17:48:30,939 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='файл' chat=8208528068
+2026-09-24 17:48:31,085 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:48:31,238 [INFO] aiogram.event: Update id=82900245 is handled. Duration 383 ms by bot id=8824105826
+2026-09-24 17:48:31,964 [INFO] united_dialog: [del event] chat=8208528068 mids=[577558] owner=7113397602 notify=True
+2026-09-24 17:48:31,987 [INFO] aiogram.event: Update id=82900246 is handled. Duration 65 ms by bot id=8824105826
+2026-09-24 17:48:32,034 [INFO] united_dialog: [del event] chat=7113397602 mids=[2663] owner=8208528068 notify=True
+2026-09-24 17:48:32,095 [INFO] united_dialog: [del lookup] mid=2663 found=False
+2026-09-24 17:48:34,278 [INFO] aiogram.event: Update id=82900247 is handled. Duration 2289 ms by bot id=8824105826
+2026-09-24 17:48:44,561 [INFO] aiogram.event: Update id=82900248 is handled. Duration 68 ms by bot id=8824105826
+2026-09-24 17:48:44,631 [INFO] united_dialog: [cmd .type]
+2026-09-24 17:48:44,650 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='стикер' chat=8208528068
+2026-09-24 17:48:44,823 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-24 17:48:45,030 [INFO] aiogram.event: Update id=82900249 is handled. Duration 469 ms by bot id=8824105826
+2026-09-24 17:48:46,516 [INFO] united_dialog: [del event] chat=8208528068 mids=[577560] owner=7113397602 notify=True
+2026-09-24 17:48:46,580 [INFO] aiogram.event: Update id=82900250 is handled. Duration 301 ms by bot id=8824105826
+2026-09-24 17:48:46,706 [INFO] united_dialog: [del event] chat=7113397602 mids=[2665] owner=8208528068 notify=True
+2026-09-24 17:48:46,802 [INFO] united_dialog: [del lookup] mid=2665 found=False
+2026-09-24 17:48:46,997 [INFO] aiogram.event: Update id=82900251 is handled. Duration 413 ms by bot id=8824105826
+2026-09-24 17:52:04,479 [INFO] aiogram.event: Update id=82900252 is handled. Duration 159 ms by bot id=8824105826
+2026-09-24 17:52:28,269 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:52:28,285 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:52:28,287 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:53:10,588 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:53:10,590 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:53:10,707 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:53:12,347 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-24 17:53:12,349 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:53:12,349 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-24 17:53:37,841 [INFO] united_dialog: United Dialog запущен.
+2026-09-24 17:53:37,847 [INFO] aiogram.dispatcher: Start polling
+2026-09-24 17:53:37,977 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-24 17:54:07,710 [INFO] united_dialog: archive: Готово: 14 архивов

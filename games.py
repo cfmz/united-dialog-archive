@@ -1,96 +1,35 @@
-import random, json, uuid
-from datetime import datetime, timezone, timedelta
-from aiogram import Router, F, Bot
+"""United Dialog Games — работают и в личке, и в бизнес-чате."""
+import random, uuid, os, sqlite3, asyncio
+from datetime import datetime, timezone
+from aiogram import Router, F
+from aiogram.filters import Command
 from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, Message
 from aiogram.exceptions import TelegramAPIError
 
 router = Router()
-
-def _private(m: Message) -> bool:
-    """Игры только в личке с ботом (не в бизнес-чате)."""
-    return m.chat.type == "private" and not m.business_connection_id
-
-# Перебиваем Message-хендлеры кастомным фильтром
-
 NL = chr(10)
+_BOT = {}
+def set_bot(b): _BOT["bot"] = b
 
-# ---------- Помощник для БД (импорт из bot.py) ----------
 def _db():
-    import sqlite3
-    c = sqlite3.connect("/root/united/united_dialog.db", timeout=30.0, check_same_thread=False)
-    c.execute("PRAGMA busy_timeout=30000")
-    c.execute("PRAGMA journal_mode=WAL")
+    base = os.path.dirname(os.path.abspath(__file__))
+    c = sqlite3.connect(os.path.join(base, "united_dialog.db"), timeout=10, check_same_thread=False)
     c.row_factory = sqlite3.Row
     return c
 
-def _now():
-    return datetime.now(timezone.utc)
-
-def _init_games_table():
-    c = _db()
-    c.executescript("""
-    CREATE TABLE IF NOT EXISTS games(
-        id TEXT PRIMARY KEY,
-        type TEXT,
-        host_id INTEGER,
-        guest_id INTEGER,
-        state TEXT,
-        created TEXT,
-        finished INTEGER DEFAULT 0
-    );
-    CREATE TABLE IF NOT EXISTS transactions(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER, amount INTEGER, reason TEXT, created TEXT
-    );
-    CREATE TABLE IF NOT EXISTS users(
-        id INTEGER PRIMARY KEY, username TEXT, full_name TEXT,
-        joined TEXT, is_premium INTEGER DEFAULT 0,
-        ucoin INTEGER DEFAULT 0, last_seen TEXT, messages INTEGER DEFAULT 0
-    );
-    """)
-    c.commit(); c.close()
-
-_init_games_table()
-
-def _save_game(gid, gtype, host_id, guest_id, state):
-    c = _db()
-    c.execute("""INSERT INTO games(id,type,host_id,guest_id,state,created,finished)
-                 VALUES(?,?,?,?,?,?,0)
-                 ON CONFLICT(id) DO UPDATE SET state=excluded.state""",
-              (gid, gtype, host_id, guest_id, json.dumps(state), _now().isoformat()))
-    c.commit(); c.close()
-
-def _get_game(gid):
-    c = _db()
-    r = c.execute("SELECT * FROM games WHERE id=?", (gid,)).fetchone()
-    c.close()
-    if not r: return None
-    r = dict(r)
-    r["state"] = json.loads(r["state"])
-    return r
-
-def _finish_game(gid):
-    c = _db()
-    c.execute("UPDATE games SET finished=1 WHERE id=?", (gid,))
-    c.commit(); c.close()
+def _now(): return datetime.now(timezone.utc)
 
 def _add_ucoin(uid, amount, reason):
     c = _db()
     try:
-        # Гарантируем, что юзер есть
-        r = c.execute("SELECT id FROM users WHERE id=?", (uid,)).fetchone()
-        if not r:
-            c.execute("INSERT INTO users(id,joined,ucoin) VALUES(?,?,0)",
-                      (uid, _now().isoformat()))
-        c.execute("UPDATE users SET ucoin = MAX(0, ucoin + ?) WHERE id=?", (amount, uid))
+        if not c.execute("SELECT 1 FROM users WHERE id=?", (uid,)).fetchone():
+            c.execute("INSERT INTO users(id,joined,ucoin) VALUES(?,?,0)", (uid, _now().isoformat()))
+        c.execute("UPDATE users SET ucoin=MAX(0, ucoin+?) WHERE id=?", (amount, uid))
         c.execute("INSERT INTO transactions(user_id,amount,reason,created) VALUES(?,?,?,?)",
                   (uid, amount, reason, _now().isoformat()))
         c.commit()
         r = c.execute("SELECT ucoin FROM users WHERE id=?", (uid,)).fetchone()
         return r["ucoin"] if r else 0
-    except Exception as e:
-        c.rollback()
-        raise
     finally:
         c.close()
 
@@ -98,526 +37,360 @@ def B(text, cb, style=None):
     kw = {"text": text, "callback_data": cb}
     if style:
         try: return InlineKeyboardButton(**kw, style=style)
-        except TypeError: pass
+        except Exception: pass
     return InlineKeyboardButton(**kw)
 
-async def _safe_edit(c, text, kb):
+def q(t): return f"<blockquote>{t}</blockquote>"
+
+async def _send(chat_id, text, kb=None, conn_id=None):
+    """Отправка с business_connection_id если это бизнес-чат."""
+    bot = _BOT.get("bot")
+    if not bot: return None
     try:
-        await c.message.edit_text(text, reply_markup=kb)
+        kw = {"chat_id": chat_id, "text": text, "reply_markup": kb}
+        if conn_id: kw["business_connection_id"] = conn_id
+        return await bot.send_message(**kw)
     except TelegramAPIError as e:
-        if "message is not modified" not in str(e):
-            try: await c.message.edit_reply_markup(reply_markup=kb)
-            except: pass
+        print(f"[games send] {e}")
+        return None
 
-# ================================================================
-#                     КРЕСТИКИ-НОЛИКИ
-# ================================================================
+async def _edit(c, text, kb=None):
+    """Редактирование с поддержкой бизнес-сообщений."""
+    bot = _BOT.get("bot")
+    if not bot: return
+    conn_id = getattr(c.message, "business_connection_id", None)
+    try:
+        kw = {"chat_id": c.message.chat.id, "message_id": c.message.message_id,
+              "text": text, "reply_markup": kb}
+        if conn_id: kw["business_connection_id"] = conn_id
+        await bot.edit_message_text(**kw)
+    except TelegramAPIError as e:
+        if "not modified" in str(e).lower(): return
+        print(f"[games edit] {e}")
 
-TTT_WIN = [
-    [0,1,2],[3,4,5],[6,7,8],
-    [0,3,6],[1,4,7],[2,5,8],
-    [0,4,8],[2,4,6]
-]
+# =================== КНБ ===================
+KNB = {}
+KNB_ICON = {"r": "🪨", "s": "✂️", "p": "📄"}
+KNB_BEATS = {"r": "s", "s": "p", "p": "r"}
 
-def _ttt_check(b):
-    for a,c,d in TTT_WIN:
-        if b[a] and b[a] == b[c] == b[d]:
-            return b[a], [a,c,d]
-    if all(b): return "draw", []
-    return None, []
+def _knb_render(st, name):
+    h = "🎲 <b>Камень · Ножницы · Бумага</b>" + NL
+    h += f"<i>Раунд {min(st['round']+1, 5)} / 5</i>" + NL + NL
+    h += q(f"👤 <b>{name}:</b> {st['my']}" + NL + f"🤖 <b>Бот:</b> {st['bot']}")
+    if st.get("last"): h += NL + NL + st["last"]
+    return h
 
-def _ttt_kb(gid, state, viewer=None, finished=False):
-    b = state["board"]; turn = state["turn"]
-    host = state["host"]; guest = state["guest"]
-    win_sym = state.get("win_sym"); win_cells = state.get("win_cells", [])
+def _knb_kb(gid):
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [B("🪨 Камень", f"knb:{gid}:r", "primary"),
+         B("✂️ Ножницы", f"knb:{gid}:s", "primary"),
+         B("📄 Бумага", f"knb:{gid}:p", "primary")],
+        [B("🏳️ Сдаться", f"knb:{gid}:x", "danger")]])
+
+async def knb_start_ctx(chat_id, uid, name, conn_id=None):
+    gid = uuid.uuid4().hex[:8]
+    KNB[gid] = {"round": 0, "my": 0, "bot": 0, "last": "", "done": False, "host": uid}
+    await _send(chat_id, _knb_render(KNB[gid], name) + NL + NL + "<i>Выбирай ход 👇</i>",
+                _knb_kb(gid), conn_id)
+
+@router.message(Command("knb"))
+async def knb_start(m: Message):
+    if m.business_connection_id: return
+    await knb_start_ctx(m.chat.id, m.from_user.id, m.from_user.full_name)
+
+@router.callback_query(F.data.startswith("knb:"))
+async def knb_cb(c: CallbackQuery):
+    _, gid, act = c.data.split(":")
+    st = KNB.get(gid)
+    if not st: await c.answer("Игра устарела", show_alert=True); return
+    if c.from_user.id != st["host"]: await c.answer("Не твоя игра", show_alert=True); return
+    if st["done"]: await c.answer("Игра окончена", show_alert=True); return
+    if act == "x":
+        st["done"] = True
+        await _edit(c, "🏳️ <b>Ты сдался.</b>" + NL + NL + q("Спасибо за игру!"))
+        await c.answer(); return
+    bm = random.choice(["r", "s", "p"])
+    if act == bm: st["last"] = f"🤝 <b>Ничья</b> · {KNB_ICON[act]} vs {KNB_ICON[bm]}"
+    elif KNB_BEATS[act] == bm:
+        st["my"] += 1; st["last"] = f"🎉 <b>Ты взял раунд</b> · {KNB_ICON[act]} vs {KNB_ICON[bm]}"
+    else:
+        st["bot"] += 1; st["last"] = f"😢 <b>Бот взял раунд</b> · {KNB_ICON[act]} vs {KNB_ICON[bm]}"
+    st["round"] += 1
+    if st["round"] >= 5:
+        st["done"] = True
+        if st["my"] > st["bot"]: reward, verdict = 30, "🏆 <b>ПОБЕДА!</b>"
+        elif st["my"] < st["bot"]: reward, verdict = -10, "💀 <b>Поражение</b>"
+        else: reward, verdict = 5, "🤝 <b>Ничья</b>"
+        _add_ucoin(st["host"], reward, "knb")
+        sign = "+" if reward >= 0 else ""
+        await _edit(c, _knb_render(st, c.from_user.full_name) + NL + NL
+            + q(f"{verdict}" + NL + f"💰 <b>{sign}{reward}</b> U-Coin"),
+            InlineKeyboardMarkup(inline_keyboard=[[B("🎲 Ещё раз", "knb_new", "success")]]))
+        await c.answer(); return
+    await _edit(c, _knb_render(st, c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>", _knb_kb(gid))
+    await c.answer()
+
+@router.callback_query(F.data == "knb_new")
+async def knb_new(c: CallbackQuery):
+    gid = uuid.uuid4().hex[:8]
+    KNB[gid] = {"round": 0, "my": 0, "bot": 0, "last": "", "done": False, "host": c.from_user.id}
+    await _edit(c, _knb_render(KNB[gid], c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>", _knb_kb(gid))
+    await c.answer()
+
+# =================== TTT ===================
+TTT = {}
+WIN = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
+
+def _ttt_win(b):
+    for a, c2, d in WIN:
+        if b[a] and b[a] == b[c2] == b[d]: return b[a]
+    return "draw" if all(b) else None
+
+def _ttt_kb(gid, st):
     rows = []
     for r in range(3):
         row = []
         for c in range(3):
-            i = r*3 + c
-            v = b[i]
-            if v == "X": label = "❌"
-            elif v == "O": label = "⭕"
-            else: label = "⬜"
-            if i in win_cells: label = "🟩" if v=="X" else "🟦"
-            cb = f"ttt_{gid}_{i}"
-            row.append(B(label, cb, style="primary" if not v else "success"))
+            i = r*3 + c; v = st["board"][i]
+            label = "❌" if v == "X" else ("⭕" if v == "O" else "⬜")
+            row.append(B(label, f"ttt:{gid}:{i}", "primary" if not v else "success"))
         rows.append(row)
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
-def _ttt_render(state, host_name, guest_name):
-    b = state["board"]; turn = state["turn"]
-    if state.get("finished"):
-        w = state.get("winner")
+def _ttt_text(st):
+    a = st.get("a_name") or "Игрок 1"
+    b = st.get("b_name") or "Игрок 2"
+    if st.get("done"):
+        w = st.get("winner")
         if w == "draw": head = "🤝 <b>Ничья!</b>"
-        elif w == "X": head = "❌ <b>Победил " + host_name + "!</b>"
-        else: head = "⭕ <b>Победил " + guest_name + "!</b>"
+        elif w == "X": head = f"🏆 <b>Победил {a}</b> (❌)"
+        else: head = f"🏆 <b>Победил {b}</b> (⭕)"
     else:
-        t_name = host_name if turn == "X" else guest_name
-        head = "🎮 <b>Крестики-нолики</b>" + NL + NL + f"Ход: <b>{t_name}</b>"
-    return head + NL + NL + _ttt_board_text(b)
+        cur = st.get("a_name") if st["turn"] == "X" else st.get("b_name")
+        if not cur:
+            head = "⏳ <b>Ожидание второго игрока...</b>"
+        else:
+            head = f"Ход: <b>{cur}</b> ({'❌' if st['turn']=='X' else '⭕'})" + NL + \
+                   f"Поставьте {'❌' if st['turn']=='X' else '⭕'} на любое свободное поле."
+    return ("🎲 <b>Крестики-нолики</b>" + NL + NL + q(head))
 
-def _ttt_board_text(b):
-    lines = []
-    for r in range(3):
-        row = []
-        for c in range(3):
-            v = b[r*3+c]
-            row.append("❌" if v=="X" else ("⭕" if v=="O" else "⬜"))
-        lines.append(" ".join(row))
-    return "<code>" + NL.join(lines).replace("❌","X").replace("⭕","O").replace("⬜","·") + "</code>"
-
-@router.message(_private, F.text.regexp(r"^\.ttt(?:@\w+)?(?:\s+.*)?$"))
-async def ttt_start(m: Message):
-    gid = uuid.uuid4().hex[:10]
-    state = {
-        "board": [""]*9,
-        "turn": "X",
-        "host": m.from_user.id,
-        "guest": None,
-        "host_name": m.from_user.full_name,
+def _ttt_new(uid, name):
+    gid = uuid.uuid4().hex[:8]
+    TTT[gid] = {
+        "board": [""]*9, "turn": "X", "done": False,
+        "a_id": uid, "a_name": name,
+        "b_id": None, "b_name": None,
+        "chat_id": None, "conn_id": None,
     }
-    _save_game(gid, "ttt", m.from_user.id, None, state)
-    kb = InlineKeyboardMarkup(inline_keyboard=[
-        [B("✋ Присоединиться", f"ttt_join_{gid}", style="success")],
-    ])
-    await m.answer(
-        "🎮 <b>Крестики-нолики</b>" + NL + NL
-        + "<blockquote>Игрок <b>" + m.from_user.full_name + "</b> создал дуэль." + NL
-        + "Нажми кнопку, чтобы присоединиться!</blockquote>",
-        reply_markup=kb)
+    return gid
 
-@router.callback_query(F.data.startswith("ttt_join_"))
-async def ttt_join(c: CallbackQuery):
-    gid = c.data[len("ttt_join_"):]
-    g = _get_game(gid)
-    if not g: await c.answer("Игра не найдена", show_alert=True); return
-    st = g["state"]
-    if st.get("guest"):
-        await c.answer("Уже занято", show_alert=True); return
-    if c.from_user.id == st["host"]:
-        await c.answer("Нельзя играть с собой", show_alert=True); return
-    st["guest"] = c.from_user.id
-    st["guest_name"] = c.from_user.full_name
-    _save_game(gid, "ttt", st["host"], st["guest"], st)
+async def ttt_start_ctx(chat_id, uid, name, conn_id=None, to_chat=None):
+    gid = _ttt_new(uid, name)
+    TTT[gid]["chat_id"] = to_chat or chat_id
+    TTT[gid]["conn_id"] = conn_id
+    await _send(chat_id, _ttt_text(TTT[gid]), _ttt_kb(gid, TTT[gid]), conn_id)
 
-    kb = _ttt_kb(gid, st)
-    text = _ttt_render(st, st["host_name"], st["guest_name"])
-    await _safe_edit(c, text, kb)
-    await c.answer()
+@router.message(Command("ttt"))
+async def ttt_start(m: Message):
+    if m.business_connection_id: return
+    await ttt_start_ctx(m.chat.id, m.from_user.id, m.from_user.full_name)
 
-@router.callback_query(F.data.startswith("ttt_") & ~F.data.startswith("ttt_join_"))
+@router.callback_query(F.data.startswith("ttt:"))
 async def ttt_move(c: CallbackQuery):
-    parts = c.data.split("_")
-    if len(parts) != 3: return
-    gid = parts[1]; idx = int(parts[2])
-    g = _get_game(gid)
-    if not g: await c.answer("Игра не найдена", show_alert=True); return
-    st = g["state"]
-    if st.get("finished"):
-        await c.answer("Игра окончена", show_alert=True); return
-    if not st.get("guest"):
-        await c.answer("Ждём соперника", show_alert=True); return
-    uid = c.from_user.id
-    host, guest = st["host"], st["guest"]
-    turn = st["turn"]
-    expected = host if turn == "X" else guest
-    if uid != expected:
+    _, gid, idx_s = c.data.split(":")
+    idx = int(idx_s); st = TTT.get(gid)
+    if not st: await c.answer("Игра устарела", show_alert=True); return
+    if st["done"]: await c.answer("Игра окончена"); return
+    # Определяем игрока по порядку
+    if c.from_user.id == st["a_id"]:
+        role = "X"
+    elif c.from_user.id == st["b_id"]:
+        role = "O"
+    elif st["b_id"] is None:
+        st["b_id"] = c.from_user.id
+        st["b_name"] = c.from_user.full_name
+        role = "O"
+    else:
+        await c.answer("Это не твоя игра", show_alert=True); return
+    if st["turn"] != role:
         await c.answer("Сейчас не твой ход", show_alert=True); return
     if st["board"][idx]:
-        await c.answer("Клетка занята", show_alert=True); return
-
-    st["board"][idx] = turn
-    winner, cells = _ttt_check(st["board"])
-    if winner:
-        st["finished"] = True
-        st["winner"] = winner
-        st["win_cells"] = cells
-        if winner == "X":
-            _add_ucoin(host, 15, "ttt_win")
-            _add_ucoin(guest, -5, "ttt_lose")
-        elif winner == "O":
-            _add_ucoin(guest, 15, "ttt_win")
-            _add_ucoin(host, -5, "ttt_lose")
-        else:
-            _add_ucoin(host, 5, "ttt_draw")
-            _add_ucoin(guest, 5, "ttt_draw")
-        _finish_game(gid)
+        await c.answer("Клетка занята"); return
+    st["board"][idx] = role
+    w = _ttt_win(st["board"])
+    if w:
+        st["done"] = True; st["winner"] = w
+        if w == "X": _add_ucoin(st["a_id"], 15, "ttt_win"); _add_ucoin(st["b_id"], -5, "ttt_lose")
+        elif w == "O": _add_ucoin(st["b_id"], 15, "ttt_win"); _add_ucoin(st["a_id"], -5, "ttt_lose")
+        else: _add_ucoin(st["a_id"], 5, "ttt_draw"); _add_ucoin(st["b_id"], 5, "ttt_draw")
     else:
-        st["turn"] = "O" if turn == "X" else "X"
-
-    _save_game(gid, "ttt", host, guest, st)
-    kb = _ttt_kb(gid, st)
-    text = _ttt_render(st, st["host_name"], st["guest_name"])
-    if st.get("finished"):
-        text += NL + NL + "<i>Награды: победитель +15 💰, проигравший −5 💰, ничья +5 💰</i>"
-    await _safe_edit(c, text, kb)
+        st["turn"] = "O" if st["turn"] == "X" else "X"
+    await _edit(c, _ttt_text(st), _ttt_kb(gid, st))
     await c.answer()
 
-# ================================================================
-#                           САПЁР
-# ================================================================
+# =================== САПЁР ===================
+SAP = {}
+SAP_SIZE = 5; SAP_MINES = 5; SAP_REWARD = 50
 
-def _saper_new():
-    size = 5
-    mines = set()
-    while len(mines) < 5:
-        mines.add(random.randint(0, size*size-1))
-    state = {
-        "size": size,
-        "mines": list(mines),
-        "opened": [],
-        "flags": [],
-        "dead": False,
-        "won": False,
-        "bet": 20,
-    }
-    return state
-
-def _saper_neighbors(size, i):
-    r, c = divmod(i, size)
-    out = []
+def _sap_nb(i):
+    r, c = divmod(i, SAP_SIZE); out = []
     for dr in (-1,0,1):
         for dc in (-1,0,1):
             if dr == 0 and dc == 0: continue
             nr, nc = r+dr, c+dc
-            if 0 <= nr < size and 0 <= nc < size:
-                out.append(nr*size + nc)
+            if 0 <= nr < SAP_SIZE and 0 <= nc < SAP_SIZE: out.append(nr*SAP_SIZE+nc)
     return out
 
-def _saper_mines_around(state, i):
-    return sum(1 for n in _saper_neighbors(state["size"], i) if n in state["mines"])
+def _sap_around(st, i): return sum(1 for n in _sap_nb(i) if n in st["mines"])
 
-def _saper_kb(gid, state):
-    size = state["size"]
+def _sap_new():
+    mines = set()
+    while len(mines) < SAP_MINES: mines.add(random.randint(0, SAP_SIZE*SAP_SIZE-1))
+    return {"mines": list(mines), "opened": [], "flags": [], "dead": False, "won": False}
+
+def _sap_kb(gid, st):
     rows = []
-    for r in range(size):
+    for r in range(SAP_SIZE):
         row = []
-        for c in range(size):
-            i = r*size + c
-            if i in state["opened"]:
-                n = _saper_mines_around(state, i)
-                label = "💣" if i in state["mines"] else (str(n) if n > 0 else "⬜")
-                cb = f"sap_noop_{gid}"
-            elif i in state["flags"]:
-                label = "🚩"; cb = f"sap_flag_{gid}_{i}"
-            else:
-                label = "🔷"; cb = f"sap_open_{gid}_{i}"
-            row.append(B(label, cb, style="primary"))
+        for c in range(SAP_SIZE):
+            i = r*SAP_SIZE + c
+            if i in st["opened"]:
+                if i in st["mines"]: label = "💥"
+                else:
+                    n = _sap_around(st, i); label = str(n) if n else "·"
+                row.append(B(label, f"sap_noop:{gid}", "primary"))
+            elif i in st["flags"]: row.append(B("🚩", f"sap_flag:{gid}:{i}", "danger"))
+            else: row.append(B("🔷", f"sap_open:{gid}:{i}", "primary"))
         rows.append(row)
+    if st["dead"] or st["won"]:
+        rows.append([B("🔁 Новая игра", f"sap_new:{st['host']}", "success")])
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
-def _saper_render(state, name):
-    opened = len([i for i in state["opened"] if i not in state["mines"]])
-    total_safe = state["size"]*state["size"] - len(state["mines"])
-    head = "💣 <b>Сапёр 5×5</b>"
-    if state["dead"]:
-        head += NL + "💥 <b>Ты подорвался!</b>"
-    elif state["won"]:
-        head += NL + "🏆 <b>Победа! Поле очищено</b>"
-    else:
-        head += NL + NL + f"Безопасных открыто: <b>{opened}/{total_safe}</b>"
-    return head + NL + NL + f"<i>Игрок: {name}</i>"
+def _sap_text(st):
+    total = SAP_SIZE*SAP_SIZE - SAP_MINES
+    opened = len([i for i in st["opened"] if i not in st["mines"]])
+    h = "💣 <b>Сапёр 5×5</b>"
+    if st["dead"]: h += NL + "💥 <b>Взрыв!</b>"
+    elif st["won"]: h += NL + f"🏆 <b>Победа! +{SAP_REWARD} 💰</b>"
+    else: h += NL + f"<i>Открыто: {opened} / {total}</i>"
+    return h + NL + NL + q("🔷 открыть · 🚩 пометить")
 
-@router.message(_private, F.text.regexp(r"^\.saper(?:@\w+)?$"))
-async def saper_start(m: Message):
-    gid = uuid.uuid4().hex[:10]
-    state = _saper_new()
-    _save_game(gid, "saper", m.from_user.id, None, state)
-    await m.answer(
-        _saper_render(state, m.from_user.full_name) + NL + NL
-        + "<i>Нажми на 🔷 чтобы открыть клетку. Ставка: 20 💰. Победа: +50 💰, мина: −20 💰.</i>",
-        reply_markup=_saper_kb(gid, state))
+@router.message(Command("saper"))
+async def sap_start(m: Message):
+    if m.business_connection_id: return
+    gid = uuid.uuid4().hex[:8]
+    st = _sap_new(); st["host"] = m.from_user.id
+    SAP[gid] = st
+    await m.answer(_sap_text(st), reply_markup=_sap_kb(gid, st))
 
 @router.callback_query(F.data.startswith("sap_"))
-async def saper_cb(c: CallbackQuery):
-    parts = c.data.split("_")
-    action = parts[1]; gid = parts[2]
-    g = _get_game(gid)
-    if not g: await c.answer("Не найдено", show_alert=True); return
-    if c.from_user.id != g["host_id"]:
-        await c.answer("Это не твоя игра", show_alert=True); return
-    st = g["state"]
-    if st["dead"] or st["won"]:
-        await c.answer("Игра окончена", show_alert=True); return
-
-    if action == "noop":
-        await c.answer(); return
-
-    if action == "flag":
-        i = int(parts[3])
-        if i in st["flags"]:
-            st["flags"].remove(i)
-        elif i not in st["opened"]:
-            st["flags"].append(i)
-        _save_game(gid, "saper", g["host_id"], None, st)
-        await _safe_edit(c, _saper_render(st, c.from_user.full_name) + NL + NL
-            + "<i>🔷 открыть · 🚩 пометить · мин всего: 5</i>",
-            _saper_kb(gid, st))
-        await c.answer(); return
-
-    if action == "open":
-        i = int(parts[3])
-        if i in st["opened"] or i in st["flags"]:
-            await c.answer(); return
+async def sap_cb(c: CallbackQuery):
+    parts = c.data.split(":"); action = parts[0]; gid = parts[1]
+    st = SAP.get(gid)
+    if not st: await c.answer("Устарело", show_alert=True); return
+    if c.from_user.id != st["host"]: await c.answer("Не твоя игра", show_alert=True); return
+    if st["dead"] or st["won"]: await c.answer("Игра окончена"); return
+    if action == "sap_noop": await c.answer(); return
+    if action == "sap_flag":
+        i = int(parts[2])
+        if i in st["flags"]: st["flags"].remove(i)
+        elif i not in st["opened"]: st["flags"].append(i)
+        await _edit(c, _sap_text(st), _sap_kb(gid, st)); await c.answer(); return
+    if action == "sap_open":
+        i = int(parts[2])
+        if i in st["opened"] or i in st["flags"]: await c.answer(); return
         if i in st["mines"]:
-            st["dead"] = True
-            st["opened"].append(i)
-            _add_ucoin(g["host_id"], -st["bet"], "saper_mine")
-            _finish_game(gid)
-            _save_game(gid, "saper", g["host_id"], None, st)
-            await _safe_edit(c, _saper_render(st, c.from_user.full_name) + NL + NL
-                + f"<i>−{st['bet']} 💰</i>",
-                _saper_kb(gid, st))
-            await c.answer("💥 Мина!", show_alert=True); return
-
-        # Открываем клетку + авто-открытие пустых соседних
+            st["dead"] = True; st["opened"].append(i)
+            _add_ucoin(st["host"], -20, "saper_mine")
+            await _edit(c, _sap_text(st), _sap_kb(gid, st))
+            await c.answer("💥 Мина! −20", show_alert=True); return
         stack = [i]
         while stack:
             cur = stack.pop()
-            if cur in st["opened"]: continue
-            if cur in st["mines"]: continue
+            if cur in st["opened"] or cur in st["mines"]: continue
             st["opened"].append(cur)
-            if _saper_mines_around(st, cur) == 0:
-                for n in _saper_neighbors(st["size"], cur):
-                    if n not in st["opened"] and n not in st["mines"]:
-                        stack.append(n)
+            if _sap_around(st, cur) == 0:
+                for n in _sap_nb(cur):
+                    if n not in st["opened"] and n not in st["mines"]: stack.append(n)
+        total = SAP_SIZE*SAP_SIZE - SAP_MINES
+        opened = len([x for x in st["opened"] if x not in st["mines"]])
+        if opened >= total:
+            st["won"] = True; _add_ucoin(st["host"], SAP_REWARD, "saper_win")
+        await _edit(c, _sap_text(st), _sap_kb(gid, st)); await c.answer(); return
 
-        safe_total = st["size"]*st["size"] - len(st["mines"])
-        opened_safe = len([x for x in st["opened"] if x not in st["mines"]])
-        if opened_safe >= safe_total:
-            st["won"] = True
-            reward = 50
-            _add_ucoin(g["host_id"], reward, "saper_win")
-            _finish_game(gid)
-            _save_game(gid, "saper", g["host_id"], None, st)
-            await _safe_edit(c, _saper_render(st, c.from_user.full_name) + NL + NL
-                + f"<i>+{reward} 💰</i>",
-                _saper_kb(gid, st))
-            await c.answer(f"🏆 Победа! +{reward}", show_alert=True); return
+@router.callback_query(F.data.startswith("sap_new:"))
+async def sap_new(c: CallbackQuery):
+    if c.from_user.id != int(c.data.split(":")[1]): await c.answer("Только хост", show_alert=True); return
+    gid = uuid.uuid4().hex[:8]
+    st = _sap_new(); st["host"] = c.from_user.id
+    SAP[gid] = st
+    await _edit(c, _sap_text(st), _sap_kb(gid, st)); await c.answer()
 
-        _save_game(gid, "saper", g["host_id"], None, st)
-        await _safe_edit(c, _saper_render(st, c.from_user.full_name) + NL + NL
-            + "<i>🔷 открыть · 🚩 пометить · мин всего: 5</i>",
-            _saper_kb(gid, st))
-        await c.answer(); return
+# =================== СЛОТЫ ===================
+SLOT = {}
+SYM = ["🍒","🍋","🍇","💎","⭐","7️⃣"]
+PAY = {"🍒":3,"🍋":4,"🍇":6,"💎":10,"⭐":15,"7️⃣":25}
 
-# ================================================================
-#                          СЛОТЫ
-# ================================================================
+def _slot_text(st, anim=False):
+    reels = ["🎲","🎲","🎲"] if anim else st["reels"]
+    foot = "<i>Крутится...</i>" if anim else (st.get("result") or f"<i>Ставка: {st['bet']} 💰</i>")
+    return ("🎰 <b>Слоты</b>" + NL + NL
+            + f"<code>[ {reels[0]} | {reels[1]} | {reels[2]} ]</code>" + NL + NL
+            + foot + NL + NL + q(f"💰 Баланс: <b>{st['balance']}</b>"))
 
-SLOT_SYMBOLS = ["🍒", "🍋", "🍇", "💎", "⭐", "7️⃣"]
-SLOT_PAYOUT = {
-    "🍒": 3, "🍋": 4, "🍇": 6, "💎": 10, "⭐": 15, "7️⃣": 25,
-}
-
-def _slot_kb(gid, bet, spinning=False):
-    if spinning:
-        return InlineKeyboardMarkup(inline_keyboard=[[B("⏳ Крутится...", f"slot_noop_{gid}", style="primary")]])
+def _slot_kb(gid, st, anim=False):
+    if anim: return InlineKeyboardMarkup(inline_keyboard=[[B("⏳ Крутится...", "slot_noop", "primary")]])
     return InlineKeyboardMarkup(inline_keyboard=[
-        [B(f"🎰 Крутить ({bet} 💰)", f"slot_spin_{gid}", style="success")],
-        [B("×2", f"slot_bet_{gid}_40", style="primary"),
-         B("×5", f"slot_bet_{gid}_100", style="primary"),
-         B("×10", f"slot_bet_{gid}_200", style="primary")],
-        [B("❌ Выйти", f"slot_exit_{gid}", style="danger")],
-    ])
+        [B(f"🎰 Крутить · {st['bet']} 💰", f"slot_spin:{gid}", "success")],
+        [B(("✅ " if st["bet"]==20 else "")+"20", f"slot_bet:{gid}:20", "primary"),
+         B(("✅ " if st["bet"]==40 else "")+"40", f"slot_bet:{gid}:40", "primary"),
+         B(("✅ " if st["bet"]==100 else "")+"100", f"slot_bet:{gid}:100", "primary")],
+        [B("❌ Выйти", f"slot_exit:{gid}", "danger")]])
 
-@router.message(_private, F.text.regexp(r"^\.slot(?:@\w+)?$"))
+@router.message(Command("slot"))
 async def slot_start(m: Message):
-    gid = uuid.uuid4().hex[:10]
-    bet = 20
-    state = {"bet": bet, "reels": ["❔","❔","❔"], "finished": False}
-    _save_game(gid, "slot", m.from_user.id, None, state)
-    await m.answer(
-        "🎰 <b>Слоты</b>" + NL + NL
-        + "<code>[ ❔ | ❔ | ❔ ]</code>" + NL + NL
-        + "<i>Ставка: 20 💰 · 3 одинаковых = x3-x25</i>" + NL
-        + "<i>Изменяй ставку кнопками ×2/×5/×10</i>",
-        reply_markup=_slot_kb(gid, bet))
+    if m.business_connection_id: return
+    gid = uuid.uuid4().hex[:8]
+    bal = _ucoin(m.from_user.id)
+    SLOT[gid] = {"bet": 20, "reels": ["❔","❔","❔"], "host": m.from_user.id,
+                 "balance": bal, "result": None, "done": False}
+    await m.answer(_slot_text(SLOT[gid]) + NL + NL
+        + q("Три одинаковых: 🍒×3 · 🍋×4 · 🍇×6 · 💎×10 · ⭐×15 · 7️⃣×25" + NL + "Пара — x2"),
+        reply_markup=_slot_kb(gid, SLOT[gid]))
 
 @router.callback_query(F.data.startswith("slot_"))
 async def slot_cb(c: CallbackQuery):
-    parts = c.data.split("_")
-    action = parts[1]; gid = parts[2]
-    g = _get_game(gid)
-    if not g: await c.answer("Не найдено", show_alert=True); return
-    if c.from_user.id != g["host_id"]:
-        await c.answer("Это не твоя игра", show_alert=True); return
-    st = g["state"]
-    if st.get("finished"):
-        await c.answer("Игра закрыта", show_alert=True); return
-
-    if action == "noop":
-        await c.answer(); return
-
-    if action == "bet":
-        new_bet = int(parts[3])
-        st["bet"] = new_bet
-        _save_game(gid, "slot", g["host_id"], None, st)
-        await _safe_edit(c,
-            "🎰 <b>Слоты</b>" + NL + NL
-            + "<code>[ ❔ | ❔ | ❔ ]</code>" + NL + NL
-            + f"<i>Ставка: {new_bet} 💰</i>",
-            _slot_kb(gid, new_bet))
-        await c.answer(f"Ставка: {new_bet}"); return
-
-    if action == "exit":
-        st["finished"] = True
-        _finish_game(gid)
-        _save_game(gid, "slot", g["host_id"], None, st)
-        await _safe_edit(c, "🎰 Слоты закрыты. Заходи ещё!", None)
-        await c.answer(); return
-
-    if action == "spin":
-        bet = st["bet"]
-        # Проверка баланса
-        c_db = _db()
-        r = c_db.execute("SELECT ucoin FROM users WHERE id=?", (g["host_id"],)).fetchone()
-        bal = r["ucoin"] if r else 0
-        c_db.close()
-        if bal < bet:
-            await c.answer(f"❌ Нужно {bet} 💰, у тебя {bal}", show_alert=True); return
-
-        _add_ucoin(g["host_id"], -bet, "slot_bet")
-
-        # Анимация: показываем "крутится"
-        await _safe_edit(c,
-            "🎰 <b>Слоты</b>" + NL + NL
-            + "<code>[ 🎲 | 🎲 | 🎲 ]</code>" + NL + NL
-            + "<i>Крутится...</i>",
-            _slot_kb(gid, bet, spinning=True))
-
-        import asyncio as _asyncio
-        await _asyncio.sleep(1.0)
-
-        reels = [random.choice(SLOT_SYMBOLS) for _ in range(3)]
+    parts = c.data.split(":"); action = parts[0]
+    if action == "slot_noop": await c.answer(); return
+    gid = parts[1]; st = SLOT.get(gid)
+    if not st: await c.answer("Устарело", show_alert=True); return
+    if c.from_user.id != st["host"]: await c.answer("Не твоя игра", show_alert=True); return
+    if st["done"]: await c.answer("Закрыто"); return
+    if action == "slot_bet":
+        st["bet"] = int(parts[2]); st["result"] = None
+        await _edit(c, _slot_text(st), _slot_kb(gid, st))
+        await c.answer(f"Ставка: {st['bet']}"); return
+    if action == "slot_exit":
+        st["done"] = True; SLOT.pop(gid, None)
+        await _edit(c, "🎰 <b>Слоты закрыты.</b>" + NL + NL + q("Заходи ещё!")); await c.answer(); return
+    if action == "slot_spin":
+        bal = _ucoin(st["host"])
+        if bal < st["bet"]: await c.answer(f"❌ Нужно {st['bet']} 💰, у тебя {bal}", show_alert=True); return
+        _add_ucoin(st["host"], -st["bet"], "slot_bet")
+        await _edit(c, _slot_text(st, anim=True), _slot_kb(gid, st, anim=True))
+        await asyncio.sleep(0.9)
+        reels = [random.choice(SYM) for _ in range(3)]
         st["reels"] = reels
-
-        # Подсчёт выигрыша
         if reels[0] == reels[1] == reels[2]:
-            mult = SLOT_PAYOUT[reels[0]]
-            won = bet * mult
-            result = f"🎉 <b>ДЖЕКПОТ! x{mult}</b>"
+            mult = PAY[reels[0]]; won = st["bet"] * mult
+            st["result"] = f"🎉 <b>ДЖЕКПОТ · x{mult}</b>"
         elif reels[0] == reels[1] or reels[1] == reels[2] or reels[0] == reels[2]:
-            won = bet * 2
-            result = "✨ <b>Пара! x2</b>"
+            won = st["bet"] * 2; st["result"] = "✨ <b>Пара · x2</b>"
         else:
-            won = 0
-            result = "😢 <b>Мимо</b>"
-
-        if won > 0:
-            _add_ucoin(g["host_id"], won, "slot_win")
-        profit = won - bet
-        sign = "+" if profit >= 0 else ""
-
-        text = (
-            "🎰 <b>Слоты</b>" + NL + NL
-            + f"<code>[ {reels[0]} | {reels[1]} | {reels[2]} ]</code>" + NL + NL
-            + result + NL
-            + f"Ставка: {bet} 💰 · Выигрыш: {won} 💰 · <b>{sign}{profit} 💰</b>"
-        )
-        _save_game(gid, "slot", g["host_id"], None, st)
-        await _safe_edit(c, text, _slot_kb(gid, bet))
-        await c.answer()
-
-# ================================================================
-#                     ЗАКРЫТИЕ (заглушка)
-# ================================================================
-
-@router.callback_query(F.data == "game_noop")
-async def game_noop(c: CallbackQuery):
-    await c.answer()
-
-# ================================================================
-#                     КНБ С БОТОМ (5 раундов)
-# ================================================================
-
-KNB_ICONS = {"r": "🪨 Камень", "s": "✂️ Ножницы", "p": "📄 Бумага"}
-KNB_ORDER = ["r", "s", "p"]
-KNB_BEATS = {"r": "s", "s": "p", "p": "r"}
-
-def _knb_kb(gid, disabled=False):
-    if disabled:
-        return InlineKeyboardMarkup(inline_keyboard=[[B("⏳ Ход...", "knb_noop", style="primary")]])
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [B("🪨 Камень", f"knb_r_{gid}", style="primary"),
-         B("✂️ Ножницы", f"knb_s_{gid}", style="primary"),
-         B("📄 Бумага", f"knb_p_{gid}", style="primary")],
-        [B("🏳️ Сдаться", f"knb_exit_{gid}", style="danger")],
-    ])
-
-def _knb_render(state, name):
-    st = state
-    my = st.get("my", 0); bot = st.get("bot", 0); rnd = st.get("round", 0)
-    last = st.get("last", "")
-    head = "🎲 <b>КНБ с ботом</b> — раунд " + str(min(rnd+1, 5)) + "/5" + NL + NL
-    head += f"👤 <b>{name}</b>: {my}" + NL
-    head += f"🤖 <b>Бот</b>: {bot}"
-    if last: head += NL + NL + last
-    return head
-
-@router.callback_query(F.data == "game_knb_new")
-async def knb_new(c: CallbackQuery):
-    gid = uuid.uuid4().hex[:10]
-    state = {"round": 0, "my": 0, "bot": 0, "last": "", "finished": False}
-    _save_game(gid, "knb", c.from_user.id, None, state)
-    await _safe_edit(c,
-        _knb_render(state, c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>",
-        _knb_kb(gid))
-    await c.answer()
-
-@router.callback_query(F.data.startswith("knb_"))
-async def knb_cb(c: CallbackQuery):
-    parts = c.data.split("_")
-    action = parts[1]
-    if action == "noop": await c.answer(); return
-    gid = parts[2] if len(parts) > 2 else None
-    if not gid: await c.answer(); return
-    g = _get_game(gid)
-    if not g: await c.answer("Игра не найдена", show_alert=True); return
-    if c.from_user.id != g["host_id"]:
-        await c.answer("Не твоя игра", show_alert=True); return
-    st = g["state"]
-    if st.get("finished"): await c.answer("Игра окончена", show_alert=True); return
-
-    if action == "exit":
-        st["finished"] = True
-        _finish_game(gid)
-        _save_game(gid, "knb", g["host_id"], None, st)
-        await _safe_edit(c, "🎲 Игра завершена. Спасибо!", None)
+            won = 0; st["result"] = "😢 <b>Мимо</b>"
+        if won: _add_ucoin(st["host"], won, "slot_win")
+        st["balance"] = _ucoin(st["host"])
+        profit = won - st["bet"]
+        st["result"] += NL + f"💰 <b>{'+' if profit>=0 else ''}{profit}</b> U-Coin"
+        await _edit(c, _slot_text(st), _slot_kb(gid, st))
         await c.answer(); return
-
-    my = action
-    bot_move = random.choice(KNB_ORDER)
-    if my == bot_move:
-        st["last"] = f"🤝 Ничья! ({KNB_ICONS[my]})"
-    elif KNB_BEATS[my] == bot_move:
-        st["my"] += 1
-        st["last"] = f"🎉 Ты выиграл раунд! {KNB_ICONS[my]} vs {KNB_ICONS[bot_move]}"
-    else:
-        st["bot"] += 1
-        st["last"] = f"😢 Бот выиграл. {KNB_ICONS[my]} vs {KNB_ICONS[bot_move]}"
-    st["round"] += 1
-
-    if st["round"] >= 5:
-        st["finished"] = True
-        if st["my"] > st["bot"]:
-            reward = 30; verdict = "🏆 <b>ПОБЕДА!</b>"
-        elif st["my"] < st["bot"]:
-            reward = -10; verdict = "💀 <b>Поражение</b>"
-        else:
-            reward = 5; verdict = "🤝 <b>Ничья</b>"
-        _add_ucoin(g["host_id"], reward, "knb_game")
-        _finish_game(gid)
-        _save_game(gid, "knb", g["host_id"], None, st)
-        sign = "+" if reward >= 0 else ""
-        await _safe_edit(c,
-            _knb_render(st, c.from_user.full_name) + NL + NL + verdict + NL + f"<i>Баланс: {sign}{reward} 💰</i>",
-            InlineKeyboardMarkup(inline_keyboard=[[B("🎲 Играть снова", "game_knb_new", style="success")]]))
-        await c.answer(); return
-
-    _save_game(gid, "knb", g["host_id"], None, st)
-    await _safe_edit(c,
-        _knb_render(st, c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>",
-        _knb_kb(gid))
-    await c.answer()
