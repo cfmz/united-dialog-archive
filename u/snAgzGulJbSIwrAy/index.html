@@ -5,7 +5,7 @@
 <title>United Dialog — Веб-Архив</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0e1621;color:#fff;height:100vh;overflow:hidden;
+body{background:#0e1621;color:#fff;height:100dvh;overflow:hidden;
 font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;display:flex}
 
 /* Лок-экран */
@@ -23,13 +23,13 @@ font-size:15px;font-weight:600;cursor:pointer;transition:.15s;font-family:inheri
 #lock .hint{font-size:11px;color:#5a6b7a;margin-top:14px}
 
 /* Основной интерфейс */
-.sidebar{width:320px;background:#17212b;display:flex;flex-direction:column;border-right:1px solid #101921}
+.sidebar{width:320px;background:#17212b;display:flex;flex-direction:column;border-right:1px solid #101921;min-height:0}
 .sbh{padding:12px;border-bottom:1px solid #101921}
 .sbh h1{font-size:15px;font-weight:600;color:#64b5f6;margin-bottom:8px}
 .search{width:100%;padding:8px 12px;background:#242f3d;border:none;border-radius:20px;
 color:#fff;font-size:14px;outline:none}
 .search::placeholder{color:#6b7c8e}
-.chats{flex:1;overflow-y:auto}
+.chats{flex:1;overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
 .chat{padding:10px 14px;border-bottom:1px solid #101921;cursor:pointer;display:flex;flex-direction:column;gap:3px}
 .chat:hover{background:#202b36}
 .chat.active{background:#2b5278}
@@ -37,9 +37,9 @@ color:#fff;font-size:14px;outline:none}
 .cprev{font-size:12px;color:#7e8f9e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ctime{font-size:11px;color:#6b7c8e;float:right;font-weight:normal}
 .chd{display:flex;justify-content:space-between;align-items:center}
-.main{flex:1;display:flex;flex-direction:column;background:#0e1621}
+.main{flex:1;display:flex;flex-direction:column;background:#0e1621;min-height:0}
 .mh{padding:12px 20px;background:#17212b;border-bottom:1px solid #101921;font-weight:600;font-size:15px}
-.msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:8px}
+.msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:8px;min-height:0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .msg{max-width:70%;padding:8px 12px;border-radius:12px;background:#182533;
 align-self:flex-start;word-wrap:break-word;font-size:14px;line-height:1.4}
 .msg.own{background:#2b5278;align-self:flex-end}
@@ -53,7 +53,7 @@ align-self:flex-start;word-wrap:break-word;font-size:14px;line-height:1.4}
 .media-tag{display:inline-block;margin-top:6px;padding:4px 8px;background:#2b3e50;border-radius:6px;font-size:12px}
 .empty{flex:1;display:flex;align-items:center;justify-content:center;color:#6b7c8e;font-size:14px}
 .back{display:none;color:#64b5f6;cursor:pointer;margin-right:8px}
-@media(max-width:700px){.sidebar{width:100%;position:absolute;z-index:10;height:100vh}
+@media(max-width:700px){.sidebar{width:100%;position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;height:100dvh}
 .sidebar.hidden{display:none}.back{display:inline-block}}
 </style></head><body>
 

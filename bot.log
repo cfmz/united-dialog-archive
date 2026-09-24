@@ -3,5 +3,19 @@ nohup: ignoring input
 2026-09-24 18:39:03,628 [INFO] aiogram.dispatcher: Start polling
 2026-09-24 18:39:03,734 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-24 18:39:08,891 [INFO] united_dialog: archive: Готово: 14 архивов
- id=8824105826 - 'United Dialog'
-2026-09-24 18:39:08,891 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-24 18:39:29,913 [INFO] united_dialog: archive: pushed to web
+2026-09-24 18:39:30,125 [INFO] united_dialog: [del event] chat=8114487221 mids=[577581] owner=7113397602 notify=True
+2026-09-24 18:39:30,174 [INFO] united_dialog: [del lookup] mid=577581 found=False
+2026-09-24 18:39:30,430 [INFO] aiogram.event: Update id=82900278 is not handled. Duration 230 ms by bot id=8824105826
+2026-09-24 18:39:30,760 [INFO] aiogram.event: Update id=82900277 is handled. Duration 689 ms by bot id=8824105826
+2026-09-24 18:39:31,297 [INFO] united_dialog: [media ↓] 577600 → jpg
+2026-09-24 18:39:32,396 [INFO] united_dialog: [del event] chat=5194433280 mids=[577600] owner=7113397602 notify=True
+2026-09-24 18:39:32,530 [INFO] united_dialog: [del lookup] mid=577600 found=True
+2026-09-24 18:39:32,872 [INFO] aiogram.event: Update id=82900279 is handled. Duration 617 ms by bot id=8824105826
+2026-09-24 18:42:10,475 [INFO] aiogram.event: Update id=82900280 is handled. Duration 385 ms by bot id=8824105826
+2026-09-24 18:42:13,001 [INFO] aiogram.event: Update id=82900281 is handled. Duration 612 ms by bot id=8824105826
+2026-09-24 18:42:18,847 [INFO] aiogram.event: Update id=82900282 is handled. Duration 589 ms by bot id=8824105826
+2026-09-24 18:42:30,333 [INFO] united_dialog: [media] всего скачано за прогон: 1
+2026-09-24 18:42:31,454 [INFO] united_dialog: archive: Готово: 14 архивов
+�ачано за прогон: 1
+2026-09-24 18:42:31,454 [INFO] united_dialog: archive: Готово: 14 архивов
