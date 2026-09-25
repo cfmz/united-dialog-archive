@@ -947,3 +947,19 @@ Error opening output files: Numerical result out of range
 2026-09-25 16:57:48,202 [INFO] united_dialog: [voicemod] preset=13 chat=5194433280
 2026-09-25 16:57:48,204 [INFO] aiogram.event: Update id=82900638 is not handled. Duration 1966 ms by bot id=8824105826
 2026-09-25 16:57:48,461 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 16:57:58,005 [INFO] united_dialog: archive: pushed to web
+2026-09-25 16:57:58,225 [INFO] united_dialog: [del event] chat=5194433280 mids=[578026] owner=7113397602 notify=True
+2026-09-25 16:57:58,229 [INFO] united_dialog: [del lookup] mid=578026 found=True
+2026-09-25 16:57:58,230 [INFO] united_dialog: [del skip vm] mid=578026
+2026-09-25 16:57:58,230 [INFO] aiogram.event: Update id=82900639 is handled. Duration 8 ms by bot id=8824105826
+2026-09-25 16:57:59,080 [INFO] united_dialog: [vm transform] preset=13 filter=asetrate=48000*0.85,aresample=48000,atempo=1.1765, in=7800b out=8406b
+2026-09-25 16:57:59,341 [INFO] united_dialog: [voicemod] preset=13 chat=5194433280
+2026-09-25 16:57:59,342 [INFO] aiogram.event: Update id=82900640 is not handled. Duration 1111 ms by bot id=8824105826
+2026-09-25 17:00:33,505 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-25 17:00:33,507 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 17:00:33,508 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-25 17:00:53,446 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 17:00:53,453 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 17:00:53,545 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 17:00:58,804 [INFO] united_dialog: [media] всего скачано за прогон: 1
+2026-09-25 17:01:00,385 [INFO] united_dialog: archive: Готово: 14 архивов
