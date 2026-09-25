@@ -142,3 +142,16 @@ d_dialog: archive: pushed to web
 2026-09-25 15:10:39,296 [INFO] united_dialog: archive: Готово: 14 архивов
 2026-09-25 15:10:44,978 [INFO] united_dialog: archive: pushed to web
 2026-09-25 15:13:46,138 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:13:52,634 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:15:09,310 [INFO] aiogram.event: Update id=82900457 is handled. Duration 16 ms by bot id=8824105826
+2026-09-25 15:15:10,013 [INFO] united_dialog: [media ↓] 577785 → webp
+2026-09-25 15:16:01,868 [INFO] aiogram.event: Update id=82900458 is not handled. Duration 38 ms by bot id=8824105826
+2026-09-25 15:16:02,609 [INFO] united_dialog: [media ↓] 577786 → bin
+2026-09-25 15:16:13,014 [INFO] aiogram.event: Update id=82900459 is not handled. Duration 30 ms by bot id=8824105826
+2026-09-25 15:16:13,499 [INFO] united_dialog: [media ↓] 577787 → bin
+2026-09-25 15:16:22,436 [INFO] aiogram.event: Update id=82900460 is not handled. Duration 27 ms by bot id=8824105826
+2026-09-25 15:16:23,347 [INFO] aiogram.event: Update id=82900461 is handled. Duration 26 ms by bot id=8824105826
+2026-09-25 15:16:24,668 [INFO] united_dialog: [media ↓] 577788 → bin
+2026-09-25 15:16:24,673 [INFO] united_dialog: [media ↓] 577789 → mp4
+2026-09-25 15:16:56,631 [INFO] united_dialog: [media] всего скачано за прогон: 5
+2026-09-25 15:16:58,274 [INFO] united_dialog: archive: Готово: 14 архивов
