@@ -25,9 +25,21 @@ except Exception:
 
 # ============ НАСТРОЙКИ ============
 # ТОКЕН БОЛЬШЕ НЕ В КОДЕ: export BOT_TOKEN="123:abc"
+# --- автозагрузка .env ---
+_env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+if os.path.exists(_env_file):
+    with open(_env_file, "r", encoding="utf-8") as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if not _line or _line.startswith("#") or "=" not in _line:
+                continue
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
+# ------------------------
+
 TOKEN = os.getenv("BOT_TOKEN", "").strip()
 if not TOKEN:
-    sys.exit("Задай токен: export BOT_TOKEN='...'")
+    sys.exit("Токен не задан. Проверь .env файл рядом с bot.py")
 DB = os.getenv("DB_PATH", "united_dialog.db")
 LOG_FILE = os.getenv("LOG_FILE", "bot.log")
 BRAND = "United Dialog"

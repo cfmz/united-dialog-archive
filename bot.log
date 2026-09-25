@@ -43,3 +43,7 @@ nohup: ignoring input
 2026-09-25 03:46:28,709 [INFO] united_dialog: archive: Готово: 14 архивов
 d_dialog: archive: pushed to web
 2026-09-25 03:46:28,709 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:01:09,609 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 15:01:09,610 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 15:01:09,758 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 15:01:16,245 [INFO] united_dialog: archive: Готово: 14 архивов
