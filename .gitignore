@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+bot.log
+*.log
+united_dialog.db
+united_dialog.db-shm
+united_dialog.db-wal
+_web_deploy/
