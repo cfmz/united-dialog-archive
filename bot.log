@@ -155,3 +155,27 @@ d_dialog: archive: pushed to web
 2026-09-25 15:16:24,673 [INFO] united_dialog: [media ↓] 577789 → mp4
 2026-09-25 15:16:56,631 [INFO] united_dialog: [media] всего скачано за прогон: 5
 2026-09-25 15:16:58,274 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:17:06,453 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:18:10,345 [INFO] aiogram.event: Update id=82900462 is not handled. Duration 48 ms by bot id=8824105826
+2026-09-25 15:18:11,041 [INFO] united_dialog: [media ↓] 577790 → mp4
+2026-09-25 15:18:23,400 [INFO] aiogram.event: Update id=82900463 is not handled. Duration 55 ms by bot id=8824105826
+2026-09-25 15:18:24,117 [INFO] united_dialog: [media ↓] 577791 → mp4
+2026-09-25 15:18:46,742 [INFO] aiogram.event: Update id=82900464 is not handled. Duration 39 ms by bot id=8824105826
+2026-09-25 15:18:47,306 [INFO] united_dialog: [media ↓] 577792 → bin
+2026-09-25 15:18:51,775 [INFO] aiogram.event: Update id=82900465 is not handled. Duration 60 ms by bot id=8824105826
+2026-09-25 15:18:55,523 [INFO] united_dialog: [media ↓] 577793 → bin
+2026-09-25 15:18:59,604 [INFO] united_dialog: [del event] chat=5923273661 mids=[577793] owner=7113397602 notify=True
+2026-09-25 15:18:59,613 [INFO] united_dialog: [del lookup] mid=577793 found=True
+2026-09-25 15:19:00,206 [INFO] aiogram.event: Update id=82900466 is handled. Duration 610 ms by bot id=8824105826
+2026-09-25 15:19:12,074 [INFO] aiogram.event: Update id=82900467 is not handled. Duration 72 ms by bot id=8824105826
+2026-09-25 15:19:12,402 [INFO] united_dialog: [media ↓] 577796 → bin
+2026-09-25 15:19:30,988 [INFO] aiogram.event: Update id=82900468 is not handled. Duration 50 ms by bot id=8824105826
+2026-09-25 15:19:32,500 [INFO] aiogram.event: Update id=82900469 is handled. Duration 46 ms by bot id=8824105826
+2026-09-25 15:19:33,895 [INFO] united_dialog: [media ↓] 577798 → bin
+2026-09-25 15:19:34,226 [INFO] united_dialog: [media ↓] 577797 → bin
+2026-09-25 15:19:48,272 [INFO] aiogram.event: Update id=82900470 is not handled. Duration 79 ms by bot id=8824105826
+2026-09-25 15:19:48,767 [INFO] united_dialog: [media ↓] 577799 → bin
+2026-09-25 15:20:02,807 [INFO] aiogram.event: Update id=82900471 is not handled. Duration 30 ms by bot id=8824105826
+2026-09-25 15:20:03,596 [INFO] united_dialog: [media ↓] 577800 → bin
+2026-09-25 15:20:12,373 [INFO] united_dialog: [media] всего скачано за прогон: 9
+2026-09-25 15:20:17,503 [INFO] united_dialog: archive: Готово: 14 архивов
