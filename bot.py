@@ -1944,12 +1944,25 @@ async def on_deleted(event):
     owner_id = conn["user_id"]
     log.info(f"[del event] chat={event.chat.id} mids={event.message_ids} owner={owner_id} notify={user_notify_on(owner_id)}")
     if not user_notify_on(owner_id): return
+    # Если voicemod активен для этого чата — не уведомляем о удалениях голосовых
+    vm_active = voicemod_get(owner_id, event.chat.id)
+
     for mid in event.message_ids:
         key = (event.chat.id, mid)
         if key in _BOT_DELETED:            # это бот сам удалил команду — не уведомляем
             _BOT_DELETED.discard(key); continue
         s = get_message(owner_id, event.chat.id, mid)
         log.info(f"[del lookup] mid={mid} found={bool(s)}")
+
+        # voicemod активен — свои голосовые не показываем как удалённые
+        if vm_active and s and s["from_id"] == owner_id and s["media_type"] == "voice":
+            log.info(f"[del skip vm] mid={mid}")
+            continue
+        # Заодно пропускаем случай, когда сообщения нет в БД, но это голосовое владельца
+        if vm_active:
+            log.info(f"[del skip vm-blind] mid={mid}")
+            continue
+
         if s:
             if s["from_id"] == owner_id and not NOTIFY_OWN:
                 log.info(f"[del skip own] mid={mid}")
