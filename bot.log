@@ -543,3 +543,11 @@ voice.is-instance[InputFile]
 2026-09-25 16:09:33,245 [INFO] aiogram.event: Update id=82900554 is not handled. Duration 1367 ms by bot id=8824105826
 2026-09-25 16:09:49,369 [INFO] united_dialog: [media] всего скачано за прогон: 6
 2026-09-25 16:09:50,538 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 16:09:59,204 [INFO] united_dialog: archive: pushed to web
+2026-09-25 16:10:47,256 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-25 16:10:47,257 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 16:10:47,260 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-25 16:11:07,711 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 16:11:07,713 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 16:11:07,812 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 16:11:13,802 [INFO] united_dialog: archive: Готово: 14 архивов
