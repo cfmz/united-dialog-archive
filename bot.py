@@ -493,13 +493,14 @@ VOICE_PRESETS = {
     "3":  (1.55, 0.65),                # Девочка
     "4":  (0.55, 1.82),                # Демон
     "5":  (1.55, 0.72),                # Бурундук
-    "6":  (1.45, 0.68),                # Гелий
-    "7":  (0.80, 1.25),                # Старик
-    "8":  "aecho=0.8:0.9:1000:0.3",    # Эхо
-    "9":  "highpass=f=300,lowpass=f=3400",   # Телефон
-    "10": "acrusher=bits=6:mode=log:aa=1",   # 8-бит
-    "11": "tremolo=f=8:d=0.7",         # Вибрация
-    "12": "aecho=0.9:0.7:40:0.5",      # Пещера
+    "6":  (1.50, 0.66),                # Гелий
+    "7":  (0.72, 1.38),                # Старик
+    # Эффекты — усиленные
+    "8":  "aecho=1.0:0.9:400|800:0.6|0.4",                        # Эхо (2 повтора, громкие)
+    "9":  "highpass=f=500,lowpass=f=2800,volume=1.3",              # Телефон (узкий + громче)
+    "10": "acrusher=bits=4:mode=log:aa=1:mix=0.9",                 # 8-бит (жёстче)
+    "11": "tremolo=f=12:d=0.9",                                    # Вибрация (глубже)
+    "12": "aecho=1.0:0.85:150|300|600:0.7|0.5|0.3",                # Пещера (3 повтора)
 }
 VOICE_PRESET_NAMES = {
     "1":  "🎈 Мультяшный",
@@ -572,27 +573,51 @@ async def _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset):
 
 
 async def _voice_transform(in_path, out_path, preset):
-    """Меняет голос. preset — 1-12, внутри pitch/tempo или строка-фильтр."""
+    """Меняет голос. preset — 1-12, внутри pitch/tempo или строка-фильтр.
+    Обрабатываем через WAV, потом кодируем в opus — так эффекты слышны лучше."""
+    import tempfile
     val = VOICE_PRESETS.get(preset, VOICE_PRESETS["1"])
     if isinstance(val, tuple):
         pitch, tempo = val
         af = f"asetrate=48000*{pitch},aresample=48000,atempo={tempo}"
     else:
         af = val
-    cmd = [
-        "ffmpeg", "-y", "-i", in_path,
-        "-af", af,
-        "-c:a", "libopus", "-b:a", "64k",
-        out_path,
-    ]
-    proc = await asyncio.create_subprocess_exec(
-        *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-    _, err = await proc.communicate()
-    if proc.returncode != 0:
-        raise RuntimeError(err.decode()[-300:])
-    sz_in = os.path.getsize(in_path) if os.path.exists(in_path) else 0
-    sz_out = os.path.getsize(out_path) if os.path.exists(out_path) else 0
-    log.info(f"[vm transform] preset={preset} filter={af[:40]} in={sz_in}b out={sz_out}b")
+
+    wav_tmp = tempfile.mktemp(suffix=".wav")
+    try:
+        # Шаг 1: ogg → wav 48kHz mono + фильтр
+        cmd1 = [
+            "ffmpeg", "-y", "-i", in_path,
+            "-af", af,
+            "-ar", "48000", "-ac", "1",
+            "-c:a", "pcm_s16le",
+            wav_tmp,
+        ]
+        proc = await asyncio.create_subprocess_exec(
+            *cmd1, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        _, err = await proc.communicate()
+        if proc.returncode != 0:
+            raise RuntimeError(f"step1: {err.decode()[-250:]}")
+
+        # Шаг 2: wav → opus 32кбит/с (качество выше, чем стандарт tg)
+        cmd2 = [
+            "ffmpeg", "-y", "-i", wav_tmp,
+            "-c:a", "libopus", "-b:a", "32k", "-vbr", "on",
+            "-application", "voip",
+            out_path,
+        ]
+        proc = await asyncio.create_subprocess_exec(
+            *cmd2, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        _, err = await proc.communicate()
+        if proc.returncode != 0:
+            raise RuntimeError(f"step2: {err.decode()[-250:]}")
+
+        sz_in = os.path.getsize(in_path) if os.path.exists(in_path) else 0
+        sz_out = os.path.getsize(out_path) if os.path.exists(out_path) else 0
+        log.info(f"[vm transform] preset={preset} filter={af[:50]} in={sz_in}b out={sz_out}b")
+    finally:
+        try: os.remove(wav_tmp)
+        except: pass
 
 
 def mute_set(owner_id, chat_id, minutes):
