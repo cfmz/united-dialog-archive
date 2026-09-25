@@ -542,36 +542,40 @@ def voicemod_get(owner_id, chat_id):
 
 
 async def _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset):
-    """Удаляет голосовое владельца, меняет голос, отправляет обратно."""
+    """Тихо удаляет оригинал, отправляет изменённый."""
+    # 1. Удаляем СРАЗУ (мгновенно)
+    try:
+        await bot.delete_business_messages(
+            business_connection_id=conn_id,
+            message_ids=[message.message_id])
+    except TelegramAPIError:
+        pass
+
+    # Помечаем — чтобы не пришло уведомление владельцу
+    _BOT_DELETED.add((chat_id, message.message_id))
+
+    # 2. Скачиваем + обрабатываем + отправляем
     in_ogg = f"/tmp/vm_in_{message.message_id}.ogg"
     out_ogg = f"/tmp/vm_out_{message.message_id}.ogg"
     try:
-        # Скачиваем
         tg_file = await bot.get_file(message.voice.file_id)
         await bot.download_file(tg_file.file_path, in_ogg)
-        # Удаляем оригинал из чата
-        try:
-            await bot.delete_business_messages(
-                business_connection_id=conn_id,
-                message_ids=[message.message_id])
-        except TelegramAPIError as e:
-            log.warning(f"voicemod del orig: {e}")
-        # Обрабатываем
         await _voice_transform(in_ogg, out_ogg, preset)
-        # Отправляем изменённый
+        from aiogram.types import FSInputFile
         await bot.send_voice(
             chat_id=chat_id, voice=FSInputFile(out_ogg),
             business_connection_id=conn_id)
-        log.info(f"[voicemod] preset={preset} chat={chat_id}")
+        log.info(f"[vm sent] preset={preset} chat={chat_id} mid={message.message_id}")
     except Exception as e:
         log.warning(f"voicemod fail: {e}")
-        try:
-            await bot.send_message(owner_id, f"❌ VoiceMod: {e}")
+        try: await bot.send_message(owner_id, f"❌ VoiceMod: {e}")
         except: pass
     finally:
-        for p in (in_ogg, out_ogg):
-            try: os.remove(p)
+        for pp in (in_ogg, out_ogg):
+            try: os.remove(pp)
             except: pass
+
+
 
 
 async def _voice_transform(in_path, out_path, preset):
