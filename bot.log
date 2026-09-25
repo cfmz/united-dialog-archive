@@ -116,5 +116,7 @@ nohup: ignoring input
 2026-09-25 14:35:45,126 [INFO] united_dialog: [media ↓] 578118 → ogg
 2026-09-25 14:38:07,519 [INFO] united_dialog: [media] всего скачано за прогон: 5
 2026-09-25 14:38:09,479 [INFO] united_dialog: archive: Готово: 14 архивов
-�ачано за прогон: 5
-2026-09-25 14:38:09,479 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 14:38:41,814 [INFO] united_dialog: archive: pushed to web
+2026-09-25 14:41:44,141 [INFO] united_dialog: archive: Готово: 14 архивов
+d_dialog: archive: pushed to web
+2026-09-25 14:41:44,141 [INFO] united_dialog: archive: Готово: 14 архивов
