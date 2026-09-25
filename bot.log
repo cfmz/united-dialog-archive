@@ -609,7 +609,57 @@ Everything up-to-date
 2026-09-25 15:21:39,086 [INFO] united_dialog: [media] скачано 10...
 2026-09-25 15:21:39,618 [INFO] united_dialog: [media] всего скачано за прогон: 11
 2026-09-25 15:21:41,953 [INFO] united_dialog: archive: Готово: 14 архивов
-26
-2026-09-25 15:21:39,086 [INFO] united_dialog: [media] скачано 10...
-2026-09-25 15:21:39,618 [INFO] united_dialog: [media] всего скачано за прогон: 11
-2026-09-25 15:21:41,953 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:21:57,492 [INFO] aiogram.event: Update id=82900973 is not handled. Duration 233 ms by bot id=8824105826
+2026-09-25 15:22:14,595 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 15:22:14,660 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='4' chat=5718273644
+2026-09-25 15:22:14,845 [INFO] aiogram.event: Update id=82900975 is handled. Duration 122 ms by bot id=8824105826
+2026-09-25 15:22:15,339 [INFO] united_dialog: [private OK] to=8208528068
+2026-09-25 15:22:15,435 [INFO] aiogram.event: Update id=82900974 is handled. Duration 930 ms by bot id=8824105826
+2026-09-25 15:22:15,950 [INFO] united_dialog: [media ↓] 578324 → ogg
+2026-09-25 15:22:32,335 [INFO] united_dialog: [del event] chat=5718273644 mids=[2730] owner=8208528068 notify=True
+2026-09-25 15:22:32,421 [INFO] aiogram.event: Update id=82900976 is handled. Duration 166 ms by bot id=8824105826
+2026-09-25 15:22:32,665 [INFO] aiogram.event: Update id=82900977 is not handled. Duration 243 ms by bot id=8824105826
+2026-09-25 15:22:33,575 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:22:35,960 [INFO] aiogram.event: Update id=82900978 is handled. Duration 418 ms by bot id=8824105826
+2026-09-25 15:22:37,048 [INFO] united_dialog: [media ↓] 2732 → ogg
+2026-09-25 15:22:45,481 [INFO] aiogram.event: Update id=82900979 is not handled. Duration 117 ms by bot id=8824105826
+2026-09-25 15:22:54,546 [INFO] united_dialog: [cmd .type]
+2026-09-25 15:22:54,627 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='геолокация' chat=5718273644
+2026-09-25 15:22:54,808 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-25 15:22:54,899 [INFO] aiogram.event: Update id=82900980 is handled. Duration 469 ms by bot id=8824105826
+2026-09-25 15:23:33,482 [INFO] united_dialog: [del event] chat=5718273644 mids=[578327] owner=7113397602 notify=True
+2026-09-25 15:23:33,528 [INFO] aiogram.event: Update id=82900981 is handled. Duration 88 ms by bot id=8824105826
+2026-09-25 15:23:33,633 [INFO] aiogram.event: Update id=82900982 is handled. Duration 104 ms by bot id=8824105826
+2026-09-25 15:23:36,669 [INFO] united_dialog: [media ↓] 2734 → ogg
+2026-09-25 15:23:51,933 [INFO] aiogram.event: Update id=82900983 is handled. Duration 227 ms by bot id=8824105826
+2026-09-25 15:23:52,232 [INFO] united_dialog: [media ↓] 2735 → ogg
+2026-09-25 15:23:56,155 [INFO] aiogram.event: Update id=82900984 is handled. Duration 158 ms by bot id=8824105826
+2026-09-25 15:24:16,175 [INFO] aiogram.event: Update id=82900985 is not handled. Duration 148 ms by bot id=8824105826
+2026-09-25 15:24:20,784 [INFO] aiogram.event: Update id=82900986 is not handled. Duration 327 ms by bot id=8824105826
+2026-09-25 15:24:37,774 [INFO] aiogram.event: Update id=82900987 is handled. Duration 400 ms by bot id=8824105826
+2026-09-25 15:24:39,060 [INFO] united_dialog: [media ↓] 2739 → ogg
+2026-09-25 15:24:49,443 [INFO] united_dialog: [vm transform] preset=1 filter=asetrate=48000*1.35,aresample=48000,atempo=0.74 in=176539b out=38391b
+2026-09-25 15:24:49,848 [INFO] united_dialog: [voicemod] preset=1 chat=5718273644
+2026-09-25 15:24:49,853 [INFO] aiogram.event: Update id=82900988 is not handled. Duration 8169 ms by bot id=8824105826
+2026-09-25 15:24:53,469 [INFO] united_dialog: [del event] chat=5718273644 mids=[578330] owner=7113397602 notify=True
+2026-09-25 15:24:53,647 [INFO] united_dialog: [del lookup] mid=578330 found=True
+2026-09-25 15:24:53,647 [INFO] united_dialog: [del skip vm] mid=578330
+2026-09-25 15:24:53,647 [INFO] aiogram.event: Update id=82900989 is handled. Duration 345 ms by bot id=8824105826
+2026-09-25 15:24:53,731 [INFO] united_dialog: [cmd .type]
+2026-09-25 15:24:53,760 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='геолокация' chat=5718273644
+2026-09-25 15:24:53,885 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-25 15:24:53,976 [INFO] aiogram.event: Update id=82900990 is handled. Duration 328 ms by bot id=8824105826
+2026-09-25 15:25:07,018 [INFO] united_dialog: [del event] chat=5718273644 mids=[578332] owner=7113397602 notify=True
+2026-09-25 15:25:07,054 [INFO] aiogram.event: Update id=82900991 is handled. Duration 73 ms by bot id=8824105826
+2026-09-25 15:25:07,152 [INFO] aiogram.event: Update id=82900992 is not handled. Duration 97 ms by bot id=8824105826
+2026-09-25 15:25:10,657 [INFO] aiogram.event: Update id=82900993 is handled. Duration 186 ms by bot id=8824105826
+2026-09-25 15:25:12,204 [INFO] united_dialog: [media ↓] 2741 → ogg
+2026-09-25 15:25:30,459 [INFO] aiogram.event: Update id=82900994 is handled. Duration 185 ms by bot id=8824105826
+2026-09-25 15:25:30,979 [INFO] united_dialog: [media ↓] 2742 → ogg
+2026-09-25 15:25:33,197 [INFO] aiogram.event: Update id=82900995 is handled. Duration 115 ms by bot id=8824105826
+2026-09-25 15:25:35,126 [INFO] united_dialog: [media] всего скачано за прогон: 2
+2026-09-25 15:25:38,462 [INFO] aiogram.event: Update id=82900996 is not handled. Duration 132 ms by bot id=8824105826
+2026-09-25 15:25:39,043 [INFO] united_dialog: archive: Готово: 14 архивов
+ialog: [media] всего скачано за прогон: 2
+2026-09-25 15:25:38,462 [INFO] aiogram.event: Update id=82900996 is not handled. Duration 132 ms by bot id=8824105826
+2026-09-25 15:25:39,043 [INFO] united_dialog: archive: Готово: 14 архивов
