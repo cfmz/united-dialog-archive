@@ -122,11 +122,12 @@ voice.is-instance[InputFile]
 2026-09-25 15:45:48,070 [INFO] aiogram.dispatcher: Connection established (tryings = 7, bot id = 8824105826)
 2026-09-25 15:47:14,397 [INFO] united_dialog: [media] всего скачано за прогон: 1
 2026-09-25 15:47:15,712 [INFO] united_dialog: archive: Готово: 14 архивов
-796 [WARNING] aiogram.dispatcher: Sleep for 4.800994 seconds and try again... (tryings = 11, bot id = 8824105826)
-2026-09-25 15:40:13,326 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
-2026-09-25 15:40:13,326 [WARNING] aiogram.dispatcher: Sleep for 5.035447 seconds and try again... (tryings = 20, bot id = 8824105826)
-2026-09-25 15:40:18,466 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
-2026-09-25 15:40:18,466 [WARNING] aiogram.dispatcher: Sleep for 5.008869 seconds and try again... (tryings = 12, bot id = 8824105826)
+2026-09-25 15:47:20,110 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-25 15:47:20,113 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8824105826)
+2026-09-25 15:47:22,743 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:47:25,292 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-25 15:47:25,293 [WARNING] aiogram.dispatcher: Sleep for 1.288334 seconds and try again... (tryings = 1, bot id = 8824105826)
+y again... (tryings = 12, bot id = 8824105826)
 2026-09-25 15:40:23,567 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
 2026-09-25 15:40:23,567 [WARNING] aiogram.dispatcher: Sleep for 5.032994 seconds and try again... (tryings = 21, bot id = 8824105826)
 2026-09-25 15:40:28,685 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
@@ -260,3 +261,14 @@ voice.is-instance[InputFile]
 2026-09-25 15:45:48,070 [INFO] aiogram.dispatcher: Connection established (tryings = 7, bot id = 8824105826)
 2026-09-25 15:47:14,397 [INFO] united_dialog: [media] всего скачано за прогон: 1
 2026-09-25 15:47:15,712 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:47:19,938 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 15:47:19,941 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 15:47:20,034 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 15:47:20,110 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-25 15:47:20,113 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8824105826)
+2026-09-25 15:47:22,743 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:47:24,216 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-25 15:47:24,217 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8824105826)
+2026-09-25 15:47:25,292 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-25 15:47:25,293 [WARNING] aiogram.dispatcher: Sleep for 1.288334 seconds and try again... (tryings = 1, bot id = 8824105826)
+2026-09-25 15:47:25,891 [INFO] united_dialog: archive: Готово: 14 архивов
