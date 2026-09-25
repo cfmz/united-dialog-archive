@@ -210,7 +210,8 @@ voice.is-instance[InputFile]
 2026-09-25 15:51:12,373 [WARNING] aiogram.dispatcher: Sleep for 5.067162 seconds and try again... (tryings = 13, bot id = 8824105826)
 2026-09-25 15:51:27,629 [INFO] aiogram.dispatcher: Connection established (tryings = 14, bot id = 8824105826)
 2026-09-25 15:53:32,504 [INFO] united_dialog: archive: Готово: 14 архивов
-n instance of InputFile [type=is_instance_of, input_value=<_io.BufferedReader name='/tmp/vm_out_577848.ogg'>, input_type=BufferedReader]
+2026-09-25 15:53:41,652 [INFO] united_dialog: archive: pushed to web
+edReader name='/tmp/vm_out_577848.ogg'>, input_type=BufferedReader]
     For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
 2026-09-25 15:44:44,092 [INFO] aiogram.event: Update id=82900512 is not handled. Duration 1134 ms by bot id=8824105826
 2026-09-25 15:44:45,407 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
@@ -409,3 +410,8 @@ voice.is-instance[InputFile]
 2026-09-25 15:51:21,283 [INFO] aiogram.dispatcher: Polling stopped
 2026-09-25 15:51:27,629 [INFO] aiogram.dispatcher: Connection established (tryings = 14, bot id = 8824105826)
 2026-09-25 15:53:32,504 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:53:41,652 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:54:29,405 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 15:54:29,408 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 15:54:29,594 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 15:54:35,360 [INFO] united_dialog: archive: Готово: 14 архивов
