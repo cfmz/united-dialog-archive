@@ -501,7 +501,7 @@ VOICE_PRESETS = {
     "10": "acrusher=bits=4:mode=log:aa=1:mix=0.9",                 # 8-бит (жёстче)
     "11": "tremolo=f=12:d=0.9",                                    # Вибрация (глубже)
     "12": "aecho=1.0:0.85:150|300|600:0.7|0.5|0.3",                # Пещера (3 повтора)
-    "13": "highpass=f=500,lowpass=f=2500,equalizer=f=1200:t=q:w=3:g=15,acompressor=threshold=-35dB:ratio=20:attack=1:release=20,acrusher=bits=5:mode=log:mix=0.5,volume=5.0,alimiter=limit=0.9",
+    "13": "highpass=f=500,lowpass=f=2500,equalizer=f=1200:t=q:w=3:g=15,acompressor=threshold=-35dB:ratio=20:attack=1:release=20,acrusher=bits=1:mode=log:mix=1.0,volume=5.0,alimiter=limit=0.9",
 }
 VOICE_PRESET_NAMES = {
     "1":  "🎈 Мультяшный",
