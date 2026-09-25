@@ -73,8 +73,9 @@ voice.is-instance[InputFile]
   Input should be an instance of InputFile [type=is_instance_of, input_value=<_io.BufferedReader name='/tmp/vm_out_577837.ogg'>, input_type=BufferedReader]
     For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
 2026-09-25 15:44:03,225 [INFO] aiogram.event: Update id=82900505 is not handled. Duration 1224 ms by bot id=8824105826
-25 15:38:33,691 [WARNING] aiogram.dispatcher: Sleep for 4.927614 seconds and try again... (tryings = 10, bot id = 8824105826)
-2026-09-25 15:38:38,711 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2026-09-25 15:44:03,914 [INFO] united_dialog: [media] всего скачано за прогон: 1
+2026-09-25 15:44:05,737 [INFO] united_dialog: archive: Готово: 14 архивов
+fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
 2026-09-25 15:38:38,711 [WARNING] aiogram.dispatcher: Sleep for 1.706203 seconds and try again... (tryings = 2, bot id = 8824105826)
 2026-09-25 15:38:43,522 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
 2026-09-25 15:38:43,523 [WARNING] aiogram.dispatcher: Sleep for 4.894501 seconds and try again... (tryings = 11, bot id = 8824105826)
@@ -153,3 +154,5 @@ voice.is-instance[InputFile]
     For further information visit https://errors.pydantic.dev/2.13/v/is_instance_of
 2026-09-25 15:44:03,225 [INFO] aiogram.event: Update id=82900505 is not handled. Duration 1224 ms by bot id=8824105826
 2026-09-25 15:44:03,302 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:44:03,914 [INFO] united_dialog: [media] всего скачано за прогон: 1
+2026-09-25 15:44:05,737 [INFO] united_dialog: archive: Готово: 14 архивов
