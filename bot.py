@@ -3,6 +3,7 @@ from datetime import datetime, timezone, timedelta
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart, BaseFilter
 from aiogram.types import (
+    FSInputFile,
     LabeledPrice, PreCheckoutQuery, Message, CallbackQuery,
     InlineKeyboardMarkup, InlineKeyboardButton, CopyTextButton, FSInputFile,
 )
@@ -542,10 +543,9 @@ async def _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset):
         # Обрабатываем
         await _voice_transform(in_ogg, out_ogg, pitch, tempo)
         # Отправляем изменённый
-        with open(out_ogg, "rb") as f:
-            await bot.send_voice(
-                chat_id=chat_id, voice=f,
-                business_connection_id=conn_id)
+        await bot.send_voice(
+            chat_id=chat_id, voice=FSInputFile(out_ogg),
+            business_connection_id=conn_id)
         log.info(f"[voicemod] preset={preset} chat={chat_id}")
     except Exception as e:
         log.warning(f"voicemod fail: {e}")
