@@ -484,6 +484,94 @@ async def _type_loop(owner_id, chat_id, conn_id, action):
         log.warning(f"_type_loop: {e}")
 
 
+
+# ============ VOICEMOD ============
+VOICE_PRESETS = {
+    "1": (1.45, 1.00),   # чуть выше, "мультяшный"
+    "2": (0.75, 1.00),   # низкий, "робот"
+    "3": (1.70, 1.15),   # высокий, "девочка"
+    "4": (0.55, 0.95),   # очень низкий, "демон"
+    "5": (1.20, 1.30),   # быстрый, "бурундук"
+}
+VOICE_PRESET_NAMES = {
+    "1": "🎈 Мультяшный",
+    "2": "🤖 Робот",
+    "3": "👧 Девочка",
+    "4": "👹 Демон",
+    "5": "🐿 Бурундук",
+}
+
+def voicemod_set(owner_id, chat_id, preset):
+    c = db()
+    c.execute("""INSERT INTO voice_modes(owner_id,chat_id,preset,enabled)
+                 VALUES(?,?,?,1)
+                 ON CONFLICT(owner_id,chat_id) DO UPDATE SET
+                 preset=excluded.preset, enabled=1""",
+        (owner_id, chat_id, preset))
+    c.commit(); c.close()
+
+def voicemod_off(owner_id, chat_id):
+    c = db()
+    c.execute("DELETE FROM voice_modes WHERE owner_id=? AND chat_id=?", (owner_id, chat_id))
+    c.commit(); c.close()
+
+def voicemod_get(owner_id, chat_id):
+    c = db()
+    r = c.execute("SELECT preset FROM voice_modes WHERE owner_id=? AND chat_id=? AND enabled=1",
+                  (owner_id, chat_id)).fetchone()
+    c.close()
+    return r["preset"] if r else None
+
+
+async def _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset):
+    """Удаляет голосовое владельца, меняет голос, отправляет обратно."""
+    pitch, tempo = VOICE_PRESETS.get(preset, VOICE_PRESETS["1"])
+    in_ogg = f"/tmp/vm_in_{message.message_id}.ogg"
+    out_ogg = f"/tmp/vm_out_{message.message_id}.ogg"
+    try:
+        # Скачиваем
+        tg_file = await bot.get_file(message.voice.file_id)
+        await bot.download_file(tg_file.file_path, in_ogg)
+        # Удаляем оригинал из чата
+        try:
+            await bot.delete_business_messages(
+                business_connection_id=conn_id,
+                message_ids=[message.message_id])
+        except TelegramAPIError as e:
+            log.warning(f"voicemod del orig: {e}")
+        # Обрабатываем
+        await _voice_transform(in_ogg, out_ogg, pitch, tempo)
+        # Отправляем изменённый
+        with open(out_ogg, "rb") as f:
+            await bot.send_voice(
+                chat_id=chat_id, voice=f,
+                business_connection_id=conn_id)
+        log.info(f"[voicemod] preset={preset} chat={chat_id}")
+    except Exception as e:
+        log.warning(f"voicemod fail: {e}")
+        try:
+            await bot.send_message(owner_id, f"❌ VoiceMod: {e}")
+        except: pass
+    finally:
+        for p in (in_ogg, out_ogg):
+            try: os.remove(p)
+            except: pass
+
+
+async def _voice_transform(in_path, out_path, pitch, tempo):
+    cmd = [
+        "ffmpeg", "-y", "-i", in_path,
+        "-af", f"asetrate=44100*{pitch},atempo={tempo},aresample=44100",
+        "-c:a", "libopus", "-b:a", "64k",
+        out_path,
+    ]
+    proc = await asyncio.create_subprocess_exec(
+        *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    _, err = await proc.communicate()
+    if proc.returncode != 0:
+        raise RuntimeError(err.decode()[-300:])
+
+
 def mute_set(owner_id, chat_id, minutes):
     until = now_utc() + timedelta(minutes=minutes)
     c = db()
@@ -1417,7 +1505,7 @@ async def on_bc(conn):
 # бот удалял такое сообщение и молчал)
 KNOWN = {"ping", "id", "info", "help", "love", "flip", "rps", "kawai", "kub",
          "roast", "anim", "type", "title", "split", "перевод", "translit",
-         "afk", "unafk", "redeem", "balance", "ttt", "knb", "saper", "slot", "mute", "unmute"}
+         "afk", "unafk", "redeem", "balance", "ttt", "knb", "saper", "slot", "mute", "unmute", "voicemod"}
 
 async def biz_send(chat_id, conn_id, text, owner_id=None):
     try:
@@ -1487,6 +1575,13 @@ async def on_bm(message: Message):
                         log.exception(f"biz_dispatch error: {e}")
                     return
         save_message(conn_id, chat_id, message, owner_id)
+
+        # VoiceMod — если включён и это голосовое
+        if message.voice:
+            preset = voicemod_get(owner_id, chat_id)
+            if preset:
+                await _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset)
+                raise SkipHandler
 
         # Автоскачивание медиа владельца
         _mt, _fid = None, None
@@ -1570,6 +1665,37 @@ async def biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id):
             log.info(f"[private OK] to={owner_id}")
         except TelegramAPIError as e:
             log.error(f"[private fail] to={owner_id}: {e}")
+    if cmd == "voicemod":
+        a = (arg or "").strip().lower()
+        # --- выключение ---
+        if a in ("off", "выкл", "стоп", "stop"):
+            voicemod_off(owner_id, chat_id)
+            await private("🔇 <b>VoiceMod выключен</b>" + NL + NL
+                + q("Твои голосовые снова отправляются как есть."))
+            return
+        # --- меню / выбор пресета ---
+        if a not in VOICE_PRESETS:
+            await out(
+                "🎤 <b>VoiceMod</b>" + NL + NL
+                + q("Меняет голос во всех твоих голосовых в этом чате." + NL + NL
+                    + "<b>Как использовать:</b>" + NL
+                    + "<code>.voicemod 1</code> — " + VOICE_PRESET_NAMES["1"] + NL
+                    + "<code>.voicemod 2</code> — " + VOICE_PRESET_NAMES["2"] + NL
+                    + "<code>.voicemod 3</code> — " + VOICE_PRESET_NAMES["3"] + NL
+                    + "<code>.voicemod 4</code> — " + VOICE_PRESET_NAMES["4"] + NL
+                    + "<code>.voicemod 5</code> — " + VOICE_PRESET_NAMES["5"] + NL + NL
+                    + "<code>.voicemod off</code> — выключить" + NL + NL
+                    + "⚡ <i>После включения просто пиши голосовые — они автоматически заменятся.</i>"))
+            return
+        # --- включение ---
+        voicemod_set(owner_id, chat_id, a)
+        await private(
+            "🎤 <b>VoiceMod включён</b>" + NL + NL
+            + q(f"Пресет: <b>{VOICE_PRESET_NAMES[a]}</b>" + NL + NL
+                + "Теперь все твои голосовые будут автоматически заменяться с изменённым голосом." + NL + NL
+                + "<i>Выключить:</i> <code>.voicemod off</code>"))
+        return
+
 
 
     if cmd == "mute":
