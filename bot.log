@@ -83,5 +83,38 @@ nohup: ignoring input
 2026-09-25 14:33:37,432 [INFO] united_dialog: [media] скачано 10...
 2026-09-25 14:33:39,589 [INFO] united_dialog: [media] всего скачано за прогон: 14
 2026-09-25 14:33:42,598 [INFO] united_dialog: archive: Готово: 14 архивов
-ачано за прогон: 14
-2026-09-25 14:33:42,598 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 14:33:52,336 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 14:33:52,390 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='7' chat=5194433280
+2026-09-25 14:33:52,651 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-25 14:33:52,787 [INFO] aiogram.event: Update id=82900702 is handled. Duration 755 ms by bot id=8824105826
+2026-09-25 14:34:02,352 [INFO] united_dialog: [del event] chat=5194433280 mids=[578105] owner=7113397602 notify=True
+2026-09-25 14:34:02,477 [INFO] aiogram.event: Update id=82900703 is handled. Duration 223 ms by bot id=8824105826
+2026-09-25 14:34:03,321 [WARNING] united_dialog: voicemod fail: [Errno 2] No such file or directory: 'ffmpeg'
+2026-09-25 14:34:03,528 [INFO] aiogram.event: Update id=82900704 is not handled. Duration 1050 ms by bot id=8824105826
+2026-09-25 14:34:13,008 [INFO] united_dialog: [del event] chat=5194433280 mids=[578107] owner=7113397602 notify=True
+2026-09-25 14:34:13,135 [INFO] united_dialog: [del lookup] mid=578107 found=True
+2026-09-25 14:34:13,135 [INFO] united_dialog: [del skip vm] mid=578107
+2026-09-25 14:34:13,136 [INFO] aiogram.event: Update id=82900705 is handled. Duration 228 ms by bot id=8824105826
+2026-09-25 14:34:13,439 [INFO] aiogram.event: Update id=82900706 is handled. Duration 303 ms by bot id=8824105826
+2026-09-25 14:34:15,830 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 14:34:15,867 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='13' chat=5194433280
+2026-09-25 14:34:16,107 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-25 14:34:16,243 [INFO] aiogram.event: Update id=82900707 is handled. Duration 556 ms by bot id=8824105826
+2026-09-25 14:34:22,264 [INFO] united_dialog: [del event] chat=5194433280 mids=[578110] owner=7113397602 notify=True
+2026-09-25 14:34:22,358 [INFO] aiogram.event: Update id=82900708 is handled. Duration 205 ms by bot id=8824105826
+2026-09-25 14:34:23,193 [WARNING] united_dialog: voicemod fail: [Errno 2] No such file or directory: 'ffmpeg'
+2026-09-25 14:34:23,413 [INFO] aiogram.event: Update id=82900709 is not handled. Duration 1053 ms by bot id=8824105826
+2026-09-25 14:34:47,374 [INFO] united_dialog: [del event] chat=5194433280 mids=[578112] owner=7113397602 notify=True
+2026-09-25 14:34:47,479 [INFO] united_dialog: [del lookup] mid=578112 found=True
+2026-09-25 14:34:47,479 [INFO] united_dialog: [del skip vm] mid=578112
+2026-09-25 14:34:47,479 [INFO] aiogram.event: Update id=82900710 is handled. Duration 186 ms by bot id=8824105826
+2026-09-25 14:34:47,627 [INFO] aiogram.event: Update id=82900711 is not handled. Duration 147 ms by bot id=8824105826
+2026-09-25 14:35:05,633 [INFO] aiogram.event: Update id=82900712 is handled. Duration 350 ms by bot id=8824105826
+2026-09-25 14:35:05,648 [INFO] united_dialog: archive: pushed to web
+2026-09-25 14:35:18,027 [INFO] aiogram.event: Update id=82900713 is handled. Duration 121 ms by bot id=8824105826
+2026-09-25 14:35:44,472 [INFO] aiogram.event: Update id=82900714 is handled. Duration 347 ms by bot id=8824105826
+2026-09-25 14:35:45,126 [INFO] united_dialog: [media ↓] 578118 → ogg
+2026-09-25 14:38:07,519 [INFO] united_dialog: [media] всего скачано за прогон: 5
+2026-09-25 14:38:09,479 [INFO] united_dialog: archive: Готово: 14 архивов
+�ачано за прогон: 5
+2026-09-25 14:38:09,479 [INFO] united_dialog: archive: Готово: 14 архивов
