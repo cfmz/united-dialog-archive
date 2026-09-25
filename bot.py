@@ -1692,14 +1692,12 @@ async def biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id):
             await out(
                 "🎤 <b>VoiceMod</b>" + NL + NL
                 + q("Меняет голос во всех твоих голосовых в этом чате." + NL + NL
-                    + "<b>Как использовать:</b>" + NL
-                    + "<code>.voicemod 1</code> — " + VOICE_PRESET_NAMES["1"] + NL
-                    + "<code>.voicemod 2</code> — " + VOICE_PRESET_NAMES["2"] + NL
-                    + "<code>.voicemod 3</code> — " + VOICE_PRESET_NAMES["3"] + NL
-                    + "<code>.voicemod 4</code> — " + VOICE_PRESET_NAMES["4"] + NL
-                    + "<code>.voicemod 5</code> — " + VOICE_PRESET_NAMES["5"] + NL + NL
-                    + "<code>.voicemod off</code> — выключить" + NL + NL
-                    + "⚡ <i>После включения просто пиши голосовые — они автоматически заменятся.</i>"))
+                    + "<b>Пресеты:</b>" + NL + NL.join(
+                        f"<code>.voicemod {k}</code> — {VOICE_PRESET_NAMES[k]}"
+                        for k in sorted(VOICE_PRESETS.keys(), key=int)
+                    ) + NL + NL
+                    + "<code>.voicemod off</code> — выключить") + NL + NL
+                + "<i>⚡ После включения просто пиши голосовые — они автоматически заменятся.</i>")
             return
         # --- включение ---
         voicemod_set(owner_id, chat_id, a)
