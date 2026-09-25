@@ -1026,3 +1026,10 @@ Error opening output files: Numerical result out of range
 2026-09-25 17:06:09,332 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-25 17:06:14,311 [INFO] united_dialog: [media] всего скачано за прогон: 1
 2026-09-25 17:06:16,067 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 17:06:16,638 [INFO] united_dialog: [vm transform] preset=13 filter=highpass=f=500,lowpass=f=2500,equalizer=f=1200:t=q in=11864b out=12894b
+2026-09-25 17:06:16,931 [INFO] united_dialog: [voicemod] preset=13 chat=5194433280
+2026-09-25 17:06:16,933 [INFO] aiogram.event: Update id=82900651 is not handled. Duration 1680 ms by bot id=8824105826
+2026-09-25 17:06:26,752 [INFO] united_dialog: archive: pushed to web
+2026-09-25 17:07:32,946 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-25 17:07:32,951 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 17:07:32,951 [INFO] aiogram.dispatcher: Polling stopped
