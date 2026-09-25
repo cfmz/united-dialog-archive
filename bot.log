@@ -34,5 +34,12 @@ nohup: ignoring input
 2026-09-25 03:41:44,100 [INFO] aiogram.event: Update id=82900361 is not handled. Duration 109 ms by bot id=8824105826
 2026-09-25 03:41:44,678 [INFO] aiogram.event: Update id=82900340 is handled. Duration 2901 ms by bot id=8824105826
 2026-09-25 03:41:48,955 [INFO] united_dialog: archive: Готово: 14 архивов
-ion 2901 ms by bot id=8824105826
-2026-09-25 03:41:48,955 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 03:41:53,462 [INFO] aiogram.event: Update id=82900363 is handled. Duration 375 ms by bot id=8824105826
+2026-09-25 03:42:07,300 [INFO] united_dialog: [cmd .type]
+2026-09-25 03:42:07,388 [INFO] united_dialog: [dispatch ENTER] cmd='type' arg='печатает' chat=5194433280
+2026-09-25 03:42:07,668 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-25 03:42:07,816 [INFO] aiogram.event: Update id=82900364 is handled. Duration 701 ms by bot id=8824105826
+2026-09-25 03:42:10,645 [INFO] united_dialog: archive: pushed to web
+2026-09-25 03:46:28,709 [INFO] united_dialog: archive: Готово: 14 архивов
+d_dialog: archive: pushed to web
+2026-09-25 03:46:28,709 [INFO] united_dialog: archive: Готово: 14 архивов
