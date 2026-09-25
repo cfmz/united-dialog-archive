@@ -211,3 +211,8 @@ d_dialog: archive: pushed to web
 2026-09-25 15:29:55,383 [INFO] aiogram.event: Update id=82900491 is handled. Duration 28 ms by bot id=8824105826
 2026-09-25 15:29:59,421 [INFO] aiogram.event: Update id=82900492 is handled. Duration 64 ms by bot id=8824105826
 2026-09-25 15:30:01,616 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:30:08,563 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:30:09,292 [INFO] aiogram.event: Update id=82900493 is not handled. Duration 25 ms by bot id=8824105826
+2026-09-25 15:30:12,369 [INFO] aiogram.event: Update id=82900494 is not handled. Duration 20 ms by bot id=8824105826
+2026-09-25 15:30:18,633 [INFO] aiogram.event: Update id=82900495 is handled. Duration 34 ms by bot id=8824105826
+2026-09-25 15:33:09,948 [INFO] united_dialog: archive: Готово: 14 архивов
