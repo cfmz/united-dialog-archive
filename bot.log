@@ -140,3 +140,5 @@ d_dialog: archive: pushed to web
 2026-09-25 15:09:50,952 [INFO] aiogram.event: Update id=82900455 is handled. Duration 122 ms by bot id=8824105826
 2026-09-25 15:10:00,692 [INFO] aiogram.event: Update id=82900456 is handled. Duration 318 ms by bot id=8824105826
 2026-09-25 15:10:39,296 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:10:44,978 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:13:46,138 [INFO] united_dialog: archive: Готово: 14 архивов
