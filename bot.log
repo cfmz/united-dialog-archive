@@ -839,3 +839,31 @@ ValueError: too many values to unpack (expected 2)
 2026-09-25 16:45:33,003 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-25 16:45:38,344 [INFO] united_dialog: [media] всего скачано за прогон: 3
 2026-09-25 16:45:39,556 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 16:45:46,215 [INFO] united_dialog: [del event] chat=5194433280 mids=[578003] owner=7113397602 notify=True
+2026-09-25 16:45:46,221 [INFO] united_dialog: [del lookup] mid=578003 found=True
+2026-09-25 16:45:46,221 [INFO] united_dialog: [del skip vm] mid=578003
+2026-09-25 16:45:46,221 [INFO] aiogram.event: Update id=82900618 is handled. Duration 9 ms by bot id=8824105826
+2026-09-25 16:45:46,235 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 16:45:46,237 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='' chat=5194433280
+2026-09-25 16:45:48,369 [INFO] united_dialog: [out OK] chat=5194433280
+2026-09-25 16:45:49,363 [INFO] aiogram.event: Update id=82900619 is handled. Duration 3141 ms by bot id=8824105826
+2026-09-25 16:45:55,290 [INFO] united_dialog: [del event] chat=5194433280 mids=[578005] owner=7113397602 notify=True
+2026-09-25 16:45:55,295 [INFO] aiogram.event: Update id=82900620 is handled. Duration 7 ms by bot id=8824105826
+2026-09-25 16:45:55,309 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 16:45:55,310 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='' chat=5194433280
+2026-09-25 16:45:56,106 [INFO] united_dialog: [out OK] chat=5194433280
+2026-09-25 16:45:56,689 [INFO] aiogram.event: Update id=82900621 is handled. Duration 1394 ms by bot id=8824105826
+2026-09-25 16:46:00,034 [INFO] united_dialog: archive: pushed to web
+2026-09-25 16:46:51,595 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-25 16:46:51,596 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 16:46:51,601 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-25 16:48:37,835 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 16:48:37,837 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 16:48:37,936 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 16:48:43,597 [INFO] united_dialog: [del event] chat=5194433280 mids=[578007] owner=7113397602 notify=True
+2026-09-25 16:48:43,600 [INFO] united_dialog: [del lookup] mid=578007 found=False
+2026-09-25 16:48:43,602 [INFO] united_dialog: [del skip vm-blind] mid=578007
+2026-09-25 16:48:43,602 [INFO] aiogram.event: Update id=82900622 is handled. Duration 8 ms by bot id=8824105826
+2026-09-25 16:48:43,611 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 16:48:43,613 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='' chat=5194433280
+2026-09-25 16:48:43,812 [INFO] united_dialog: archive: Готово: 14 архивов
