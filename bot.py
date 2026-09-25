@@ -515,6 +515,7 @@ VOICE_PRESET_NAMES = {
     "10": "🎮 8-бит",
     "11": "📳 Вибрация",
     "12": "🕳 Пещера",
+    "13": "🎖 Танкист",
 }
 
 def voicemod_set(owner_id, chat_id, preset):
