@@ -155,5 +155,10 @@ nohup: ignoring input
 2026-09-25 18:39:06,350 [INFO] aiogram.event: Update id=82901400 is handled. Duration 96 ms by bot id=8824105826
 2026-09-25 18:39:07,216 [INFO] united_dialog: [media ↓] 578766 → webp
 2026-09-25 18:39:08,259 [INFO] united_dialog: archive: Готово: 14 архивов
-:07,216 [INFO] united_dialog: [media ↓] 578766 → webp
-2026-09-25 18:39:08,259 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 18:40:18,652 [INFO] united_dialog: archive: pushed to web
+2026-09-25 18:41:05,521 [INFO] aiogram.event: Update id=82901401 is not handled. Duration 105 ms by bot id=8824105826
+2026-09-25 18:41:29,875 [INFO] aiogram.event: Update id=82901402 is handled. Duration 308 ms by bot id=8824105826
+2026-09-25 18:43:20,714 [INFO] united_dialog: [media] всего скачано за прогон: 1
+2026-09-25 18:43:24,344 [INFO] united_dialog: archive: Готово: 14 архивов
+g: [media] всего скачано за прогон: 1
+2026-09-25 18:43:24,344 [INFO] united_dialog: archive: Готово: 14 архивов
