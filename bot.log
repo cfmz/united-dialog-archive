@@ -430,3 +430,11 @@ voice.is-instance[InputFile]
 2026-09-25 15:57:19,797 [INFO] aiogram.dispatcher: Start polling
 2026-09-25 15:57:19,888 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-25 15:57:25,730 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 15:57:32,194 [INFO] united_dialog: archive: pushed to web
+2026-09-25 15:58:47,918 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-25 15:58:47,922 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 15:58:47,923 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-25 15:59:18,680 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 15:59:18,681 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 15:59:18,772 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 15:59:24,768 [INFO] united_dialog: archive: Готово: 14 архивов
