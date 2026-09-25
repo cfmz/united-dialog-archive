@@ -540,7 +540,6 @@ def voicemod_get(owner_id, chat_id):
 
 async def _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset):
     """Удаляет голосовое владельца, меняет голос, отправляет обратно."""
-    pitch, tempo = VOICE_PRESETS.get(preset, VOICE_PRESETS["1"])
     in_ogg = f"/tmp/vm_in_{message.message_id}.ogg"
     out_ogg = f"/tmp/vm_out_{message.message_id}.ogg"
     try:
@@ -572,10 +571,17 @@ async def _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset):
             except: pass
 
 
-async def _voice_transform(in_path, out_path, pitch, tempo):
+async def _voice_transform(in_path, out_path, preset):
+    """Меняет голос. preset — 1-12, внутри pitch/tempo или строка-фильтр."""
+    val = VOICE_PRESETS.get(preset, VOICE_PRESETS["1"])
+    if isinstance(val, tuple):
+        pitch, tempo = val
+        af = f"asetrate=48000*{pitch},aresample=48000,atempo={tempo}"
+    else:
+        af = val
     cmd = [
         "ffmpeg", "-y", "-i", in_path,
-        "-af", f"asetrate=44100*{pitch},atempo={tempo},aresample=44100",
+        "-af", af,
         "-c:a", "libopus", "-b:a", "64k",
         out_path,
     ]
@@ -584,6 +590,9 @@ async def _voice_transform(in_path, out_path, pitch, tempo):
     _, err = await proc.communicate()
     if proc.returncode != 0:
         raise RuntimeError(err.decode()[-300:])
+    sz_in = os.path.getsize(in_path) if os.path.exists(in_path) else 0
+    sz_out = os.path.getsize(out_path) if os.path.exists(out_path) else 0
+    log.info(f"[vm transform] preset={preset} filter={af[:40]} in={sz_in}b out={sz_out}b")
 
 
 def mute_set(owner_id, chat_id, minutes):

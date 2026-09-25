@@ -630,3 +630,80 @@ voice.is-instance[InputFile]
 2026-09-25 16:24:30,958 [INFO] aiogram.event: Update id=82900570 is handled. Duration 468 ms by bot id=8824105826
 2026-09-25 16:24:33,810 [INFO] united_dialog: [media] всего скачано за прогон: 1
 2026-09-25 16:24:35,023 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-25 16:24:42,292 [INFO] united_dialog: [del event] chat=5194433280 mids=[577951] owner=7113397602 notify=True
+2026-09-25 16:24:42,296 [INFO] aiogram.event: Update id=82900571 is handled. Duration 8 ms by bot id=8824105826
+2026-09-25 16:24:42,311 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 16:24:42,314 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='8' chat=5194433280
+2026-09-25 16:24:42,559 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-25 16:24:42,757 [INFO] aiogram.event: Update id=82900572 is handled. Duration 459 ms by bot id=8824105826
+2026-09-25 16:24:43,499 [INFO] united_dialog: archive: pushed to web
+2026-09-25 16:24:49,889 [INFO] united_dialog: [del event] chat=5194433280 mids=[577953] owner=7113397602 notify=True
+2026-09-25 16:24:49,893 [INFO] aiogram.event: Update id=82900573 is handled. Duration 6 ms by bot id=8824105826
+2026-09-25 16:24:49,916 [ERROR] united_dialog: Error: too many values to unpack (expected 2)
+Traceback (most recent call last):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 284, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 172, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 164, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 192, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/maya/united/bot.py", line 1597, in on_bm
+    await _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset)
+  File "/home/maya/united/bot.py", line 543, in _handle_voicemod_message
+    pitch, tempo = VOICE_PRESETS.get(preset, VOICE_PRESETS["1"])
+    ^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 2)
+2026-09-25 16:24:49,922 [INFO] aiogram.event: Update id=82900574 is handled. Duration 28 ms by bot id=8824105826
+2026-09-25 16:25:09,075 [INFO] united_dialog: [cmd .voicemod]
+2026-09-25 16:25:09,080 [INFO] united_dialog: [dispatch ENTER] cmd='voicemod' arg='6' chat=5194433280
+2026-09-25 16:25:09,558 [INFO] united_dialog: [private OK] to=7113397602
+2026-09-25 16:25:09,662 [INFO] aiogram.event: Update id=82900575 is handled. Duration 617 ms by bot id=8824105826
+2026-09-25 16:25:18,154 [INFO] united_dialog: [del event] chat=5194433280 mids=[577956] owner=7113397602 notify=True
+2026-09-25 16:25:18,158 [INFO] aiogram.event: Update id=82900576 is handled. Duration 7 ms by bot id=8824105826
+2026-09-25 16:25:18,618 [WARNING] united_dialog: voicemod fail: _voice_transform() missing 1 required positional argument: 'tempo'
+2026-09-25 16:25:18,763 [INFO] aiogram.event: Update id=82900577 is not handled. Duration 604 ms by bot id=8824105826
+2026-09-25 16:26:25,121 [INFO] united_dialog: [del event] chat=5194433280 mids=[577958] owner=7113397602 notify=True
+2026-09-25 16:26:25,126 [INFO] united_dialog: [del lookup] mid=577958 found=True
+2026-09-25 16:26:25,126 [INFO] united_dialog: [del skip vm] mid=577958
+2026-09-25 16:26:25,126 [INFO] aiogram.event: Update id=82900578 is handled. Duration 8 ms by bot id=8824105826
+2026-09-25 16:26:25,145 [INFO] aiogram.event: Update id=82900579 is handled. Duration 18 ms by bot id=8824105826
+2026-09-25 16:26:26,043 [INFO] united_dialog: [media ↓] 577961 → ogg
+2026-09-25 16:26:57,865 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-25 16:26:57,866 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 16:26:57,867 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-25 16:37:18,849 [INFO] united_dialog: United Dialog запущен.
+2026-09-25 16:37:18,850 [INFO] aiogram.dispatcher: Start polling
+2026-09-25 16:37:18,942 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-25 16:37:19,113 [INFO] aiogram.event: Update id=82900580 is handled. Duration 38 ms by bot id=8824105826
+2026-09-25 16:37:19,144 [INFO] aiogram.event: Update id=82900581 is not handled. Duration 23 ms by bot id=8824105826
+2026-09-25 16:37:19,187 [INFO] aiogram.event: Update id=82900582 is not handled. Duration 40 ms by bot id=8824105826
+2026-09-25 16:37:19,657 [INFO] united_dialog: [media ↓] 577964 → ogg
+2026-09-25 16:37:25,044 [INFO] united_dialog: [media] всего скачано за прогон: 4
+2026-09-25 16:37:26,582 [INFO] united_dialog: archive: Готово: 14 архивов
