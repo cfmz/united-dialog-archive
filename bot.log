@@ -553,3 +553,17 @@ nohup: ignoring input
 2026-09-26 16:41:46,522 [INFO] aiogram.dispatcher: Start polling
 2026-09-26 16:41:46,603 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 16:41:53,021 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 16:41:56,548 [INFO] aiogram.event: Update id=82901841 is handled. Duration 686 ms by bot id=8824105826
+2026-09-26 16:41:57,377 [INFO] aiogram.event: Update id=82901842 is handled. Duration 233 ms by bot id=8824105826
+2026-09-26 16:42:01,829 [INFO] aiogram.event: Update id=82901843 is handled. Duration 227 ms by bot id=8824105826
+2026-09-26 16:42:03,757 [INFO] aiogram.event: Update id=82901844 is handled. Duration 367 ms by bot id=8824105826
+2026-09-26 16:42:25,456 [INFO] united_dialog: archive: pushed to web
+2026-09-26 16:42:51,336 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-26 16:42:51,338 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 16:42:51,341 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-26 16:45:53,498 [INFO] united_dialog: United Dialog запущен.
+2026-09-26 16:45:53,499 [INFO] aiogram.dispatcher: Start polling
+2026-09-26 16:45:53,601 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 16:45:58,232 [INFO] aiogram.event: Update id=82901845 is handled. Duration 421 ms by bot id=8824105826
+2026-09-26 16:45:59,448 [INFO] aiogram.event: Update id=82901846 is handled. Duration 280 ms by bot id=8824105826
+2026-09-26 16:45:59,807 [INFO] united_dialog: archive: Готово: 14 архивов
