@@ -482,3 +482,18 @@ nohup: ignoring input
 2026-09-26 16:09:51,775 [INFO] aiogram.event: Update id=82901805 is handled. Duration 387 ms by bot id=8824105826
 2026-09-26 16:09:51,792 [INFO] aiogram.event: Update id=82901807 is handled. Duration 400 ms by bot id=8824105826
 2026-09-26 16:09:57,501 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 16:10:02,914 [INFO] aiogram.event: Update id=82901808 is handled. Duration 212 ms by bot id=8824105826
+2026-09-26 16:10:06,771 [INFO] aiogram.event: Update id=82901809 is handled. Duration 245 ms by bot id=8824105826
+2026-09-26 16:10:11,800 [INFO] aiogram.event: Update id=82901810 is handled. Duration 3413 ms by bot id=8824105826
+2026-09-26 16:10:42,266 [INFO] aiogram.event: Update id=82901811 is not handled. Duration 22 ms by bot id=8824105826
+2026-09-26 16:10:44,479 [INFO] united_dialog: [media ↓] 579278 → jpg
+2026-09-26 16:10:45,142 [INFO] united_dialog: archive: pushed to web
+2026-09-26 16:10:55,874 [INFO] aiogram.event: Update id=82901812 is handled. Duration 1477 ms by bot id=8824105826
+2026-09-26 16:11:04,624 [INFO] aiogram.event: Update id=82901813 is not handled. Duration 29 ms by bot id=8824105826
+2026-09-26 16:11:04,863 [INFO] united_dialog: [media ↓] 579280 → jpg
+2026-09-26 16:11:08,210 [INFO] aiogram.event: Update id=82901814 is handled. Duration 300 ms by bot id=8824105826
+2026-09-26 16:11:35,616 [INFO] aiogram.event: Update id=82901815 is handled. Duration 238 ms by bot id=8824105826
+2026-09-26 16:11:37,478 [INFO] aiogram.event: Update id=82901816 is handled. Duration 218 ms by bot id=8824105826
+2026-09-26 16:11:39,343 [INFO] aiogram.event: Update id=82901817 is handled. Duration 212 ms by bot id=8824105826
+2026-09-26 16:13:45,576 [INFO] united_dialog: [media] всего скачано за прогон: 2
+2026-09-26 16:13:47,093 [INFO] united_dialog: archive: Готово: 14 архивов
