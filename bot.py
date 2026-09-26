@@ -74,6 +74,8 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
 _AFK_LAST = {}
+AFK_WAIT = set()
+GREET_WAIT = set()
 TYPE_TASKS = {}
 ADMIN_WAIT = {}
 SUPPORT_WAIT = set()

@@ -669,3 +669,62 @@ sqlite3.OperationalError: no such table: support_threads
 2026-09-26 16:54:19,150 [INFO] aiogram.dispatcher: Start polling
 2026-09-26 16:54:19,241 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 16:54:25,706 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 16:54:39,886 [INFO] aiogram.event: Update id=82901853 is handled. Duration 657 ms by bot id=8824105826
+2026-09-26 16:54:51,558 [INFO] aiogram.event: Update id=82901854 is handled. Duration 4203 ms by bot id=8824105826
+2026-09-26 16:54:57,003 [INFO] aiogram.event: Update id=82901855 is handled. Duration 2 ms by bot id=8824105826
+2026-09-26 16:55:11,024 [INFO] aiogram.event: Update id=82901856 is handled. Duration 5821 ms by bot id=8824105826
+2026-09-26 16:55:45,085 [INFO] aiogram.event: Update id=82901857 is handled. Duration 1687 ms by bot id=8824105826
+2026-09-26 16:55:51,439 [INFO] aiogram.event: Update id=82901858 is handled. Duration 5393 ms by bot id=8824105826
+2026-09-26 16:55:54,246 [INFO] aiogram.event: Update id=82901859 is handled. Duration 2970 ms by bot id=8824105826
+2026-09-26 16:55:54,286 [ERROR] united_dialog: Error: name 'AFK_WAIT' is not defined
+Traceback (most recent call last):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 284, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 172, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 164, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 192, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/maya/united/bot.py", line 2613, in support_catch
+    if uid in AFK_WAIT or uid in GREET_WAIT: return
+              ^^^^^^^^
+NameError: name 'AFK_WAIT' is not defined. Did you mean: '_AFK_LAST'?
+2026-09-26 16:55:54,302 [INFO] aiogram.event: Update id=82901860 is handled. Duration 19 ms by bot id=8824105826
+2026-09-26 16:56:02,508 [INFO] aiogram.event: Update id=82901862 is handled. Duration 827 ms by bot id=8824105826
+2026-09-26 16:56:02,987 [INFO] aiogram.event: Update id=82901861 is handled. Duration 4616 ms by bot id=8824105826
+2026-09-26 16:56:30,938 [INFO] united_dialog: archive: pushed to web
+2026-09-26 16:56:41,212 [INFO] aiogram.event: Update id=82901863 is handled. Duration 247 ms by bot id=8824105826
+2026-09-26 16:56:58,884 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-26 16:56:58,887 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 16:56:58,889 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-26 16:57:20,741 [INFO] united_dialog: United Dialog запущен.
+2026-09-26 16:57:20,742 [INFO] aiogram.dispatcher: Start polling
+2026-09-26 16:57:20,841 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 16:57:23,905 [INFO] aiogram.event: Update id=82901864 is handled. Duration 1012 ms by bot id=8824105826
+2026-09-26 16:57:25,874 [INFO] united_dialog: archive: Готово: 14 архивов
