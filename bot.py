@@ -695,6 +695,45 @@ def _read_qr_from_image(file_path):
 
 # ============ SUPPORT ============
 
+
+# ============ РЕФЕРАЛЬНЫЕ ВЫПЛАТЫ ============
+REF_PERCENTS = [0.20, 0.10, 0.05]   # 1 ур, 2 ур, 3 ур
+STARS_TO_UCOIN = 5                  # курс: 1 Stars ≈ 5 U-Coin
+
+def pay_referrers(buyer_id, amount_ucoin):
+    """Платит рефереру и его рефереру и т.д. до 3 уровней.
+    amount_ucoin — сколько U-Coin потратил покупатель.
+    Возвращает список (user_id, level, amount) для уведомлений."""
+    payouts = []
+    c = db()
+    current = buyer_id
+    for level, pct in enumerate(REF_PERCENTS, start=1):
+        r = c.execute("SELECT referrer_id FROM users WHERE id=?", (current,)).fetchone()
+        if not r or not r["referrer_id"]:
+            break
+        inviter = r["referrer_id"]
+        amount = max(1, round(amount_ucoin * pct))
+        c.execute("UPDATE users SET ucoin = ucoin + ? WHERE id=?", (amount, inviter))
+        c.execute("INSERT INTO transactions(user_id, amount, reason, created) VALUES(?,?,?,?)",
+                  (inviter, amount, f"ref_l{level}", now_utc().isoformat()))
+        payouts.append((inviter, level, amount))
+        current = inviter
+    c.commit(); c.close()
+    return payouts
+
+async def notify_referrers(payouts, buyer_name):
+    for user_id, level, amount in payouts:
+        try:
+            lvl_emoji = "🥇" if level == 1 else ("🥈" if level == 2 else "🥉")
+            await bot.send_message(user_id,
+                "💰 <b>Реферальная выплата!</b>" + NL + NL
+                + q(f"{lvl_emoji} Уровень <b>{level}</b>" + NL
+                    + f"👤 Твой реферал <b>{esc(buyer_name)}</b> купил подписку" + NL
+                    + f"🎁 Начислено: <b>+{amount}</b> U-Coin"))
+        except TelegramAPIError as e:
+            log.warning(f"ref notify {user_id}: {e}")
+
+
 def fmt_ticket(tid):
     """Форматирует номер тикета: 1 → #0001"""
     try:
@@ -1322,7 +1361,25 @@ async def on_menu_cb(c: CallbackQuery):
         await _edit(c, txt_games(), kb_games())
     elif d == "m_refs":
         me = await bot.get_me()
-        await _edit(c, txt_refs(f"https://t.me/{me.username}?start=ref_{u['id']}", u), kb_back("m_main"))
+        _c = db()
+        earned = _c.execute("""SELECT COALESCE(SUM(amount),0) FROM transactions
+                              WHERE user_id=? AND reason LIKE 'ref_l%'""", (u["id"],)).fetchone()[0]
+        invited = _c.execute("SELECT COUNT(*) FROM refs WHERE ref_id=?", (u["id"],)).fetchone()[0]
+        _c.close()
+        link = f"https://t.me/{me.username}?start=ref_{u['id']}"
+        text = (
+            "💼 <b>Реферальная программа</b>" + NL + NL
+            + q("🔔 <b>Твоя ссылка</b>" + NL + link) + NL
+            + q("🏆 <b>Вознаграждение</b>" + NL
+                + "🥇 1 уровень — <b>20%</b>" + NL
+                + "🥈 2 уровень — <b>10%</b>" + NL
+                + "🥉 3 уровень — <b>5%</b>") + NL
+            + q(f"👥 Приглашено: <b>{invited}</b>" + NL
+                + f"💰 Заработано: <b>{earned}</b> U-Coin" + NL
+                + f"💎 Всего на балансе: <b>{u['ucoin']}</b>") + NL
+            + "<i>Выплата приходит автоматически, когда реферал покупает подписку.</i>"
+        )
+        await _edit(c, text, kb_back("m_main"))
     elif d == "m_cmds":
         await _edit(c, "✏️ <b>Команды</b>" + NL + NL
                     + q("Напиши команду в любом диалоге (Business) — она выполнится, а твоё сообщение исчезнет."), kb_cmds())
@@ -1405,6 +1462,13 @@ async def on_sub_cb(c: CallbackQuery):
                 await c.answer("❌ Недостаточно U-Coin", show_alert=True); return
             grant_sub(u["id"], p["days"])
             log_payment(u["id"], plan, "ucoin", p["ucoin"])
+            # Реферальные выплаты
+            try:
+                payouts = pay_referrers(u["id"], p["ucoin"])
+                if payouts:
+                    await notify_referrers(payouts, u["full_name"] or u["username"] or "друг")
+            except Exception as e:
+                log.warning(f"ref payout ucoin: {e}")
             await c.answer("✅ United Love на " + str(p["days"]) + " дней активирована!", show_alert=True)
             return
     elif d.startswith("sub_pay_stars_"):
@@ -1469,6 +1533,15 @@ async def on_success_pay(m: Message):
             get_user(m.from_user.id, m.from_user.username, m.from_user.full_name)
             until = grant_sub(m.from_user.id, p["days"])
             log_payment(m.from_user.id, plan, "stars", p["stars"])
+            # Реферальные выплаты — пересчёт Stars в U-Coin
+            try:
+                amount_ucoin = p["stars"] * STARS_TO_UCOIN
+                payouts = pay_referrers(m.from_user.id, amount_ucoin)
+                if payouts:
+                    u2 = get_user(m.from_user.id)
+                    await notify_referrers(payouts, u2["full_name"] or u2["username"] or "друг")
+            except Exception as e:
+                log.warning(f"ref payout stars: {e}")
             await m.answer("✅ <b>United Love активирована!</b>" + NL + NL
                 + q("Подписка на " + str(p["days"]) + " дней до " + until.strftime("%d.%m.%Y")))
 
