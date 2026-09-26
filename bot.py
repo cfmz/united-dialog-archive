@@ -2478,6 +2478,48 @@ async def on_deleted(event):
         if s and s["media_type"]:
             await resend_media(conn["user_chat_id"], s)
 
+# ============ SUPPORT: callback'и вне меню ============
+@dp.callback_query(F.data == "sup_new")
+async def sup_new_cb(c: CallbackQuery):
+    if c.message.business_connection_id:
+        await c.answer(); return
+    SUPPORT_WAIT.add(c.from_user.id)
+    kb = InlineKeyboardMarkup(inline_keyboard=[[B("← Назад", "m_support", style="danger")]])
+    try: await c.message.delete()
+    except: pass
+    await bot.send_message(c.from_user.id,
+        "✍️ <b>Написать в поддержку</b>" + NL + NL
+        + q("Отправь сообщение в этот чат — оно уйдёт в поддержку." + NL + NL
+            + "📎 Можно приложить фото, голосовое, видео." + NL + NL
+            + "<i>Ответ придёт сюда же.</i>"),
+        reply_markup=kb)
+    await c.answer()
+
+@dp.callback_query(F.data == "sup_my")
+async def sup_my_cb(c: CallbackQuery):
+    if c.message.business_connection_id:
+        await c.answer(); return
+    u = get_user(c.from_user.id, c.from_user.username, c.from_user.full_name)
+    _c = db()
+    rows = _c.execute("""SELECT id, status, created, last_msg FROM support_threads
+                         WHERE user_id=? ORDER BY id DESC LIMIT 10""", (c.from_user.id,)).fetchall()
+    _c.close()
+    if not rows:
+        text = q("У тебя пока нет обращений.")
+    else:
+        lines = []
+        for r in rows:
+            icon = "🟢" if r["status"] == "open" else "⚪"
+            lines.append(f"{icon} <b>#{r['id']}</b> · {r['status']} · {(r['last_msg'] or '')[:40]}")
+        text = q(NL.join(lines))
+    kb = InlineKeyboardMarkup(inline_keyboard=[[B("← Назад", "m_support", style="danger")]])
+    try: await c.message.delete()
+    except: pass
+    await bot.send_message(c.from_user.id,
+        "📋 <b>Мои тикеты</b>" + NL + NL + text,
+        reply_markup=kb)
+    await c.answer()
+
 @dp.error()
 async def on_error(event):
     log.error(f"Error: {event.exception}", exc_info=event.exception)
