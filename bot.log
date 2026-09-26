@@ -438,3 +438,28 @@ nohup: ignoring input
 2026-09-26 15:39:56,784 [INFO] aiogram.event: Update id=82901783 is not handled. Duration 24 ms by bot id=8824105826
 2026-09-26 15:40:46,016 [INFO] aiogram.event: Update id=82901784 is handled. Duration 155 ms by bot id=8824105826
 2026-09-26 15:41:00,197 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 15:41:01,806 [INFO] aiogram.event: Update id=82901785 is handled. Duration 363 ms by bot id=8824105826
+2026-09-26 15:41:05,971 [INFO] aiogram.event: Update id=82901786 is handled. Duration 250 ms by bot id=8824105826
+2026-09-26 15:42:09,897 [INFO] united_dialog: archive: pushed to web
+2026-09-26 15:42:21,285 [INFO] aiogram.event: Update id=82901787 is handled. Duration 1562 ms by bot id=8824105826
+2026-09-26 15:42:25,159 [ERROR] aiogram.dispatcher: Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientOSError: [Errno 104] Connection reset by peer
+2026-09-26 15:42:25,162 [WARNING] aiogram.dispatcher: Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8824105826)
+2026-09-26 15:42:55,909 [INFO] aiogram.dispatcher: Connection established (tryings = 1, bot id = 8824105826)
+2026-09-26 15:43:12,356 [INFO] aiogram.event: Update id=82901788 is handled. Duration 352 ms by bot id=8824105826
+2026-09-26 15:43:14,849 [INFO] aiogram.event: Update id=82901789 is handled. Duration 517 ms by bot id=8824105826
+2026-09-26 15:43:16,322 [INFO] aiogram.event: Update id=82901790 is handled. Duration 222 ms by bot id=8824105826
+2026-09-26 15:43:18,981 [INFO] aiogram.event: Update id=82901791 is handled. Duration 1091 ms by bot id=8824105826
+2026-09-26 15:43:25,154 [INFO] aiogram.event: Update id=82901792 is handled. Duration 135 ms by bot id=8824105826
+2026-09-26 15:43:27,528 [INFO] aiogram.event: Update id=82901793 is handled. Duration 261 ms by bot id=8824105826
+2026-09-26 15:43:28,530 [INFO] aiogram.event: Update id=82901794 is handled. Duration 138 ms by bot id=8824105826
+2026-09-26 15:43:29,307 [INFO] aiogram.event: Update id=82901795 is handled. Duration 131 ms by bot id=8824105826
+2026-09-26 15:43:30,838 [INFO] aiogram.event: Update id=82901796 is handled. Duration 279 ms by bot id=8824105826
+2026-09-26 15:43:32,238 [INFO] aiogram.event: Update id=82901797 is handled. Duration 241 ms by bot id=8824105826
+2026-09-26 15:43:34,557 [INFO] aiogram.event: Update id=82901798 is handled. Duration 340 ms by bot id=8824105826
+2026-09-26 15:44:30,934 [INFO] aiogram.event: Update id=82901799 is handled. Duration 411 ms by bot id=8824105826
+2026-09-26 15:44:48,746 [INFO] aiogram.event: Update id=82901800 is handled. Duration 347 ms by bot id=8824105826
+2026-09-26 15:44:52,532 [INFO] aiogram.event: Update id=82901801 is handled. Duration 98 ms by bot id=8824105826
+2026-09-26 15:44:57,895 [INFO] aiogram.event: Update id=82901802 is handled. Duration 125 ms by bot id=8824105826
+2026-09-26 15:45:01,269 [INFO] aiogram.event: Update id=82901803 is handled. Duration 129 ms by bot id=8824105826
+2026-09-26 15:45:02,637 [INFO] aiogram.event: Update id=82901804 is handled. Duration 101 ms by bot id=8824105826
+2026-09-26 15:45:11,716 [INFO] united_dialog: archive: Готово: 14 архивов
