@@ -728,3 +728,38 @@ NameError: name 'AFK_WAIT' is not defined. Did you mean: '_AFK_LAST'?
 2026-09-26 16:57:20,841 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 16:57:23,905 [INFO] aiogram.event: Update id=82901864 is handled. Duration 1012 ms by bot id=8824105826
 2026-09-26 16:57:25,874 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 16:57:25,970 [INFO] aiogram.event: Update id=82901865 is handled. Duration 701 ms by bot id=8824105826
+2026-09-26 16:57:28,194 [INFO] aiogram.event: Update id=82901866 is handled. Duration 1672 ms by bot id=8824105826
+2026-09-26 16:57:28,617 [INFO] aiogram.event: Update id=82901867 is handled. Duration 355 ms by bot id=8824105826
+2026-09-26 16:57:33,023 [INFO] aiogram.event: Update id=82901868 is handled. Duration 2899 ms by bot id=8824105826
+2026-09-26 16:57:36,505 [INFO] aiogram.event: Update id=82901869 is handled. Duration 925 ms by bot id=8824105826
+2026-09-26 16:57:38,555 [INFO] aiogram.event: Update id=82901870 is handled. Duration 614 ms by bot id=8824105826
+2026-09-26 16:57:44,877 [INFO] aiogram.event: Update id=82901871 is handled. Duration 2 ms by bot id=8824105826
+2026-09-26 16:57:51,431 [INFO] aiogram.event: Update id=82901872 is handled. Duration 2239 ms by bot id=8824105826
+2026-09-26 16:58:29,651 [INFO] united_dialog: archive: pushed to web
+2026-09-26 16:59:25,622 [INFO] united_dialog: [vm transform] preset=3 filter=asetrate=48000*1.55,aresample=48000,atempo=0.65 in=1463b out=10699b
+2026-09-26 16:59:26,143 [INFO] united_dialog: [vm sent] preset=3 chat=5194433280 mid=579325
+2026-09-26 16:59:26,152 [INFO] aiogram.event: Update id=82901873 is not handled. Duration 2231 ms by bot id=8824105826
+2026-09-26 16:59:49,147 [INFO] united_dialog: [del event] chat=5194433280 mids=[579325] owner=7113397602 notify=True
+2026-09-26 16:59:49,156 [INFO] aiogram.event: Update id=82901874 is handled. Duration 15 ms by bot id=8824105826
+2026-09-26 16:59:49,162 [INFO] united_dialog: [del event] chat=5194433280 mids=[579326] owner=7113397602 notify=True
+2026-09-26 16:59:49,173 [INFO] united_dialog: [del lookup] mid=579326 found=False
+2026-09-26 16:59:49,173 [INFO] united_dialog: [del skip vm-blind] mid=579326
+2026-09-26 16:59:49,175 [INFO] aiogram.event: Update id=82901875 is handled. Duration 17 ms by bot id=8824105826
+2026-09-26 16:59:58,318 [INFO] united_dialog: [vm transform] preset=3 filter=asetrate=48000*1.55,aresample=48000,atempo=0.65 in=23996b out=26823b
+2026-09-26 16:59:58,669 [INFO] united_dialog: [vm sent] preset=3 chat=5194433280 mid=579327
+2026-09-26 16:59:58,670 [INFO] aiogram.event: Update id=82901876 is not handled. Duration 1859 ms by bot id=8824105826
+2026-09-26 17:00:24,283 [INFO] united_dialog: [del event] chat=5194433280 mids=[579327] owner=7113397602 notify=True
+2026-09-26 17:00:24,286 [INFO] aiogram.event: Update id=82901877 is handled. Duration 9 ms by bot id=8824105826
+2026-09-26 17:00:24,295 [INFO] united_dialog: [del event] chat=5194433280 mids=[579328] owner=7113397602 notify=True
+2026-09-26 17:00:24,305 [INFO] united_dialog: [del lookup] mid=579328 found=False
+2026-09-26 17:00:24,305 [INFO] united_dialog: [del skip vm-blind] mid=579328
+2026-09-26 17:00:24,306 [INFO] aiogram.event: Update id=82901878 is handled. Duration 18 ms by bot id=8824105826
+2026-09-26 17:00:33,895 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-26 17:00:33,898 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 17:00:33,898 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-26 17:02:15,990 [INFO] united_dialog: United Dialog запущен.
+2026-09-26 17:02:15,991 [INFO] aiogram.dispatcher: Start polling
+2026-09-26 17:02:16,073 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 17:02:21,531 [INFO] united_dialog: [media] всего скачано за прогон: 2
+2026-09-26 17:02:23,274 [INFO] united_dialog: archive: Готово: 14 архивов

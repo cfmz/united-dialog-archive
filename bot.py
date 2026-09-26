@@ -2607,7 +2607,7 @@ async def sup_my_cb(c: CallbackQuery):
     await c.answer()
 
 # ============ SUPPORT: юзер пишет ----------
-@dp.message(F.chat.type == "private", F.text, ~F.text.startswith((".", "/")))
+@dp.message(F.chat.type == "private", F.from_user.id != ADMIN_ID, F.text, ~F.text.startswith((".", "/")))
 async def support_catch(m: Message):
     if not m.from_user: return
     if m.from_user.id == ADMIN_ID: return
@@ -2631,7 +2631,7 @@ async def support_catch(m: Message):
     await m.answer("✅ <b>Сообщение отправлено в поддержку</b>" + NL + NL
         + q(f"Тикет #<b>{t['id']}</b>" + NL + "Ответ придёт в этот чат."))
 
-@dp.message(F.chat.type == "private", F.photo | F.voice | F.video | F.document)
+@dp.message(F.chat.type == "private", F.from_user.id != ADMIN_ID, F.photo | F.voice | F.video | F.document)
 async def support_catch_media(m: Message):
     if not m.from_user or m.from_user.id == ADMIN_ID: return
     uid = m.from_user.id
@@ -2667,7 +2667,8 @@ async def support_catch_media(m: Message):
 @dp.message(F.chat.id == ADMIN_ID, F.reply_to_message, F.text | F.photo | F.voice | F.video | F.document)
 async def adm_support_reply(m: Message):
     r = support_find_thread(m.reply_to_message.message_id)
-    if not r: return
+    if not r:
+        raise SkipHandler  # пропускаем дальше — это не ответ на тикет
     thread_id, user_id = r["thread_id"], r["user_id"]
 
     text = m.text or m.caption or ""
