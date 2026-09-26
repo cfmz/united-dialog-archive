@@ -1369,7 +1369,7 @@ async def on_menu_cb(c: CallbackQuery):
         link = f"https://t.me/{me.username}?start=ref_{u['id']}"
         text = (
             "💼 <b>Реферальная программа</b>" + NL + NL
-            + q("🔔 <b>Твоя ссылка</b>" + NL + link) + NL
+            + q("🔔 <b>Твоя ссылка</b> <i>(нажми чтобы скопировать)</i>" + NL + "<code>" + link + "</code>") + NL
             + q("🏆 <b>Вознаграждение</b>" + NL
                 + "🥇 1 уровень — <b>20%</b>" + NL
                 + "🥈 2 уровень — <b>10%</b>" + NL

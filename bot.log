@@ -826,3 +826,16 @@ NameError: name 'AFK_WAIT' is not defined. Did you mean: '_AFK_LAST'?
 2026-09-26 17:14:03,147 [INFO] aiogram.dispatcher: Start polling
 2026-09-26 17:14:03,226 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 17:14:09,717 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 17:14:14,353 [INFO] aiogram.event: Update id=82901916 is handled. Duration 310 ms by bot id=8824105826
+2026-09-26 17:14:43,206 [INFO] aiogram.event: Update id=82901917 is handled. Duration 2233 ms by bot id=8824105826
+2026-09-26 17:14:47,733 [INFO] aiogram.event: Update id=82901918 is handled. Duration 510 ms by bot id=8824105826
+2026-09-26 17:14:50,216 [INFO] united_dialog: archive: pushed to web
+2026-09-26 17:14:59,188 [INFO] aiogram.event: Update id=82901919 is handled. Duration 508 ms by bot id=8824105826
+2026-09-26 17:15:03,906 [INFO] aiogram.event: Update id=82901920 is handled. Duration 211 ms by bot id=8824105826
+2026-09-26 17:16:31,728 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-26 17:16:31,733 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 17:16:31,733 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-26 17:16:53,270 [INFO] united_dialog: United Dialog запущен.
+2026-09-26 17:16:53,271 [INFO] aiogram.dispatcher: Start polling
+2026-09-26 17:16:53,361 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 17:16:59,520 [INFO] united_dialog: archive: Готово: 14 архивов
