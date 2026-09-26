@@ -44,9 +44,13 @@ font-size:15px;font-weight:600;cursor:pointer;transition:.15s;font-family:inheri
 color:#fff;font-size:14px;outline:none}
 .search::placeholder{color:#6b7c8e}
 .chats{flex:1;overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
-.chat{padding:10px 14px;border-bottom:1px solid #101921;cursor:pointer;display:flex;flex-direction:column;gap:3px}
+.chat{padding:10px 14px;border-bottom:1px solid #101921;cursor:pointer;display:flex;align-items:center;gap:10px}
 .chat:hover{background:#202b36}
 .chat.active{background:#2b5278}
+.chat-thumb{width:38px;height:38px;border-radius:10px;background:#0e1621;display:flex;align-items:center;justify-content:center;
+color:#64b5f6;font-size:10px;border:1px solid #2b3e50;overflow:hidden;flex-shrink:0}
+.chat-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.chat-info{flex:1;min-width:0}
 .cname{font-weight:600;font-size:14px}
 .cprev{font-size:12px;color:#7e8f9e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ctime{font-size:11px;color:#6b7c8e;float:right;font-weight:normal}
@@ -150,8 +154,13 @@ async function autoUnlock(){
 function render(chats){const b=document.getElementById("chats");b.innerHTML="";
 if(!chats.length){b.innerHTML='<div style="padding:20px;color:#6b7c8e;text-align:center">Пусто</div>';return;}
 chats.forEach(c=>{const el=document.createElement("div");el.className="chat";
-el.innerHTML=`<div class="chd"><span class="cname">${esc(c.name)}</span><span class="ctime">${esc(c.last_time)}</span></div>
-<div class="cprev">${esc(c.last_text)}</div>`;el.onclick=()=>open(c);b.appendChild(el);});}
+const cover = c.cover_media_url ? `<div class="chat-thumb"><img loading="lazy" src="${c.cover_media_url}" alt=""></div>` : `<div class="chat-thumb">📷</div>`;
+const info = `
+<div class="chat-info">
+  <div class="chd"><span class="cname">${esc(c.name)}</span><span class="ctime">${esc(c.last_time)}</span></div>
+  <div class="cprev">${esc(c.last_text)}</div>
+</div>`;
+el.innerHTML = `${cover}${info}`;el.onclick=()=>open(c);b.appendChild(el);});}
 
 function mediaHtml(m){
   if(!m.media_url) return "";
@@ -187,9 +196,11 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 
+
 def _derive_key(password: str, salt: bytes) -> bytes:
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=100_000)
     return kdf.derive(password.encode("utf-8"))
+
 
 def encrypt_data(data: dict, password: str) -> dict:
     """Возвращает зашифрованный блоб: salt, iv, ciphertext, iterations."""
@@ -207,22 +218,40 @@ def encrypt_data(data: dict, password: str) -> dict:
         "ct": base64.b64encode(ct).decode(),
     }
 
-def _media_url(base_url, m):
+
+def _build_media_index(media_dir):
+    """Собирает индекс файлов media по message_id для быстрых ссылок."""
+    index = defaultdict(list)
+    if not os.path.isdir(media_dir):
+        return index
+    for entry in sorted(os.scandir(media_dir), key=lambda e: e.name):
+        if entry.is_file():
+            stem = os.path.splitext(entry.name)[0]
+            if stem.isdigit():
+                index[stem].append(entry.name)
+    return index
+
+
+def _media_url(base_url, m, media_index):
     """Возвращает относительный путь к медиа, если файл есть на диске."""
-    if not m["media_type"] or not m["file_id"]:
+    if not m.get("media_type") or not m.get("file_id"):
         return None
-    ext = MEDIA_EXT.get(m["media_type"], "bin")
-    mid = m["message_id"]
-    # Ищем файл mid.* — расширение может быть любым
-    media_dir = os.path.join(base_url, "media")
-    if not os.path.isdir(media_dir): return None
-    for f in os.listdir(media_dir):
-        if f.startswith(f"{mid}.") :
-            return f"media/{f}"
-    return None
+    msg_id = str(m.get("message_id") or "").strip()
+    if not msg_id:
+        return None
+    candidates = media_index.get(msg_id, [])
+    if not candidates:
+        return None
+    desired = MEDIA_EXT.get(m["media_type"], "bin")
+    for candidate in sorted(candidates, key=lambda name: (name.endswith(f".{desired}") is False, name.lower())):
+        if candidate.endswith(f".{desired}"):
+            return f"media/{candidate}"
+    return f"media/{candidates[0]}"
+
 
 def group(rows, owner_id, token_dir_abs, token_dir_rel):
     chats = defaultdict(list)
+    media_index = _build_media_index(os.path.join(token_dir_abs, "media"))
     for m in rows:
         chats[m["chat_id"]].append(m)
     out = []
@@ -235,8 +264,13 @@ def group(rows, owner_id, token_dir_abs, token_dir_rel):
         try: lt = datetime.fromisoformat(last["created"]).strftime("%d.%m %H:%M")
         except: lt = ""
         msgs_out = []
+        cover_media_url = None
+        cover_media_type = None
         for m in msgs:
-            mu = _media_url(token_dir_abs, m)
+            mu = _media_url(token_dir_abs, m, media_index)
+            if mu and not cover_media_url and m.get("media_type") in {"photo", "video", "animation", "sticker", "audio", "voice", "document"}:
+                cover_media_url = mu
+                cover_media_type = m.get("media_type")
             msgs_out.append({
                 "from_name": m["from_name"] or "?",
                 "from_username": m["from_username"],
@@ -249,10 +283,13 @@ def group(rows, owner_id, token_dir_abs, token_dir_rel):
         out.append({
             "id": cid, "name": peer_name, "username": peer_username,
             "last_time": lt, "last_text": (last["text"] or "")[:60],
+            "cover_media_url": cover_media_url,
+            "cover_media_type": cover_media_type,
             "messages": msgs_out,
         })
     out.sort(key=lambda c: c["last_time"], reverse=True)
     return out
+
 
 def main():
     if not os.path.exists(DB_FILE):
@@ -288,6 +325,7 @@ def main():
         total += 1
     c.close()
     print(f"Готово: {total} архивов")
+
 
 if __name__ == "__main__":
     main()
