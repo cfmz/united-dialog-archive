@@ -1,11 +1,16 @@
-import asyncio, os, sys, sqlite3, random, html, logging, time, secrets
+import asyncio, os, sys, sqlite3
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import random, html, logging, time, secrets
+from matplotlib import dates as mdates
 from datetime import datetime, timezone, timedelta
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart, BaseFilter
 from aiogram.types import (
     FSInputFile,
     LabeledPrice, PreCheckoutQuery, Message, CallbackQuery,
-    InlineKeyboardMarkup, InlineKeyboardButton, CopyTextButton, FSInputFile,
+    InlineKeyboardMarkup, InlineKeyboardButton, CopyTextButton,
 )
 from aiogram.enums import ParseMode
 from aiogram.exceptions import TelegramAPIError
@@ -748,7 +753,8 @@ def kb_games():
 
 def kb_admin():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [B("📊 Статистика", "adm_stats", style="primary")],
+        [B("📊 Статистика", "adm_stats", style="primary"),
+         B("📈 Аналитика", "adm_an", style="success")],
         [B("👤 Найти юзера", "adm_find", style="primary"),
          B("💎 Выдать подписку", "adm_give", style="success")],
         [B("🎁 Промокоды", "adm_promo", style="primary"),
@@ -772,6 +778,123 @@ def kb_admin_settings():
 
 def kb_admin_back():
     return InlineKeyboardMarkup(inline_keyboard=[[B("← Назад в панель", "adm_main", style="danger")]])
+
+
+# ============ ГРАФИКИ ============
+plt.rcParams.update({
+    "figure.facecolor": "#17212b",
+    "axes.facecolor": "#0e1621",
+    "axes.edgecolor": "#2b3e50",
+    "axes.labelcolor": "#8a9bae",
+    "xtick.color": "#8a9bae",
+    "ytick.color": "#8a9bae",
+    "text.color": "#ffffff",
+    "grid.color": "#1e2b38",
+    "grid.linestyle": "--",
+    "font.size": 10,
+})
+
+def build_activity_chart(days, msgs, users, path):
+    """Строит PNG с двумя графиками: сообщения и новые юзеры."""
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(9, 6), dpi=120)
+    fig.suptitle("United Dialog · Активность за 7 дней", color="#64b5f6", fontsize=14, fontweight="bold")
+
+    labels = [d.strftime("%d.%m") for d in days]
+    x = list(range(len(days)))
+
+    # Верхний — сообщения
+    ax1.plot(x, msgs, marker="o", color="#64b5f6", linewidth=2, markersize=8)
+    ax1.fill_between(x, msgs, color="#64b5f6", alpha=0.2)
+    ax1.set_title("Сообщений в день", color="#ffffff", fontsize=11, loc="left")
+    ax1.set_xticks(x); ax1.set_xticklabels(labels)
+    ax1.grid(True, alpha=0.4)
+    for i, v in enumerate(msgs):
+        ax1.annotate(str(v), (i, v), textcoords="offset points", xytext=(0, 8),
+                     ha="center", color="#ffffff", fontsize=9)
+
+    # Нижний — новые юзеры
+    ax2.bar(x, users, color="#4caf50", alpha=0.85)
+    ax2.set_title("Новых юзеров", color="#ffffff", fontsize=11, loc="left")
+    ax2.set_xticks(x); ax2.set_xticklabels(labels)
+    ax2.grid(True, alpha=0.4, axis="y")
+    for i, v in enumerate(users):
+        ax2.annotate(str(v), (i, v), textcoords="offset points", xytext=(0, 4),
+                     ha="center", color="#ffffff", fontsize=9)
+
+    plt.tight_layout()
+    fig.savefig(path, facecolor="#17212b")
+    plt.close(fig)
+
+
+def build_hours_chart(hours, path):
+    """Гистограмма по 24 часам."""
+    fig, ax = plt.subplots(figsize=(9, 4), dpi=120)
+    fig.suptitle("Топ активных часов (UTC)", color="#64b5f6", fontsize=14, fontweight="bold")
+
+    x = list(range(24))
+    colors = ["#64b5f6"] * 24
+    top5 = sorted(range(24), key=lambda i: -hours[i])[:5]
+    for i in top5:
+        colors[i] = "#ff9800"
+
+    bars = ax.bar(x, hours, color=colors, alpha=0.9)
+    ax.set_xticks(x)
+    ax.set_xticklabels([f"{h:02d}" for h in x], fontsize=8)
+    ax.set_ylabel("Сообщений", color="#8a9bae")
+    ax.grid(True, alpha=0.3, axis="y")
+    for i, v in enumerate(hours):
+        if v > 0:
+            ax.annotate(str(v), (i, v), textcoords="offset points", xytext=(0, 4),
+                        ha="center", color="#ffffff", fontsize=8)
+
+    plt.tight_layout()
+    fig.savefig(path, facecolor="#17212b")
+    plt.close(fig)
+
+
+def build_growth_chart(days, cumulative, path):
+    """Накопительный график роста юзеров."""
+    fig, ax = plt.subplots(figsize=(9, 4), dpi=120)
+    fig.suptitle("Рост юзеров", color="#64b5f6", fontsize=14, fontweight="bold")
+
+    labels = [d.strftime("%d.%m") for d in days]
+    x = list(range(len(days)))
+
+    ax.plot(x, cumulative, marker="o", color="#4caf50", linewidth=2, markersize=7)
+    ax.fill_between(x, cumulative, color="#4caf50", alpha=0.25)
+    ax.set_xticks(x); ax.set_xticklabels(labels)
+    ax.set_ylabel("Всего юзеров", color="#8a9bae")
+    ax.grid(True, alpha=0.4)
+
+    for i, v in enumerate(cumulative):
+        ax.annotate(str(v), (i, v), textcoords="offset points", xytext=(0, 8),
+                    ha="center", color="#ffffff", fontsize=9)
+
+    plt.tight_layout()
+    fig.savefig(path, facecolor="#17212b")
+    plt.close(fig)
+
+# ============ АНАЛИТИКА ============
+def kb_admin_analytics():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [B("📈 График за 7 дней", "adm_an_week", style="primary")],
+        [B("🕒 Топ активных часов", "adm_an_hours", style="primary"),
+         B("👥 Рост юзеров", "adm_an_growth", style="success")],
+        [B("📁 CSV — юзеры", "adm_an_csv", style="success"),
+         B("📦 JSON — вся БД", "adm_an_json", style="success")],
+        [B("← Назад в панель", "adm_main", style="danger")]])
+
+def _sparkline(values, width=20):
+    """ASCII-график из чисел."""
+    if not values: return ""
+    mx = max(values) or 1
+    chars = "▁▂▃▄▅▆▇█"
+    out = []
+    for v in values:
+        idx = int((v / mx) * (len(chars) - 1))
+        out.append(chars[idx])
+    return "".join(out)
+
 
 def kb_back(t="m_main"):
     return InlineKeyboardMarkup(inline_keyboard=[[B("← Назад", t, style="danger")]])
@@ -1231,6 +1354,157 @@ async def adm_cb(c: CallbackQuery):
             ADMIN_WAIT.pop(uid, None)
             await c.message.edit_text("🛡 <b>Админ-панель</b>" + NL + NL + q("Выбери действие 👇"), reply_markup=kb_admin())
             await c.answer(); return
+
+        if d == "adm_an":
+            await c.message.edit_text(
+                "📈 <b>Аналитика</b>" + NL + NL + q("Выбери раздел 👇"),
+                reply_markup=kb_admin_analytics())
+            await c.answer(); return
+
+        if d == "adm_an_week":
+            _c = db()
+            from datetime import datetime as _dt, timedelta as _td
+            today = now_utc().date()
+            days = [(today - _td(days=i)) for i in range(6, -1, -1)]
+            msgs = []; users = []
+            for d_ in days:
+                day_str = d_.isoformat()
+                msgs.append(_c.execute("SELECT COUNT(*) FROM saved_messages WHERE created LIKE ?", (day_str + "%",)).fetchone()[0])
+                users.append(_c.execute("SELECT COUNT(*) FROM users WHERE joined LIKE ?", (day_str + "%",)).fetchone()[0])
+            _c.close()
+            fname = f"/tmp/chart_week_{now_utc().strftime('%Y%m%d_%H%M%S')}.png"
+            try:
+                build_activity_chart(days, msgs, users, fname)
+                await bot.send_photo(chat_id=uid, photo=FSInputFile(fname),
+                    caption="📈 <b>Активность за 7 дней</b>" + NL + NL
+                        + q(f"💬 Всего сообщений: <b>{sum(msgs)}</b>" + NL
+                            + f"👥 Новых юзеров: <b>{sum(users)}</b>"))
+                await c.answer("📈 Готово")
+            except Exception as e:
+                log.warning(f"chart week: {e}")
+                await c.answer(f"❌ {e}"[:150], show_alert=True)
+            finally:
+                try: os.remove(fname)
+                except: pass
+            return
+
+        if d == "adm_an_hours":
+            _c = db()
+            from datetime import timedelta as _td
+            rows = _c.execute("SELECT created FROM saved_messages WHERE created >= ?",
+                              ((now_utc() - _td(days=7)).isoformat(),)).fetchall()
+            _c.close()
+            hours = [0] * 24
+            for r in rows:
+                try: hours[int(r["created"][11:13])] += 1
+                except Exception: pass
+            top = sorted(range(24), key=lambda i: -hours[i])[:3]
+            fname = f"/tmp/chart_hours_{now_utc().strftime('%Y%m%d_%H%M%S')}.png"
+            try:
+                build_hours_chart(hours, fname)
+                top_lines = [f"<code>{h:02d}:00</code> — {hours[h]} сообщ." for h in top]
+                await bot.send_photo(chat_id=uid, photo=FSInputFile(fname),
+                    caption="🕒 <b>Топ активных часов</b>" + NL + NL
+                        + q("<b>Топ-3 часа:</b>" + NL + NL.join(top_lines)))
+                await c.answer("🕒 Готово")
+            except Exception as e:
+                log.warning(f"chart hours: {e}")
+                await c.answer(f"❌ {e}"[:150], show_alert=True)
+            finally:
+                try: os.remove(fname)
+                except: pass
+            return
+
+        if d == "adm_an_growth":
+            _c = db()
+            from datetime import timedelta as _td
+            today = now_utc().date()
+            days = [(today - _td(days=i)) for i in range(13, -1, -1)]
+            # накопительный итог: сколько всего было юзеров на каждый день
+            cumulative = []
+            for d_ in days:
+                day_end = d_.isoformat() + "T23:59:59"
+                cnt = _c.execute("SELECT COUNT(*) FROM users WHERE joined <= ?", (day_end,)).fetchone()[0]
+                cumulative.append(cnt)
+            week = _c.execute("SELECT COUNT(*) FROM users WHERE joined >= ?",
+                              ((today - _td(days=7)).isoformat(),)).fetchone()[0]
+            month = _c.execute("SELECT COUNT(*) FROM users WHERE joined >= ?",
+                               ((today - _td(days=30)).isoformat(),)).fetchone()[0]
+            _c.close()
+            fname = f"/tmp/chart_growth_{now_utc().strftime('%Y%m%d_%H%M%S')}.png"
+            try:
+                build_growth_chart(days, cumulative, fname)
+                await bot.send_photo(chat_id=uid, photo=FSInputFile(fname),
+                    caption="👥 <b>Рост юзеров</b>" + NL + NL
+                        + q(f"Всего: <b>{cumulative[-1]}</b>" + NL
+                            + f"За 7 дней: <b>+{week}</b>" + NL
+                            + f"За 30 дней: <b>+{month}</b>"))
+                await c.answer("👥 Готово")
+            except Exception as e:
+                log.warning(f"chart growth: {e}")
+                await c.answer(f"❌ {e}"[:150], show_alert=True)
+            finally:
+                try: os.remove(fname)
+                except: pass
+            return
+
+        if d == "adm_an_csv":
+            import csv, io as _io
+            _c = db()
+            rows = _c.execute("""SELECT id, username, full_name, joined,
+                                 is_premium, ucoin, messages, reputation, sub_until
+                                 FROM users ORDER BY id""").fetchall()
+            _c.close()
+            buf = _io.StringIO()
+            w = csv.writer(buf)
+            w.writerow(["id", "username", "full_name", "joined",
+                        "is_premium", "ucoin", "messages", "reputation", "sub_until"])
+            for r in rows:
+                w.writerow([r["id"], r["username"], r["full_name"] or "",
+                            r["joined"], r["is_premium"], r["ucoin"],
+                            r["messages"], r["reputation"], r["sub_until"] or ""])
+            csv_bytes = buf.getvalue().encode("utf-8-sig")
+            fname = f"/tmp/users_{now_utc().strftime('%Y%m%d_%H%M')}.csv"
+            with open(fname, "wb") as f:
+                f.write(csv_bytes)
+            try:
+                await bot.send_document(chat_id=uid,
+                    document=FSInputFile(fname),
+                    caption=f"📁 <b>CSV — {len(rows)} юзеров</b>")
+                await c.answer("📤 Отправил")
+            except Exception as e:
+                await c.answer(f"❌ {e}"[:150], show_alert=True)
+            finally:
+                try: os.remove(fname)
+                except: pass
+            return
+
+        if d == "adm_an_json":
+            import json as _json
+            _c = db()
+            dump = {}
+            for tbl in ("users", "connections", "payments", "promocodes", "transactions", "settings"):
+                try:
+                    rows = _c.execute(f"SELECT * FROM {tbl}").fetchall()
+                    dump[tbl] = [dict(r) for r in rows]
+                except Exception:
+                    dump[tbl] = []
+            _c.close()
+            fname = f"/tmp/db_export_{now_utc().strftime('%Y%m%d_%H%M')}.json"
+            with open(fname, "w", encoding="utf-8") as f:
+                _json.dump(dump, f, ensure_ascii=False, indent=2, default=str)
+            try:
+                total = sum(len(v) for v in dump.values())
+                await bot.send_document(chat_id=uid,
+                    document=FSInputFile(fname),
+                    caption=f"📦 <b>JSON экспорт БД</b>" + NL + f"Записей: {total}")
+                await c.answer("📤 Отправил")
+            except Exception as e:
+                await c.answer(f"❌ {e}"[:150], show_alert=True)
+            finally:
+                try: os.remove(fname)
+                except: pass
+            return
 
         if d == "adm_stats":
             _c = db()
