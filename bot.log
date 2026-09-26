@@ -783,3 +783,30 @@ NameError: name 'AFK_WAIT' is not defined. Did you mean: '_AFK_LAST'?
 2026-09-26 17:06:07,391 [INFO] aiogram.dispatcher: Start polling
 2026-09-26 17:06:07,578 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 17:06:13,591 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 17:06:19,838 [INFO] aiogram.event: Update id=82901891 is handled. Duration 660 ms by bot id=8824105826
+2026-09-26 17:06:21,822 [INFO] aiogram.event: Update id=82901892 is handled. Duration 518 ms by bot id=8824105826
+2026-09-26 17:06:30,590 [INFO] aiogram.event: Update id=82901893 is handled. Duration 3119 ms by bot id=8824105826
+2026-09-26 17:06:44,766 [INFO] aiogram.event: Update id=82901894 is handled. Duration 4255 ms by bot id=8824105826
+2026-09-26 17:06:47,984 [INFO] aiogram.event: Update id=82901896 is handled. Duration 5 ms by bot id=8824105826
+2026-09-26 17:06:55,310 [INFO] aiogram.event: Update id=82901895 is handled. Duration 13498 ms by bot id=8824105826
+2026-09-26 17:06:58,990 [INFO] aiogram.event: Update id=82901897 is handled. Duration 3679 ms by bot id=8824105826
+2026-09-26 17:07:02,445 [INFO] aiogram.event: Update id=82901898 is handled. Duration 3109 ms by bot id=8824105826
+2026-09-26 17:07:11,944 [INFO] united_dialog: archive: pushed to web
+2026-09-26 17:07:20,818 [INFO] aiogram.event: Update id=82901899 is handled. Duration 19 ms by bot id=8824105826
+2026-09-26 17:07:22,118 [INFO] aiogram.event: Update id=82901900 is handled. Duration 19 ms by bot id=8824105826
+2026-09-26 17:07:31,829 [INFO] aiogram.event: Update id=82901901 is not handled. Duration 27 ms by bot id=8824105826
+2026-09-26 17:07:36,967 [INFO] aiogram.event: Update id=82901902 is not handled. Duration 25 ms by bot id=8824105826
+2026-09-26 17:07:39,002 [INFO] aiogram.event: Update id=82901903 is not handled. Duration 20 ms by bot id=8824105826
+2026-09-26 17:07:46,985 [INFO] aiogram.event: Update id=82901904 is not handled. Duration 21 ms by bot id=8824105826
+2026-09-26 17:07:50,800 [INFO] aiogram.event: Update id=82901905 is handled. Duration 308 ms by bot id=8824105826
+2026-09-26 17:07:51,953 [INFO] aiogram.event: Update id=82901906 is handled. Duration 18 ms by bot id=8824105826
+2026-09-26 17:07:57,612 [INFO] aiogram.event: Update id=82901907 is not handled. Duration 26 ms by bot id=8824105826
+2026-09-26 17:07:58,025 [INFO] aiogram.event: Update id=82901908 is handled. Duration 19 ms by bot id=8824105826
+2026-09-26 17:07:58,806 [INFO] aiogram.event: Update id=82901909 is handled. Duration 18 ms by bot id=8824105826
+2026-09-26 17:08:01,060 [INFO] aiogram.event: Update id=82901910 is not handled. Duration 25 ms by bot id=8824105826
+2026-09-26 17:08:05,016 [INFO] aiogram.event: Update id=82901911 is handled. Duration 286 ms by bot id=8824105826
+2026-09-26 17:08:12,496 [INFO] aiogram.event: Update id=82901912 is handled. Duration 603 ms by bot id=8824105826
+2026-09-26 17:08:16,770 [INFO] aiogram.event: Update id=82901913 is not handled. Duration 6 ms by bot id=8824105826
+2026-09-26 17:08:20,190 [INFO] aiogram.event: Update id=82901914 is handled. Duration 516 ms by bot id=8824105826
+2026-09-26 17:08:22,555 [INFO] aiogram.event: Update id=82901915 is handled. Duration 423 ms by bot id=8824105826
+2026-09-26 17:10:13,476 [INFO] united_dialog: archive: Готово: 14 архивов
