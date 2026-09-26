@@ -910,3 +910,6 @@ NameError: name 'AFK_WAIT' is not defined. Did you mean: '_AFK_LAST'?
 2026-09-26 18:03:26,526 [INFO] united_dialog: [media ↓] 579411 → webp
 2026-09-26 18:03:30,842 [INFO] united_dialog: [media] всего скачано за прогон: 1
 2026-09-26 18:03:32,337 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 18:04:03,596 [INFO] united_dialog: archive: pushed to web
+2026-09-26 18:04:20,861 [INFO] aiogram.event: Update id=82901970 is handled. Duration 446 ms by bot id=8824105826
+2026-09-26 18:07:05,139 [INFO] united_dialog: archive: Готово: 14 архивов
