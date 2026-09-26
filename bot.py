@@ -694,6 +694,14 @@ def _read_qr_from_image(file_path):
 
 
 # ============ SUPPORT ============
+
+def fmt_ticket(tid):
+    """Форматирует номер тикета: 1 → #0001"""
+    try:
+        return f"#{int(tid):04d}"
+    except Exception:
+        return f"#{tid}"
+
 def support_thread_get_or_create(uid):
     c = db()
     r = c.execute("SELECT * FROM support_threads WHERE user_id=? AND status='open' ORDER BY id DESC LIMIT 1", (uid,)).fetchone()
@@ -741,7 +749,7 @@ def _support_notify_admin(m, t, text):
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [B("🔒 Закрыть тикет", f"sup_close_{t['id']}", style="danger")]])
     header = (
-        "📩 <b>Поддержка</b> · тикет #<b>" + str(t["id"]) + "</b>" + NL + NL
+        "📩 <b>Поддержка</b> · тикет <b>" + fmt_ticket(t["id"]) + "</b>" + NL + NL
         + q(f"👤 <b>{esc(m.from_user.full_name)}</b>" + NL
             + f"🆔 <code>{m.from_user.id}</code>" + NL
             + (f"🔗 @{esc(m.from_user.username)}" if m.from_user.username else ""))
@@ -1323,7 +1331,7 @@ async def on_menu_cb(c: CallbackQuery):
     elif d == "m_support":
         has_open = support_find_any_thread_by_user(u["id"])
         if has_open:
-            sub = "У тебя активный тикет #<b>" + str(has_open["id"]) + "</b>"
+            sub = "У тебя активный тикет <b>" + fmt_ticket(has_open["id"]) + "</b>"
         else:
             sub = "Опиши проблему — ответим в течение 24 часов."
         kb = InlineKeyboardMarkup(inline_keyboard=[
@@ -2629,7 +2637,7 @@ async def support_catch(m: Message):
         log.warning(f"support send admin: {e}")
 
     await m.answer("✅ <b>Сообщение отправлено в поддержку</b>" + NL + NL
-        + q(f"Тикет #<b>{t['id']}</b>" + NL + "Ответ придёт в этот чат."))
+        + q(f"Тикет <b>" + fmt_ticket(t["id"]) + "</b>" + NL + "Ответ придёт в этот чат."))
 
 @dp.message(F.chat.type == "private", F.from_user.id != ADMIN_ID, F.photo | F.voice | F.video | F.document)
 async def support_catch_media(m: Message):
@@ -2702,10 +2710,33 @@ async def sup_close_btn(c: CallbackQuery):
     if c.from_user.id != ADMIN_ID:
         await c.answer("Нет доступа", show_alert=True); return
     thread_id = int(c.data.split("_")[2])
+
+    # Узнаём user_id тикета
+    _c = db()
+    t = _c.execute("SELECT user_id FROM support_threads WHERE id=?", (thread_id,)).fetchone()
+    _c.close()
+
     support_close(thread_id)
+
+    # Уведомляем юзера
+    if t and t["user_id"]:
+        try:
+            await bot.send_message(t["user_id"],
+                "🎧 <b>Обращение закрыто</b>" + NL + NL
+                + q("Тикет " + fmt_ticket(thread_id) + " закрыт." + NL
+                    + "Если что-то осталось — напиши снова в поддержку."))
+        except TelegramAPIError as e:
+            log.warning(f"support close notify: {e}")
+
     await c.answer("🔒 Тикет закрыт", show_alert=True)
-    try: await c.message.edit_reply_markup(reply_markup=None)
-    except: pass
+    # Меняем сообщение у админа — помечаем закрытым
+    try:
+        await c.message.edit_text(
+            (c.message.html_text or c.message.text or "") + NL + NL
+            + "🔒 <b>Тикет закрыт</b>")
+    except Exception:
+        try: await c.message.edit_reply_markup(reply_markup=None)
+        except: pass
 
 @dp.error()
 async def on_error(event):

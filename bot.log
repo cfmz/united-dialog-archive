@@ -763,3 +763,23 @@ NameError: name 'AFK_WAIT' is not defined. Did you mean: '_AFK_LAST'?
 2026-09-26 17:02:16,073 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 17:02:21,531 [INFO] united_dialog: [media] всего скачано за прогон: 2
 2026-09-26 17:02:23,274 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 17:02:27,944 [INFO] aiogram.event: Update id=82901879 is handled. Duration 1775 ms by bot id=8824105826
+2026-09-26 17:02:29,388 [INFO] aiogram.event: Update id=82901880 is handled. Duration 659 ms by bot id=8824105826
+2026-09-26 17:02:45,923 [INFO] aiogram.event: Update id=82901881 is handled. Duration 4562 ms by bot id=8824105826
+2026-09-26 17:02:49,042 [INFO] aiogram.event: Update id=82901882 is handled. Duration 6655 ms by bot id=8824105826
+2026-09-26 17:02:50,195 [INFO] aiogram.event: Update id=82901883 is handled. Duration 3868 ms by bot id=8824105826
+2026-09-26 17:02:59,077 [INFO] aiogram.event: Update id=82901884 is handled. Duration 1344 ms by bot id=8824105826
+2026-09-26 17:03:09,039 [INFO] united_dialog: archive: pushed to web
+2026-09-26 17:03:11,626 [INFO] aiogram.event: Update id=82901885 is handled. Duration 251 ms by bot id=8824105826
+2026-09-26 17:03:19,271 [INFO] aiogram.event: Update id=82901886 is handled. Duration 377 ms by bot id=8824105826
+2026-09-26 17:03:23,928 [INFO] aiogram.event: Update id=82901887 is handled. Duration 360 ms by bot id=8824105826
+2026-09-26 17:03:29,856 [INFO] aiogram.event: Update id=82901888 is handled. Duration 374 ms by bot id=8824105826
+2026-09-26 17:04:32,893 [INFO] aiogram.event: Update id=82901889 is not handled. Duration 28 ms by bot id=8824105826
+2026-09-26 17:04:42,641 [INFO] aiogram.event: Update id=82901890 is not handled. Duration 46 ms by bot id=8824105826
+2026-09-26 17:05:51,562 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-26 17:05:51,567 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 17:05:51,570 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-26 17:06:07,389 [INFO] united_dialog: United Dialog запущен.
+2026-09-26 17:06:07,391 [INFO] aiogram.dispatcher: Start polling
+2026-09-26 17:06:07,578 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 17:06:13,591 [INFO] united_dialog: archive: Готово: 14 архивов
