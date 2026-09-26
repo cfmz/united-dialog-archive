@@ -133,6 +133,22 @@ def init_db():
         user_id INTEGER, amount INTEGER, reason TEXT, created TEXT
     );
     CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT);
+    CREATE TABLE IF NOT EXISTS support_threads(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER, created TEXT, updated TEXT,
+        status TEXT DEFAULT 'open',
+        last_msg TEXT
+    );
+    CREATE TABLE IF NOT EXISTS support_messages(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        thread_id INTEGER, from_admin INTEGER DEFAULT 0,
+        text TEXT, media_type TEXT, file_id TEXT,
+        created TEXT
+    );
+    CREATE TABLE IF NOT EXISTS support_links(
+        admin_msg_id INTEGER PRIMARY KEY,
+        thread_id INTEGER, user_id INTEGER
+    );
     CREATE TABLE IF NOT EXISTS mutes(
         owner_id INTEGER, chat_id INTEGER,
         until_ts TEXT, muted_at TEXT,
