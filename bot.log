@@ -463,3 +463,5 @@ nohup: ignoring input
 2026-09-26 15:45:01,269 [INFO] aiogram.event: Update id=82901803 is handled. Duration 129 ms by bot id=8824105826
 2026-09-26 15:45:02,637 [INFO] aiogram.event: Update id=82901804 is handled. Duration 101 ms by bot id=8824105826
 2026-09-26 15:45:11,716 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-26 15:46:12,814 [INFO] united_dialog: archive: pushed to web
+2026-09-26 15:49:15,440 [INFO] united_dialog: archive: Готово: 14 архивов
