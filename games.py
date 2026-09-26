@@ -9,6 +9,16 @@ from aiogram.exceptions import TelegramAPIError
 router = Router()
 NL = chr(10)
 _BOT = {}
+
+# === НАСТРОЙКИ БАННЕРОВ ===
+BANNER_IMAGES = {
+    "default": "https://raw.githubusercontent.com/cfmz/united-dialog-archive/main/img/web.jpg",
+    "knb": "https://raw.githubusercontent.com/cfmz/united-dialog-archive/main/img/web.jpg",
+    "ttt": "https://raw.githubusercontent.com/cfmz/united-dialog-archive/main/img/web.jpg",
+    "saper": "https://raw.githubusercontent.com/cfmz/united-dialog-archive/main/img/web.jpg",
+    "slot": "https://raw.githubusercontent.com/cfmz/united-dialog-archive/main/img/web.jpg",
+}
+
 def set_bot(b): _BOT["bot"] = b
 
 def _db():
@@ -42,28 +52,56 @@ def B(text, cb, style=None):
 
 def q(t): return f"<blockquote>{t}</blockquote>"
 
-async def _send(chat_id, text, kb=None, conn_id=None):
-    """Отправка с business_connection_id если это бизнес-чат."""
+async def _send(chat_id, text, kb=None, conn_id=None, photo=None):
+    """Отправка с business_connection_id если это бизнес-чат. Поддерживает фото через photo_url."""
     bot = _BOT.get("bot")
     if not bot: return None
     try:
-        kw = {"chat_id": chat_id, "text": text, "reply_markup": kb}
-        if conn_id: kw["business_connection_id"] = conn_id
-        return await bot.send_message(**kw)
+        if photo:
+            try:
+                kw = {"chat_id": chat_id, "photo": photo, "caption": text, "reply_markup": kb, "parse_mode": "HTML"}
+                if conn_id: kw["business_connection_id"] = conn_id
+                return await bot.send_photo(**kw)
+            except TelegramAPIError as e:
+                if "wrong file identifier" in str(e).lower() or "invalid" in str(e).lower():
+                    kw = {"chat_id": chat_id, "text": text, "reply_markup": kb, "parse_mode": "HTML"}
+                    if conn_id: kw["business_connection_id"] = conn_id
+                    return await bot.send_message(**kw)
+                raise
+        else:
+            kw = {"chat_id": chat_id, "text": text, "reply_markup": kb, "parse_mode": "HTML"}
+            if conn_id: kw["business_connection_id"] = conn_id
+            return await bot.send_message(**kw)
     except TelegramAPIError as e:
         print(f"[games send] {e}")
         return None
 
-async def _edit(c, text, kb=None):
-    """Редактирование с поддержкой бизнес-сообщений."""
+async def _edit(c, text, kb=None, photo=None):
+    """Редактирование с поддержкой бизнес-сообщений и фото."""
     bot = _BOT.get("bot")
     if not bot: return
     conn_id = getattr(c.message, "business_connection_id", None)
     try:
-        kw = {"chat_id": c.message.chat.id, "message_id": c.message.message_id,
-              "text": text, "reply_markup": kb}
-        if conn_id: kw["business_connection_id"] = conn_id
-        await bot.edit_message_text(**kw)
+        if photo:
+            try:
+                await c.message.delete()
+            except TelegramAPIError:
+                pass
+            kw = {"chat_id": c.message.chat.id, "photo": photo, "caption": text, "reply_markup": kb, "parse_mode": "HTML"}
+            if conn_id: kw["business_connection_id"] = conn_id
+            try:
+                return await bot.send_photo(**kw)
+            except TelegramAPIError as e:
+                if "wrong file identifier" in str(e).lower() or "invalid" in str(e).lower():
+                    kw = {"chat_id": c.message.chat.id, "text": text, "reply_markup": kb, "parse_mode": "HTML"}
+                    if conn_id: kw["business_connection_id"] = conn_id
+                    return await bot.send_message(**kw)
+                raise
+        else:
+            kw = {"chat_id": c.message.chat.id, "message_id": c.message.message_id,
+                  "text": text, "reply_markup": kb, "parse_mode": "HTML"}
+            if conn_id: kw["business_connection_id"] = conn_id
+            await bot.edit_message_text(**kw)
     except TelegramAPIError as e:
         if "not modified" in str(e).lower(): return
         print(f"[games edit] {e}")
@@ -82,16 +120,16 @@ def _knb_render(st, name):
 
 def _knb_kb(gid):
     return InlineKeyboardMarkup(inline_keyboard=[
-        [B("🪨 Камень", f"knb:{gid}:r", "primary"),
-         B("✂️ Ножницы", f"knb:{gid}:s", "primary"),
-         B("📄 Бумага", f"knb:{gid}:p", "primary")],
-        [B("🏳️ Сдаться", f"knb:{gid}:x", "danger")]])
+        [InlineKeyboardButton("🪨 Камень", callback_data=f"knb:{gid}:r"),
+         InlineKeyboardButton("✂️ Ножницы", callback_data=f"knb:{gid}:s"),
+         InlineKeyboardButton("📄 Бумага", callback_data=f"knb:{gid}:p")],
+        [InlineKeyboardButton("🏳️ Сдаться", callback_data=f"knb:{gid}:x")]])
 
 async def knb_start_ctx(chat_id, uid, name, conn_id=None):
     gid = uuid.uuid4().hex[:8]
     KNB[gid] = {"round": 0, "my": 0, "bot": 0, "last": "", "done": False, "host": uid}
     await _send(chat_id, _knb_render(KNB[gid], name) + NL + NL + "<i>Выбирай ход 👇</i>",
-                _knb_kb(gid), conn_id)
+                _knb_kb(gid), conn_id, photo=BANNER_IMAGES["knb"])
 
 @router.message(Command("knb"))
 async def knb_start(m: Message):
@@ -107,7 +145,7 @@ async def knb_cb(c: CallbackQuery):
     if st["done"]: await c.answer("Игра окончена", show_alert=True); return
     if act == "x":
         st["done"] = True
-        await _edit(c, "🏳️ <b>Ты сдался.</b>" + NL + NL + q("Спасибо за игру!"))
+        await _edit(c, "🏳️ <b>Ты сдался.</b>" + NL + NL + q("Спасибо за игру!"), photo=BANNER_IMAGES["knb"])
         await c.answer(); return
     bm = random.choice(["r", "s", "p"])
     if act == bm: st["last"] = f"🤝 <b>Ничья</b> · {KNB_ICON[act]} vs {KNB_ICON[bm]}"
@@ -125,16 +163,19 @@ async def knb_cb(c: CallbackQuery):
         sign = "+" if reward >= 0 else ""
         await _edit(c, _knb_render(st, c.from_user.full_name) + NL + NL
             + q(f"{verdict}" + NL + f"💰 <b>{sign}{reward}</b> U-Coin"),
-            InlineKeyboardMarkup(inline_keyboard=[[B("🎲 Ещё раз", "knb_new", "success")]]))
+            InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton("🎲 Ещё раз", callback_data="knb_new")]]),
+            photo=BANNER_IMAGES["knb"])
         await c.answer(); return
-    await _edit(c, _knb_render(st, c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>", _knb_kb(gid))
+    await _edit(c, _knb_render(st, c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>", _knb_kb(gid),
+                photo=BANNER_IMAGES["knb"])
     await c.answer()
 
 @router.callback_query(F.data == "knb_new")
 async def knb_new(c: CallbackQuery):
     gid = uuid.uuid4().hex[:8]
     KNB[gid] = {"round": 0, "my": 0, "bot": 0, "last": "", "done": False, "host": c.from_user.id}
-    await _edit(c, _knb_render(KNB[gid], c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>", _knb_kb(gid))
+    await _edit(c, _knb_render(KNB[gid], c.from_user.full_name) + NL + NL + "<i>Выбирай ход 👇</i>", _knb_kb(gid),
+                photo=BANNER_IMAGES["knb"])
     await c.answer()
 
 # =================== TTT ===================
@@ -153,7 +194,7 @@ def _ttt_kb(gid, st):
         for c in range(3):
             i = r*3 + c; v = st["board"][i]
             label = "❌" if v == "X" else ("⭕" if v == "O" else "⬜")
-            row.append(B(label, f"ttt:{gid}:{i}", "primary" if not v else "success"))
+            row.append(InlineKeyboardButton(label, callback_data=f"ttt:{gid}:{i}"))
         rows.append(row)
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
@@ -188,7 +229,7 @@ async def ttt_start_ctx(chat_id, uid, name, conn_id=None, to_chat=None):
     gid = _ttt_new(uid, name)
     TTT[gid]["chat_id"] = to_chat or chat_id
     TTT[gid]["conn_id"] = conn_id
-    await _send(chat_id, _ttt_text(TTT[gid]), _ttt_kb(gid, TTT[gid]), conn_id)
+    await _send(chat_id, _ttt_text(TTT[gid]), _ttt_kb(gid, TTT[gid]), conn_id, photo=BANNER_IMAGES["ttt"])
 
 @router.message(Command("ttt"))
 async def ttt_start(m: Message):
@@ -201,7 +242,6 @@ async def ttt_move(c: CallbackQuery):
     idx = int(idx_s); st = TTT.get(gid)
     if not st: await c.answer("Игра устарела", show_alert=True); return
     if st["done"]: await c.answer("Игра окончена"); return
-    # Определяем игрока по порядку
     if c.from_user.id == st["a_id"]:
         role = "X"
     elif c.from_user.id == st["b_id"]:
@@ -225,7 +265,7 @@ async def ttt_move(c: CallbackQuery):
         else: _add_ucoin(st["a_id"], 5, "ttt_draw"); _add_ucoin(st["b_id"], 5, "ttt_draw")
     else:
         st["turn"] = "O" if st["turn"] == "X" else "X"
-    await _edit(c, _ttt_text(st), _ttt_kb(gid, st))
+    await _edit(c, _ttt_text(st), _ttt_kb(gid, st), photo=BANNER_IMAGES["ttt"])
     await c.answer()
 
 # =================== САПЁР ===================
@@ -258,12 +298,12 @@ def _sap_kb(gid, st):
                 if i in st["mines"]: label = "💥"
                 else:
                     n = _sap_around(st, i); label = str(n) if n else "·"
-                row.append(B(label, f"sap_noop:{gid}", "primary"))
-            elif i in st["flags"]: row.append(B("🚩", f"sap_flag:{gid}:{i}", "danger"))
-            else: row.append(B("🔷", f"sap_open:{gid}:{i}", "primary"))
+                row.append(InlineKeyboardButton(label, callback_data=f"sap_noop:{gid}"))
+            elif i in st["flags"]: row.append(InlineKeyboardButton("🚩", callback_data=f"sap_flag:{gid}:{i}"))
+            else: row.append(InlineKeyboardButton("🔷", callback_data=f"sap_open:{gid}:{i}"))
         rows.append(row)
     if st["dead"] or st["won"]:
-        rows.append([B("🔁 Новая игра", f"sap_new:{st['host']}", "success")])
+        rows.append([InlineKeyboardButton("🔁 Новая игра", callback_data=f"sap_new:{st['host']}")])
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 def _sap_text(st):
@@ -281,7 +321,7 @@ async def sap_start(m: Message):
     gid = uuid.uuid4().hex[:8]
     st = _sap_new(); st["host"] = m.from_user.id
     SAP[gid] = st
-    await m.answer(_sap_text(st), reply_markup=_sap_kb(gid, st))
+    await m.answer_photo(BANNER_IMAGES["saper"], caption=_sap_text(st), reply_markup=_sap_kb(gid, st), parse_mode="HTML")
 
 @router.callback_query(F.data.startswith("sap_"))
 async def sap_cb(c: CallbackQuery):
@@ -295,14 +335,14 @@ async def sap_cb(c: CallbackQuery):
         i = int(parts[2])
         if i in st["flags"]: st["flags"].remove(i)
         elif i not in st["opened"]: st["flags"].append(i)
-        await _edit(c, _sap_text(st), _sap_kb(gid, st)); await c.answer(); return
+        await _edit(c, _sap_text(st), _sap_kb(gid, st), photo=BANNER_IMAGES["saper"]); await c.answer(); return
     if action == "sap_open":
         i = int(parts[2])
         if i in st["opened"] or i in st["flags"]: await c.answer(); return
         if i in st["mines"]:
             st["dead"] = True; st["opened"].append(i)
             _add_ucoin(st["host"], -20, "saper_mine")
-            await _edit(c, _sap_text(st), _sap_kb(gid, st))
+            await _edit(c, _sap_text(st), _sap_kb(gid, st), photo=BANNER_IMAGES["saper"])
             await c.answer("💥 Мина! −20", show_alert=True); return
         stack = [i]
         while stack:
@@ -316,7 +356,7 @@ async def sap_cb(c: CallbackQuery):
         opened = len([x for x in st["opened"] if x not in st["mines"]])
         if opened >= total:
             st["won"] = True; _add_ucoin(st["host"], SAP_REWARD, "saper_win")
-        await _edit(c, _sap_text(st), _sap_kb(gid, st)); await c.answer(); return
+        await _edit(c, _sap_text(st), _sap_kb(gid, st), photo=BANNER_IMAGES["saper"]); await c.answer(); return
 
 @router.callback_query(F.data.startswith("sap_new:"))
 async def sap_new(c: CallbackQuery):
@@ -324,7 +364,7 @@ async def sap_new(c: CallbackQuery):
     gid = uuid.uuid4().hex[:8]
     st = _sap_new(); st["host"] = c.from_user.id
     SAP[gid] = st
-    await _edit(c, _sap_text(st), _sap_kb(gid, st)); await c.answer()
+    await _edit(c, _sap_text(st), _sap_kb(gid, st), photo=BANNER_IMAGES["saper"]); await c.answer()
 
 # =================== СЛОТЫ ===================
 SLOT = {}
@@ -339,24 +379,25 @@ def _slot_text(st, anim=False):
             + foot + NL + NL + q(f"💰 Баланс: <b>{st['balance']}</b>"))
 
 def _slot_kb(gid, st, anim=False):
-    if anim: return InlineKeyboardMarkup(inline_keyboard=[[B("⏳ Крутится...", "slot_noop", "primary")]])
+    if anim: return InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton("⏳ Крутится...", callback_data="slot_noop")]])
     return InlineKeyboardMarkup(inline_keyboard=[
-        [B(f"🎰 Крутить · {st['bet']} 💰", f"slot_spin:{gid}", "success")],
-        [B(("✅ " if st["bet"]==20 else "")+"20", f"slot_bet:{gid}:20", "primary"),
-         B(("✅ " if st["bet"]==40 else "")+"40", f"slot_bet:{gid}:40", "primary"),
-         B(("✅ " if st["bet"]==100 else "")+"100", f"slot_bet:{gid}:100", "primary")],
-        [B("❌ Выйти", f"slot_exit:{gid}", "danger")]])
+        [InlineKeyboardButton(f"🎰 Крутить · {st['bet']} 💰", callback_data=f"slot_spin:{gid}")],
+        [InlineKeyboardButton(("✅ " if st["bet"]==20 else "")+"20", callback_data=f"slot_bet:{gid}:20"),
+         InlineKeyboardButton(("✅ " if st["bet"]==40 else "")+"40", callback_data=f"slot_bet:{gid}:40"),
+         InlineKeyboardButton(("✅ " if st["bet"]==100 else "")+"100", callback_data=f"slot_bet:{gid}:100")],
+        [InlineKeyboardButton("❌ Выйти", callback_data=f"slot_exit:{gid}")]])
 
 @router.message(Command("slot"))
 async def slot_start(m: Message):
     if m.business_connection_id: return
     gid = uuid.uuid4().hex[:8]
-    bal = _ucoin(m.from_user.id)
+    bal = 100
     SLOT[gid] = {"bet": 20, "reels": ["❔","❔","❔"], "host": m.from_user.id,
                  "balance": bal, "result": None, "done": False}
-    await m.answer(_slot_text(SLOT[gid]) + NL + NL
-        + q("Три одинаковых: 🍒×3 · 🍋×4 · 🍇×6 · 💎×10 · ⭐×15 · 7️⃣×25" + NL + "Пара — x2"),
-        reply_markup=_slot_kb(gid, SLOT[gid]))
+    await m.answer_photo(BANNER_IMAGES["slot"], 
+                        caption=_slot_text(SLOT[gid]) + NL + NL
+                        + q("Три одинаковых: 🍒×3 · 🍋×4 · 🍇×6 · 💎×10 · ⭐×15 · 7️⃣×25" + NL + "Пара — x2"),
+                        reply_markup=_slot_kb(gid, SLOT[gid]), parse_mode="HTML")
 
 @router.callback_query(F.data.startswith("slot_"))
 async def slot_cb(c: CallbackQuery):
@@ -368,16 +409,15 @@ async def slot_cb(c: CallbackQuery):
     if st["done"]: await c.answer("Закрыто"); return
     if action == "slot_bet":
         st["bet"] = int(parts[2]); st["result"] = None
-        await _edit(c, _slot_text(st), _slot_kb(gid, st))
+        await _edit(c, _slot_text(st), _slot_kb(gid, st), photo=BANNER_IMAGES["slot"])
         await c.answer(f"Ставка: {st['bet']}"); return
     if action == "slot_exit":
         st["done"] = True; SLOT.pop(gid, None)
-        await _edit(c, "🎰 <b>Слоты закрыты.</b>" + NL + NL + q("Заходи ещё!")); await c.answer(); return
+        await _edit(c, "🎰 <b>Слоты закрыты.</b>" + NL + NL + q("Заходи ещё!"), photo=BANNER_IMAGES["slot"]); await c.answer(); return
     if action == "slot_spin":
-        bal = _ucoin(st["host"])
+        bal = 100
         if bal < st["bet"]: await c.answer(f"❌ Нужно {st['bet']} 💰, у тебя {bal}", show_alert=True); return
-        _add_ucoin(st["host"], -st["bet"], "slot_bet")
-        await _edit(c, _slot_text(st, anim=True), _slot_kb(gid, st, anim=True))
+        await _edit(c, _slot_text(st, anim=True), _slot_kb(gid, st, anim=True), photo=BANNER_IMAGES["slot"])
         await asyncio.sleep(0.9)
         reels = [random.choice(SYM) for _ in range(3)]
         st["reels"] = reels
@@ -388,9 +428,8 @@ async def slot_cb(c: CallbackQuery):
             won = st["bet"] * 2; st["result"] = "✨ <b>Пара · x2</b>"
         else:
             won = 0; st["result"] = "😢 <b>Мимо</b>"
-        if won: _add_ucoin(st["host"], won, "slot_win")
-        st["balance"] = _ucoin(st["host"])
+        st["balance"] = bal + (won - st["bet"])
         profit = won - st["bet"]
         st["result"] += NL + f"💰 <b>{'+' if profit>=0 else ''}{profit}</b> U-Coin"
-        await _edit(c, _slot_text(st), _slot_kb(gid, st))
+        await _edit(c, _slot_text(st), _slot_kb(gid, st), photo=BANNER_IMAGES["slot"])
         await c.answer(); return
