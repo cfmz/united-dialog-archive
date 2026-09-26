@@ -814,3 +814,7 @@ NameError: name 'AFK_WAIT' is not defined. Did you mean: '_AFK_LAST'?
 2026-09-26 17:10:31,419 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 17:10:31,419 [INFO] aiogram.dispatcher: Polling stopped
 2026-09-26 17:10:31,423 [WARNING] united_dialog: web push failed: 
+2026-09-26 17:11:35,326 [INFO] united_dialog: United Dialog запущен.
+2026-09-26 17:11:35,327 [INFO] aiogram.dispatcher: Start polling
+2026-09-26 17:11:35,428 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 17:11:42,495 [INFO] united_dialog: archive: Готово: 14 архивов
