@@ -76,6 +76,7 @@ dp = Dispatcher()
 _AFK_LAST = {}
 TYPE_TASKS = {}
 ADMIN_WAIT = {}
+SUPPORT_WAIT = set()
 _NOTIFY_TS = {}
 _BOT_DELETED = set()      # сообщения, которые удалил сам бот (команды)
 _RIGHTS_HINT = {}
@@ -673,6 +674,65 @@ def _read_qr_from_image(file_path):
         pass
     return None
 
+
+# ============ SUPPORT ============
+def support_thread_get_or_create(uid):
+    c = db()
+    r = c.execute("SELECT * FROM support_threads WHERE user_id=? AND status='open' ORDER BY id DESC LIMIT 1", (uid,)).fetchone()
+    if not r:
+        c.execute("INSERT INTO support_threads(user_id, created, updated, status) VALUES(?,?,?, 'open')",
+                  (uid, now_utc().isoformat(), now_utc().isoformat()))
+        c.commit()
+        r = c.execute("SELECT * FROM support_threads WHERE user_id=? ORDER BY id DESC LIMIT 1", (uid,)).fetchone()
+    c.close(); return r
+
+def support_save_msg(thread_id, from_admin, text, media_type=None, file_id=None):
+    c = db()
+    c.execute("""INSERT INTO support_messages(thread_id, from_admin, text, media_type, file_id, created)
+                 VALUES(?,?,?,?,?,?)""",
+              (thread_id, int(from_admin), text, media_type, file_id, now_utc().isoformat()))
+    c.execute("UPDATE support_threads SET updated=?, last_msg=? WHERE id=?",
+              (now_utc().isoformat(), (text or "")[:60], thread_id))
+    c.commit(); c.close()
+
+def support_close(thread_id):
+    c = db()
+    c.execute("UPDATE support_threads SET status='closed' WHERE id=?", (thread_id,))
+    c.commit(); c.close()
+
+def support_link(admin_msg_id, thread_id, user_id):
+    c = db()
+    c.execute("CREATE TABLE IF NOT EXISTS support_links(admin_msg_id INTEGER PRIMARY KEY, thread_id INTEGER, user_id INTEGER)")
+    c.execute("INSERT OR REPLACE INTO support_links(admin_msg_id, thread_id, user_id) VALUES(?,?,?)",
+              (admin_msg_id, thread_id, user_id))
+    c.commit(); c.close()
+
+def support_find_thread(admin_msg_id):
+    c = db()
+    c.execute("CREATE TABLE IF NOT EXISTS support_links(admin_msg_id INTEGER PRIMARY KEY, thread_id INTEGER, user_id INTEGER)")
+    r = c.execute("SELECT thread_id, user_id FROM support_links WHERE admin_msg_id=?", (admin_msg_id,)).fetchone()
+    c.close(); return r
+
+def support_find_any_thread_by_user(uid):
+    c = db()
+    r = c.execute("SELECT * FROM support_threads WHERE user_id=? AND status='open' ORDER BY id DESC LIMIT 1", (uid,)).fetchone()
+    c.close(); return r
+
+def _support_notify_admin(m, t, text):
+    """Отправляет уведомление админу."""
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [B("🔒 Закрыть тикет", f"sup_close_{t['id']}", style="danger")]])
+    header = (
+        "📩 <b>Поддержка</b> · тикет #<b>" + str(t["id"]) + "</b>" + NL + NL
+        + q(f"👤 <b>{esc(m.from_user.full_name)}</b>" + NL
+            + f"🆔 <code>{m.from_user.id}</code>" + NL
+            + (f"🔗 @{esc(m.from_user.username)}" if m.from_user.username else ""))
+        + NL + NL
+        + (text or "<i>без текста</i>")
+    )
+    return header, kb
+
+
 def mute_set(owner_id, chat_id, minutes):
     until = now_utc() + timedelta(minutes=minutes)
     c = db()
@@ -1243,10 +1303,18 @@ async def on_menu_cb(c: CallbackQuery):
     elif d == "m_sub":
         await _edit(c, txt_sub(u), kb_sub())
     elif d == "m_support":
+        has_open = support_find_any_thread_by_user(u["id"])
+        if has_open:
+            sub = "У тебя активный тикет #<b>" + str(has_open["id"]) + "</b>"
+        else:
+            sub = "Опиши проблему — ответим в течение 24 часов."
         kb = InlineKeyboardMarkup(inline_keyboard=[
-            [B("✈️ Связаться", url=SUPPORT, style="success")],
+            [B("✍️ Написать в поддержку", "sup_new", style="success")],
+            [B("📋 Мои тикеты", "sup_my", style="primary")],
             [B("← Назад", "m_main", style="danger")]])
-        await _edit(c, txt_support(), kb)
+        await _edit(c,
+            "🎧 <b>Поддержка</b>" + NL + NL
+            + q("Пиши прямо в бота — сообщение уйдёт в поддержку." + NL + NL + sub), kb)
     elif d == "m_notify":
         notify = user_notify_on(u["id"])
         status = "✅ <b>включены</b>" if notify else "🔕 <b>выключены</b>"
@@ -2519,6 +2587,106 @@ async def sup_my_cb(c: CallbackQuery):
         "📋 <b>Мои тикеты</b>" + NL + NL + text,
         reply_markup=kb)
     await c.answer()
+
+# ============ SUPPORT: юзер пишет ----------
+@dp.message(F.chat.type == "private", F.text, ~F.text.startswith((".", "/")))
+async def support_catch(m: Message):
+    if not m.from_user: return
+    if m.from_user.id == ADMIN_ID: return
+    uid = m.from_user.id
+    if uid in AFK_WAIT or uid in GREET_WAIT: return
+    has_open = support_find_any_thread_by_user(uid)
+    if uid not in SUPPORT_WAIT and not has_open: return
+
+    get_user(uid, m.from_user.username, m.from_user.full_name)
+    t = support_thread_get_or_create(uid)
+    support_save_msg(t["id"], 0, m.text)
+    SUPPORT_WAIT.discard(uid)
+
+    header, kb = _support_notify_admin(m, t, m.text)
+    try:
+        sent = await bot.send_message(ADMIN_ID, header, reply_markup=kb)
+        support_link(sent.message_id, t["id"], uid)
+    except TelegramAPIError as e:
+        log.warning(f"support send admin: {e}")
+
+    await m.answer("✅ <b>Сообщение отправлено в поддержку</b>" + NL + NL
+        + q(f"Тикет #<b>{t['id']}</b>" + NL + "Ответ придёт в этот чат."))
+
+@dp.message(F.chat.type == "private", F.photo | F.voice | F.video | F.document)
+async def support_catch_media(m: Message):
+    if not m.from_user or m.from_user.id == ADMIN_ID: return
+    uid = m.from_user.id
+    if uid in AFK_WAIT or uid in GREET_WAIT: return
+    has_open = support_find_any_thread_by_user(uid)
+    if uid not in SUPPORT_WAIT and not has_open: return
+
+    mt, fid = None, None
+    if m.photo: mt, fid = "photo", m.photo[-1].file_id
+    elif m.voice: mt, fid = "voice", m.voice.file_id
+    elif m.video: mt, fid = "video", m.video.file_id
+    elif m.document: mt, fid = "document", m.document.file_id
+    if not mt: return
+    cap = m.caption or ""
+
+    get_user(uid, m.from_user.username, m.from_user.full_name)
+    t = support_thread_get_or_create(uid)
+    support_save_msg(t["id"], 0, cap, mt, fid)
+    SUPPORT_WAIT.discard(uid)
+
+    header, kb = _support_notify_admin(m, t, cap)
+    try:
+        sent = await bot.send_message(ADMIN_ID, header, reply_markup=kb)
+        support_link(sent.message_id, t["id"], uid)
+        fwd = await m.forward(ADMIN_ID)
+        support_link(fwd.message_id, t["id"], uid)
+    except TelegramAPIError as e:
+        log.warning(f"support media: {e}")
+
+    await m.answer("✅ Отправлено в поддержку.")
+
+# ============ SUPPORT: ответ админа реплаем ============
+@dp.message(F.chat.id == ADMIN_ID, F.reply_to_message, F.text | F.photo | F.voice | F.video | F.document)
+async def adm_support_reply(m: Message):
+    r = support_find_thread(m.reply_to_message.message_id)
+    if not r: return
+    thread_id, user_id = r["thread_id"], r["user_id"]
+
+    text = m.text or m.caption or ""
+    try:
+        if m.photo:
+            await bot.send_photo(user_id, m.photo[-1].file_id, caption=text or None)
+        elif m.voice:
+            await bot.send_voice(user_id, m.voice.file_id, caption=text or None)
+        elif m.video:
+            await bot.send_video(user_id, m.video.file_id, caption=text or None)
+        elif m.document:
+            await bot.send_document(user_id, m.document.file_id, caption=text or None)
+        else:
+            await bot.send_message(user_id, text)
+    except TelegramAPIError as e:
+        await m.reply("❌ " + q(f"Не доставлено: {esc(str(e))[:150]}"))
+        return
+
+    mt, fid = None, None
+    if m.photo: mt, fid = "photo", m.photo[-1].file_id
+    elif m.voice: mt, fid = "voice", m.voice.file_id
+    elif m.video: mt, fid = "video", m.video.file_id
+    elif m.document: mt, fid = "document", m.document.file_id
+    support_save_msg(thread_id, 1, text, mt, fid)
+
+    try: await m.reply("✅ " + q(f"Отправлено юзеру"))
+    except TelegramAPIError: pass
+
+@dp.callback_query(F.data.startswith("sup_close_"))
+async def sup_close_btn(c: CallbackQuery):
+    if c.from_user.id != ADMIN_ID:
+        await c.answer("Нет доступа", show_alert=True); return
+    thread_id = int(c.data.split("_")[2])
+    support_close(thread_id)
+    await c.answer("🔒 Тикет закрыт", show_alert=True)
+    try: await c.message.edit_reply_markup(reply_markup=None)
+    except: pass
 
 @dp.error()
 async def on_error(event):
