@@ -501,3 +501,13 @@ nohup: ignoring input
 2026-09-26 16:14:26,816 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
 2026-09-26 16:14:26,817 [INFO] aiogram.dispatcher: Polling stopped
 2026-09-26 16:14:26,821 [WARNING] united_dialog: web push failed: 
+2026-09-26 16:32:43,866 [INFO] united_dialog: United Dialog запущен.
+2026-09-26 16:32:43,868 [INFO] aiogram.dispatcher: Start polling
+2026-09-26 16:32:43,955 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-26 16:32:44,082 [INFO] aiogram.event: Update id=82901818 is not handled. Duration 20 ms by bot id=8824105826
+2026-09-26 16:32:44,104 [INFO] aiogram.event: Update id=82901819 is not handled. Duration 21 ms by bot id=8824105826
+2026-09-26 16:32:44,489 [INFO] aiogram.event: Update id=82901820 is handled. Duration 405 ms by bot id=8824105826
+2026-09-26 16:32:44,979 [INFO] united_dialog: [media ↓] 579286 → bin
+2026-09-26 16:32:49,010 [INFO] united_dialog: [media] всего скачано за прогон: 1
+2026-09-26 16:32:49,281 [INFO] aiogram.event: Update id=82901821 is handled. Duration 688 ms by bot id=8824105826
+2026-09-26 16:32:50,817 [INFO] united_dialog: archive: Готово: 14 архивов

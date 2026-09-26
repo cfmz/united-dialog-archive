@@ -1,4 +1,9 @@
 import asyncio, os, sys, sqlite3
+import qrcode
+from deep_translator import GoogleTranslator
+import cv2
+from pyzbar.pyzbar import decode as qr_decode
+
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -630,6 +635,43 @@ async def _voice_transform(in_path, out_path, preset):
         try: os.remove(wav_tmp)
         except: pass
 
+
+
+# ============ QR-КОДЫ ============
+def _make_wifi_qr(ssid, password, security="WPA"):
+    """Генерирует PNG с Wi-Fi QR-кодом."""
+    wifi_str = f"WIFI:T:{security};S:{ssid};P:{password};;"
+    qr = qrcode.QRCode(version=1, box_size=10, border=4)
+    qr.add_data(wifi_str)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    path = f"/tmp/qr_wifi_{int(time.time())}.png"
+    img.save(path)
+    return path
+
+def _make_vcard_qr(name, phone):
+    """Генерирует PNG с vCard QR-кодом."""
+    vcard_str = f"BEGIN:VCARD\nVERSION:3.0\nFN:{name}\nTEL:{phone}\nEND:VCARD"
+    qr = qrcode.QRCode(version=1, box_size=10, border=4)
+    qr.add_data(vcard_str)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    path = f"/tmp/qr_vcard_{int(time.time())}.png"
+    img.save(path)
+    return path
+
+def _read_qr_from_image(file_path):
+    """Читает QR-код с изображения."""
+    try:
+        img = cv2.imread(file_path)
+        if img is None:
+            return None
+        data = qr_decode(img)
+        if data:
+            return data[0].data.decode("utf-8")
+    except Exception:
+        pass
+    return None
 
 def mute_set(owner_id, chat_id, minutes):
     until = now_utc() + timedelta(minutes=minutes)
@@ -1833,7 +1875,7 @@ async def on_bc(conn):
 # бот удалял такое сообщение и молчал)
 KNOWN = {"ping", "id", "info", "help", "love", "flip", "rps", "kawai", "kub",
          "roast", "anim", "type", "title", "split", "перевод", "translit",
-         "afk", "unafk", "redeem", "balance", "ttt", "knb", "saper", "slot", "mute", "unmute", "voicemod"}
+         "afk", "unafk", "redeem", "balance", "ttt", "knb", "saper", "slot", "mute", "unmute", "voicemod", "qr", "tr"}
 
 async def biz_send(chat_id, conn_id, text, owner_id=None):
     try:
@@ -2056,6 +2098,133 @@ async def biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id):
         mute_off(owner_id, chat_id)
         await out("🔊 <b>Мут снят</b>" + NL + NL + q("Собеседник снова может писать."))
         return
+    if cmd == "ping":
+        await out("🏓 <b>Понг!</b> Бот онлайн.")
+        return
+
+    if cmd == "qr":
+        a = (arg or "").strip()
+        sub = a.split(maxsplit=1)
+        mode = sub[0].lower() if sub else ""
+        rest = sub[1].strip() if len(sub) > 1 else ""
+
+        if mode == "read":
+            if not message.reply_to_message or not message.reply_to_message.photo:
+                await out("❌ " + q("Ответь на фото с QR-кодом командой <code>.qr read</code>"))
+                return
+            tg_file = await bot.get_file(message.reply_to_message.photo[-1].file_id)
+            tmp = f"/tmp/qr_read_{message.message_id}.png"
+            await bot.download_file(tg_file.file_path, tmp)
+            result = _read_qr_from_image(tmp)
+            try: os.remove(tmp)
+            except: pass
+            if result:
+                await out("🔍 <b>QR прочитан</b>" + NL + NL + q(f"<code>{esc(result)}</code>"))
+            else:
+                await out("❌ " + q("QR-код не распознан."))
+            return
+
+        if mode == "wifi":
+            parts = rest.split(maxsplit=1)
+            if len(parts) < 2:
+                await out("❌ " + q("Формат: <code>.qr wifi ИмяСети Пароль</code>"))
+                return
+            ssid, password = parts[0], parts[1]
+            try:
+                path = _make_wifi_qr(ssid, password)
+                await bot.send_photo(chat_id=chat_id, photo=FSInputFile(path),
+                    caption="📶 <b>Wi-Fi QR</b>" + NL + NL
+                        + q(f"Сеть: <b>{esc(ssid)}</b>" + NL + "Наведи камеру телефона — подключится автоматически."),
+                    business_connection_id=conn_id)
+                try: os.remove(path)
+                except: pass
+            except Exception as e:
+                log.warning(f"qr wifi: {e}")
+                await out("❌ " + q(f"Ошибка: {e}"))
+            return
+
+        if mode == "vcard":
+            parts = rest.split(maxsplit=1)
+            if len(parts) < 2:
+                await out("❌ " + q("Формат: <code>.qr vcard Имя +79991234567</code>"))
+                return
+            name, phone = parts[0], parts[1]
+            try:
+                path = _make_vcard_qr(name, phone)
+                await bot.send_photo(chat_id=chat_id, photo=FSInputFile(path),
+                    caption="📇 <b>vCard QR</b>" + NL + NL
+                        + q(f"Имя: <b>{esc(name)}</b>" + NL + f"Телефон: <b>{esc(phone)}</b>"),
+                    business_connection_id=conn_id)
+                try: os.remove(path)
+                except: pass
+            except Exception as e:
+                log.warning(f"qr vcard: {e}")
+                await out("❌ " + q(f"Ошибка: {e}"))
+            return
+
+        if a:
+            url = f"https://api.qrserver.com/v1/create-qr-code/?size=300x300&data={a}"
+            try:
+                await bot.send_photo(chat_id=chat_id, photo=url,
+                    caption="📱 QR-код", business_connection_id=conn_id)
+            except TelegramAPIError:
+                await out("❌ " + q("Не удалось сгенерировать"))
+            return
+
+        await out(
+            "📱 <b>QR-коды</b>" + NL + NL
+            + q("Генерирует QR-коды разных типов и читает их с фото." + NL + NL
+                + "<b>Как использовать:</b>" + NL
+                + "<code>.qr текст</code> — обычный QR" + NL
+                + "<code>.qr wifi ИмяСеть Пароль</code> — для подключения к Wi-Fi" + NL
+                + "<code>.qr vcard Имя Телефон</code> — визитка с контактом" + NL
+                + "<code>.qr read</code> — прочитать QR (ответом на фото)") + NL
+            + q("⚡ <i>Wi-Fi QR — телефон подключится к сети просто наведя камеру.</i>" + NL
+                + "📇 <i>vCard QR — сохранит контакт в телефон одним касанием.</i>" + NL
+                + "🔍 <i>Чтение — отправь фото с QR и ответь командой.</i>"))
+        return
+
+    if cmd == "tr":
+        a = (arg or "").strip()
+        target_lang = "ru"
+        text = ""
+        if message.reply_to_message:
+            text = message.reply_to_message.text or message.reply_to_message.caption or ""
+            if a:
+                target_lang = a.lower()
+        else:
+            parts = a.split(maxsplit=1)
+            if len(parts) == 2 and len(parts[0]) <= 5:
+                target_lang, text = parts[0], parts[1]
+            else:
+                text = a
+
+        if not text:
+            await out(
+                "🌐 <b>Перевод</b>" + NL + NL
+                + q("Переводит текст между языками (автоопределение исходного)." + NL + NL
+                    + "<b>Как использовать:</b>" + NL
+                    + "<code>.tr привет</code> — перевести на русский" + NL
+                    + "<code>.tr en привет</code> — на английский" + NL
+                    + "Ответь на сообщение и напиши <code>.tr</code>" + NL
+                    + "Ответь на сообщение и напиши <code>.tr en</code>") + NL
+                + q("⚡ <i>Коды языков:</i> <code>ru, en, uk, de, fr, es, tr, ar, zh, ja, ko, pl, it</code>" + NL
+                    + "📝 <i>Работает по ответу на любое сообщение.</i>"))
+            return
+
+        try:
+            translated = GoogleTranslator(source="auto", target=target_lang).translate(text)
+        except Exception as e:
+            log.warning(f"translate: {e}")
+            await out("❌ " + q(f"Ошибка перевода: {e}"))
+            return
+
+        await out(
+            "🌐 <b>Перевод</b>" + NL + NL
+            + q("<b>Оригинал:</b>" + NL + f"<i>{esc(text[:200])}</i>")
+            + q(f"<b>Перевод ({target_lang}):</b>" + NL + f"<b>{esc(translated)}</b>"))
+        return
+
     if cmd == "id":
         await out("🆔 " + q(f"<b>Чат:</b> <code>{chat_id}</code>" + NL + f"<b>Ты:</b> <code>{owner_id}</code>")); return
     if cmd == "info":
