@@ -1341,7 +1341,7 @@ async def on_menu_cb(c: CallbackQuery):
         await _edit(c, "🌐 <b>Веб-Архив</b>" + NL + NL
             + q("Все сохранённые сообщения — на сайте." + NL + NL
                 + "🔒 Архив защищён паролем AES-256" + NL
-                + "Пароль покажется кнопкой ниже."), kb)
+                + "Пароль покажется кнопкой ниже."), kb, photo=BANNER_WEB)
     elif d == "m_archive_pw":
         _c = db()
         r = _c.execute("SELECT web_password FROM connections WHERE user_id=? AND web_password IS NOT NULL LIMIT 1", (u["id"],)).fetchone()

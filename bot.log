@@ -1491,3 +1491,135 @@ TimeoutError
 2026-09-27 18:00:07,314 [INFO] united_dialog: [media ↓] 579620 → mp4
 2026-09-27 18:00:08,657 [INFO] united_dialog: [media ↓] 579537 → mp4
 2026-09-27 18:00:10,023 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-27 18:00:10,952 [INFO] aiogram.event: Update id=82902404 is handled. Duration 1539 ms by bot id=8824105826
+2026-09-27 18:00:14,704 [INFO] aiogram.event: Update id=82902405 is handled. Duration 638 ms by bot id=8824105826
+2026-09-27 18:00:57,737 [INFO] aiogram.event: Update id=82902407 is handled. Duration 33 ms by bot id=8824105826
+2026-09-27 18:00:59,472 [INFO] aiogram.event: Update id=82902406 is handled. Duration 6353 ms by bot id=8824105826
+2026-09-27 18:01:00,326 [INFO] aiogram.event: Update id=82902408 is handled. Duration 77 ms by bot id=8824105826
+2026-09-27 18:01:02,358 [INFO] aiogram.event: Update id=82902409 is handled. Duration 44 ms by bot id=8824105826
+2026-09-27 18:01:04,584 [INFO] aiogram.event: Update id=82902410 is not handled. Duration 83 ms by bot id=8824105826
+2026-09-27 18:01:06,448 [INFO] aiogram.event: Update id=82902411 is handled. Duration 62 ms by bot id=8824105826
+2026-09-27 18:01:10,778 [INFO] aiogram.event: Update id=82902412 is not handled. Duration 173 ms by bot id=8824105826
+2026-09-27 18:01:12,216 [INFO] aiogram.event: Update id=82902413 is not handled. Duration 73 ms by bot id=8824105826
+2026-09-27 18:01:14,427 [INFO] aiogram.event: Update id=82902414 is not handled. Duration 106 ms by bot id=8824105826
+2026-09-27 18:01:22,543 [INFO] aiogram.event: Update id=82902415 is handled. Duration 2925 ms by bot id=8824105826
+2026-09-27 18:01:26,892 [INFO] aiogram.event: Update id=82902416 is handled. Duration 328 ms by bot id=8824105826
+2026-09-27 18:01:35,290 [INFO] aiogram.event: Update id=82902417 is handled. Duration 568 ms by bot id=8824105826
+2026-09-27 18:01:39,889 [INFO] aiogram.event: Update id=82902418 is handled. Duration 474 ms by bot id=8824105826
+2026-09-27 18:03:03,750 [WARNING] aiogram.dispatcher: Received SIGINT signal
+2026-09-27 18:03:03,755 [INFO] aiogram.dispatcher: Polling stopped for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-27 18:03:03,759 [INFO] aiogram.dispatcher: Polling stopped
+2026-09-27 18:03:03,767 [WARNING] united_dialog: web push failed: 
+2026-09-27 18:03:04,323 [ERROR] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-377' coro=<download_one_media() done, defined at /home/maya/united/bot.py:2875> exception=TimeoutError()>
+Traceback (most recent call last):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 365, in _wait
+    await waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/maya/united/bot.py", line 2895, in download_one_media
+    await bot.download_file(tg_file.file_path, destination=target)
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/bot.py", line 459, in download_file
+    await self.__download_file(destination=destination, stream=stream)
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/bot.py", line 408, in __download_file
+    async for chunk in stream:
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/session/aiohttp.py", line 204, in stream_content
+    async for chunk in resp.content.iter_chunked(chunk_size):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 46, in __anext__
+    rv = await self.read_func()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 448, in read
+    await self._wait("read")
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 364, in _wait
+    with self._timer:
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/helpers.py", line 759, in __exit__
+    raise asyncio.TimeoutError from exc_val
+TimeoutError
+2026-09-27 18:03:04,325 [ERROR] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-378' coro=<download_one_media() done, defined at /home/maya/united/bot.py:2875> exception=TimeoutError()>
+Traceback (most recent call last):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 365, in _wait
+    await waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/maya/united/bot.py", line 2895, in download_one_media
+    await bot.download_file(tg_file.file_path, destination=target)
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/bot.py", line 459, in download_file
+    await self.__download_file(destination=destination, stream=stream)
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/bot.py", line 408, in __download_file
+    async for chunk in stream:
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/session/aiohttp.py", line 204, in stream_content
+    async for chunk in resp.content.iter_chunked(chunk_size):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 46, in __anext__
+    rv = await self.read_func()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 448, in read
+    await self._wait("read")
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 364, in _wait
+    with self._timer:
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/helpers.py", line 759, in __exit__
+    raise asyncio.TimeoutError from exc_val
+TimeoutError
+2026-09-27 18:03:04,327 [ERROR] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-380' coro=<download_one_media() done, defined at /home/maya/united/bot.py:2875> exception=TimeoutError()>
+Traceback (most recent call last):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 365, in _wait
+    await waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/maya/united/bot.py", line 2895, in download_one_media
+    await bot.download_file(tg_file.file_path, destination=target)
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/bot.py", line 459, in download_file
+    await self.__download_file(destination=destination, stream=stream)
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/bot.py", line 408, in __download_file
+    async for chunk in stream:
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiogram/client/session/aiohttp.py", line 204, in stream_content
+    async for chunk in resp.content.iter_chunked(chunk_size):
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 46, in __anext__
+    rv = await self.read_func()
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 448, in read
+    await self._wait("read")
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/streams.py", line 364, in _wait
+    with self._timer:
+  File "/home/maya/united/venv/lib/python3.12/site-packages/aiohttp/helpers.py", line 759, in __exit__
+    raise asyncio.TimeoutError from exc_val
+TimeoutError
+2026-09-27 18:06:40,337 [INFO] united_dialog: United Dialog запущен.
+2026-09-27 18:06:40,338 [INFO] aiogram.dispatcher: Start polling
+2026-09-27 18:06:40,419 [INFO] aiogram.dispatcher: Run polling for bot @UnitedDialogBot id=8824105826 - 'United Dialog'
+2026-09-27 18:06:40,553 [INFO] aiogram.event: Update id=82902419 is handled. Duration 19 ms by bot id=8824105826
+2026-09-27 18:06:40,573 [INFO] aiogram.event: Update id=82902420 is not handled. Duration 18 ms by bot id=8824105826
+2026-09-27 18:06:40,588 [INFO] aiogram.event: Update id=82902421 is not handled. Duration 14 ms by bot id=8824105826
+2026-09-27 18:06:40,600 [INFO] aiogram.event: Update id=82902422 is handled. Duration 11 ms by bot id=8824105826
+2026-09-27 18:06:40,616 [INFO] aiogram.event: Update id=82902423 is not handled. Duration 15 ms by bot id=8824105826
+2026-09-27 18:06:40,631 [INFO] aiogram.event: Update id=82902424 is not handled. Duration 14 ms by bot id=8824105826
+2026-09-27 18:06:40,642 [INFO] aiogram.event: Update id=82902425 is handled. Duration 10 ms by bot id=8824105826
+2026-09-27 18:06:40,658 [INFO] aiogram.event: Update id=82902426 is not handled. Duration 15 ms by bot id=8824105826
+2026-09-27 18:06:40,669 [INFO] aiogram.event: Update id=82902427 is handled. Duration 10 ms by bot id=8824105826
+2026-09-27 18:06:40,681 [INFO] aiogram.event: Update id=82902428 is handled. Duration 11 ms by bot id=8824105826
+2026-09-27 18:06:40,696 [INFO] aiogram.event: Update id=82902429 is not handled. Duration 15 ms by bot id=8824105826
+2026-09-27 18:06:42,516 [INFO] united_dialog: [media ↓] 580032 → ogg
+2026-09-27 18:06:51,233 [INFO] united_dialog: [media] скачано 10...
+2026-09-27 18:06:54,365 [INFO] aiogram.event: Update id=82902430 is handled. Duration 380 ms by bot id=8824105826
+2026-09-27 18:06:57,862 [INFO] aiogram.event: Update id=82902431 is handled. Duration 1080 ms by bot id=8824105826
+2026-09-27 18:07:24,803 [INFO] united_dialog: [media] скачано 20...
+2026-09-27 18:07:28,266 [INFO] aiogram.event: Update id=82902432 is handled. Duration 35 ms by bot id=8824105826
+2026-09-27 18:07:29,991 [INFO] aiogram.event: Update id=82902433 is handled. Duration 34 ms by bot id=8824105826
+2026-09-27 18:07:30,868 [INFO] aiogram.event: Update id=82902434 is handled. Duration 107 ms by bot id=8824105826
+2026-09-27 18:07:32,967 [INFO] united_dialog: [media] скачано 30...
+2026-09-27 18:07:38,901 [INFO] united_dialog: [media] скачано 40...
+2026-09-27 18:07:44,232 [INFO] aiogram.event: Update id=82902435 is handled. Duration 25 ms by bot id=8824105826
+2026-09-27 18:07:44,761 [INFO] united_dialog: [media ↓] 580043 → ogg
+2026-09-27 18:07:57,575 [INFO] united_dialog: [media] скачано 50...
+2026-09-27 18:07:59,996 [INFO] united_dialog: [media] всего скачано за прогон: 52
+2026-09-27 18:08:01,903 [INFO] united_dialog: archive: Готово: 14 архивов
