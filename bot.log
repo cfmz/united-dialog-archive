@@ -1708,3 +1708,95 @@ TimeoutError
 2026-09-27 18:14:59,378 [INFO] united_dialog: [media] скачано 10...
 2026-09-27 18:15:05,138 [INFO] united_dialog: [media] всего скачано за прогон: 17
 2026-09-27 18:15:07,605 [INFO] united_dialog: archive: Готово: 14 архивов
+2026-09-27 18:15:08,837 [INFO] aiogram.event: Update id=82902501 is not handled. Duration 34 ms by bot id=8824105826
+2026-09-27 18:15:10,943 [INFO] aiogram.event: Update id=82902502 is not handled. Duration 23 ms by bot id=8824105826
+2026-09-27 18:15:14,283 [INFO] aiogram.event: Update id=82902503 is handled. Duration 26 ms by bot id=8824105826
+2026-09-27 18:15:20,458 [INFO] aiogram.event: Update id=82902504 is handled. Duration 24 ms by bot id=8824105826
+2026-09-27 18:15:28,120 [INFO] aiogram.event: Update id=82902505 is not handled. Duration 31 ms by bot id=8824105826
+2026-09-27 18:15:30,787 [INFO] aiogram.event: Update id=82902506 is not handled. Duration 42 ms by bot id=8824105826
+2026-09-27 18:15:31,355 [INFO] aiogram.event: Update id=82902507 is handled. Duration 32 ms by bot id=8824105826
+2026-09-27 18:15:32,533 [INFO] aiogram.event: Update id=82902508 is not handled. Duration 39 ms by bot id=8824105826
+2026-09-27 18:15:34,305 [INFO] aiogram.event: Update id=82902509 is not handled. Duration 38 ms by bot id=8824105826
+2026-09-27 18:15:36,692 [INFO] aiogram.event: Update id=82902510 is handled. Duration 63 ms by bot id=8824105826
+2026-09-27 18:15:37,832 [INFO] aiogram.event: Update id=82902511 is not handled. Duration 35 ms by bot id=8824105826
+2026-09-27 18:15:39,330 [INFO] aiogram.event: Update id=82902512 is handled. Duration 28 ms by bot id=8824105826
+2026-09-27 18:15:41,315 [INFO] aiogram.event: Update id=82902513 is not handled. Duration 44 ms by bot id=8824105826
+2026-09-27 18:15:41,613 [INFO] aiogram.event: Update id=82902514 is handled. Duration 35 ms by bot id=8824105826
+2026-09-27 18:15:44,924 [INFO] aiogram.event: Update id=82902515 is handled. Duration 78 ms by bot id=8824105826
+2026-09-27 18:15:45,048 [INFO] aiogram.event: Update id=82902516 is not handled. Duration 61 ms by bot id=8824105826
+2026-09-27 18:15:51,821 [INFO] aiogram.event: Update id=82902517 is not handled. Duration 31 ms by bot id=8824105826
+2026-09-27 18:15:53,597 [INFO] aiogram.event: Update id=82902518 is handled. Duration 46 ms by bot id=8824105826
+2026-09-27 18:15:53,844 [INFO] united_dialog: [media ↓] 580128 → webp
+2026-09-27 18:15:54,894 [INFO] aiogram.event: Update id=82902519 is not handled. Duration 27 ms by bot id=8824105826
+2026-09-27 18:15:58,886 [INFO] aiogram.event: Update id=82902520 is not handled. Duration 344 ms by bot id=8824105826
+2026-09-27 18:16:00,544 [INFO] aiogram.event: Update id=82902521 is not handled. Duration 51 ms by bot id=8824105826
+2026-09-27 18:16:01,762 [INFO] aiogram.event: Update id=82902522 is handled. Duration 20 ms by bot id=8824105826
+2026-09-27 18:16:03,049 [INFO] aiogram.event: Update id=82902523 is handled. Duration 44 ms by bot id=8824105826
+2026-09-27 18:16:05,263 [INFO] united_dialog: [media ↓] 580133 → ogg
+2026-09-27 18:16:06,174 [INFO] aiogram.event: Update id=82902524 is handled. Duration 38 ms by bot id=8824105826
+2026-09-27 18:16:07,675 [INFO] aiogram.event: Update id=82902525 is handled. Duration 25 ms by bot id=8824105826
+2026-09-27 18:16:08,988 [INFO] aiogram.event: Update id=82902526 is handled. Duration 26 ms by bot id=8824105826
+2026-09-27 18:16:10,575 [INFO] aiogram.event: Update id=82902527 is not handled. Duration 34 ms by bot id=8824105826
+2026-09-27 18:16:16,167 [INFO] aiogram.event: Update id=82902528 is handled. Duration 24 ms by bot id=8824105826
+2026-09-27 18:16:19,066 [INFO] aiogram.event: Update id=82902529 is not handled. Duration 33 ms by bot id=8824105826
+2026-09-27 18:16:23,055 [INFO] aiogram.event: Update id=82902530 is not handled. Duration 33 ms by bot id=8824105826
+2026-09-27 18:16:23,888 [INFO] aiogram.event: Update id=82902531 is handled. Duration 23 ms by bot id=8824105826
+2026-09-27 18:16:30,731 [INFO] aiogram.event: Update id=82902532 is not handled. Duration 47 ms by bot id=8824105826
+2026-09-27 18:16:31,504 [INFO] aiogram.event: Update id=82902533 is handled. Duration 41 ms by bot id=8824105826
+2026-09-27 18:17:04,063 [INFO] aiogram.event: Update id=82902534 is handled. Duration 29 ms by bot id=8824105826
+2026-09-27 18:17:06,194 [INFO] aiogram.event: Update id=82902535 is not handled. Duration 29 ms by bot id=8824105826
+2026-09-27 18:17:06,878 [INFO] united_dialog: [media ↓] 580144 → ogg
+2026-09-27 18:17:15,453 [INFO] aiogram.event: Update id=82902536 is not handled. Duration 43 ms by bot id=8824105826
+2026-09-27 18:17:22,887 [INFO] aiogram.event: Update id=82902537 is not handled. Duration 33 ms by bot id=8824105826
+2026-09-27 18:17:24,608 [INFO] aiogram.event: Update id=82902538 is not handled. Duration 29 ms by bot id=8824105826
+2026-09-27 18:17:25,859 [INFO] aiogram.event: Update id=82902539 is not handled. Duration 30 ms by bot id=8824105826
+2026-09-27 18:17:28,077 [INFO] aiogram.event: Update id=82902540 is handled. Duration 27 ms by bot id=8824105826
+2026-09-27 18:17:29,868 [INFO] aiogram.event: Update id=82902541 is handled. Duration 57 ms by bot id=8824105826
+2026-09-27 18:17:37,827 [INFO] aiogram.event: Update id=82902542 is not handled. Duration 40 ms by bot id=8824105826
+2026-09-27 18:17:54,471 [INFO] aiogram.event: Update id=82902543 is handled. Duration 29 ms by bot id=8824105826
+2026-09-27 18:18:00,581 [INFO] aiogram.event: Update id=82902544 is handled. Duration 21 ms by bot id=8824105826
+2026-09-27 18:18:04,978 [INFO] united_dialog: [media ↓] 580154 → jpg
+2026-09-27 18:18:17,607 [INFO] united_dialog: archive: pushed to web
+2026-09-27 18:18:18,130 [INFO] aiogram.event: Update id=82902545 is not handled. Duration 31 ms by bot id=8824105826
+2026-09-27 18:18:20,091 [INFO] aiogram.event: Update id=82902546 is not handled. Duration 38 ms by bot id=8824105826
+2026-09-27 18:18:25,017 [INFO] aiogram.event: Update id=82902547 is handled. Duration 26 ms by bot id=8824105826
+2026-09-27 18:18:34,353 [INFO] aiogram.event: Update id=82902548 is not handled. Duration 38 ms by bot id=8824105826
+2026-09-27 18:18:37,171 [INFO] aiogram.event: Update id=82902549 is not handled. Duration 32 ms by bot id=8824105826
+2026-09-27 18:18:38,509 [INFO] aiogram.event: Update id=82902550 is handled. Duration 25 ms by bot id=8824105826
+2026-09-27 18:18:39,440 [INFO] aiogram.event: Update id=82902551 is not handled. Duration 35 ms by bot id=8824105826
+2026-09-27 18:18:40,570 [INFO] aiogram.event: Update id=82902552 is not handled. Duration 47 ms by bot id=8824105826
+2026-09-27 18:18:42,281 [INFO] aiogram.event: Update id=82902553 is handled. Duration 22 ms by bot id=8824105826
+2026-09-27 18:18:43,418 [INFO] aiogram.event: Update id=82902554 is handled. Duration 30 ms by bot id=8824105826
+2026-09-27 18:18:50,352 [INFO] aiogram.event: Update id=82902555 is not handled. Duration 60 ms by bot id=8824105826
+2026-09-27 18:19:01,039 [INFO] aiogram.event: Update id=82902556 is handled. Duration 26 ms by bot id=8824105826
+2026-09-27 18:19:02,183 [INFO] aiogram.event: Update id=82902557 is handled. Duration 31 ms by bot id=8824105826
+2026-09-27 18:19:04,031 [INFO] aiogram.event: Update id=82902558 is not handled. Duration 45 ms by bot id=8824105826
+2026-09-27 18:19:05,694 [INFO] aiogram.event: Update id=82902559 is not handled. Duration 31 ms by bot id=8824105826
+2026-09-27 18:19:50,153 [INFO] aiogram.event: Update id=82902560 is handled. Duration 43 ms by bot id=8824105826
+2026-09-27 18:19:50,691 [INFO] united_dialog: [media ↓] 580171 → ogg
+2026-09-27 18:20:03,654 [INFO] aiogram.event: Update id=82902561 is handled. Duration 60 ms by bot id=8824105826
+2026-09-27 18:20:06,786 [INFO] aiogram.event: Update id=82902562 is not handled. Duration 52 ms by bot id=8824105826
+2026-09-27 18:20:09,112 [INFO] aiogram.event: Update id=82902563 is not handled. Duration 29 ms by bot id=8824105826
+2026-09-27 18:20:12,282 [INFO] aiogram.event: Update id=82902564 is not handled. Duration 39 ms by bot id=8824105826
+2026-09-27 18:20:14,947 [INFO] aiogram.event: Update id=82902565 is handled. Duration 25 ms by bot id=8824105826
+2026-09-27 18:20:18,827 [INFO] aiogram.event: Update id=82902566 is handled. Duration 36 ms by bot id=8824105826
+2026-09-27 18:20:21,029 [INFO] aiogram.event: Update id=82902567 is handled. Duration 17 ms by bot id=8824105826
+2026-09-27 18:20:22,516 [INFO] aiogram.event: Update id=82902568 is handled. Duration 26 ms by bot id=8824105826
+2026-09-27 18:20:25,235 [INFO] aiogram.event: Update id=82902569 is not handled. Duration 33 ms by bot id=8824105826
+2026-09-27 18:20:26,882 [INFO] aiogram.event: Update id=82902570 is not handled. Duration 37 ms by bot id=8824105826
+2026-09-27 18:20:29,384 [INFO] aiogram.event: Update id=82902571 is not handled. Duration 40 ms by bot id=8824105826
+2026-09-27 18:20:36,199 [INFO] aiogram.event: Update id=82902572 is not handled. Duration 8 ms by bot id=8824105826
+2026-09-27 18:20:39,283 [INFO] aiogram.event: Update id=82902573 is handled. Duration 29 ms by bot id=8824105826
+2026-09-27 18:20:47,032 [INFO] aiogram.event: Update id=82902574 is not handled. Duration 37 ms by bot id=8824105826
+2026-09-27 18:20:54,161 [INFO] aiogram.event: Update id=82902575 is handled. Duration 27 ms by bot id=8824105826
+2026-09-27 18:20:58,477 [INFO] aiogram.event: Update id=82902576 is handled. Duration 26 ms by bot id=8824105826
+2026-09-27 18:20:59,650 [INFO] aiogram.event: Update id=82902577 is not handled. Duration 31 ms by bot id=8824105826
+2026-09-27 18:20:59,748 [INFO] aiogram.event: Update id=82902578 is handled. Duration 29 ms by bot id=8824105826
+2026-09-27 18:21:02,186 [INFO] aiogram.event: Update id=82902579 is handled. Duration 19 ms by bot id=8824105826
+2026-09-27 18:21:02,634 [INFO] aiogram.event: Update id=82902580 is not handled. Duration 41 ms by bot id=8824105826
+2026-09-27 18:21:05,692 [INFO] aiogram.event: Update id=82902581 is handled. Duration 32 ms by bot id=8824105826
+2026-09-27 18:21:13,626 [INFO] aiogram.event: Update id=82902582 is handled. Duration 24 ms by bot id=8824105826
+2026-09-27 18:21:13,893 [INFO] united_dialog: [media ↓] 580192 → ogg
+2026-09-27 18:21:14,933 [INFO] aiogram.event: Update id=82902583 is not handled. Duration 33 ms by bot id=8824105826
+2026-09-27 18:21:20,226 [INFO] united_dialog: [media] всего скачано за прогон: 6
+2026-09-27 18:21:22,796 [INFO] united_dialog: archive: Готово: 14 архивов
