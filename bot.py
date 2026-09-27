@@ -84,6 +84,11 @@ _BOT_DELETED = set()      # сообщения, которые удалил са
 _RIGHTS_HINT = {}
 
 # ============ БД ============
+BANNER_MAIN = "https://raw.githubusercontent.com/cfmz/united-dialog-web/main/glavnoe.jpg"
+BANNER_BACK = "https://raw.githubusercontent.com/cfmz/united-dialog-web/main/nazad.jpg"
+BANNER_PROFILE = "https://raw.githubusercontent.com/cfmz/united-dialog-web/main/profile.jpg"
+BANNER_WEB = "https://raw.githubusercontent.com/cfmz/united-dialog-web/main/web.jpg"
+
 def now_utc():
     return datetime.now(timezone.utc)
 
@@ -1104,10 +1109,10 @@ def kb_peer(username=None, archive=None):
     return InlineKeyboardMarkup(inline_keyboard=[row])
 
 def start_banner_url():
-    return "https://cfmz.github.io/united-dialog-archive/img/photo_2026-09-24_15-16-00.jpg"
+    return BANNER_MAIN
 
 def profile_banner_url():
-    return "https://cfmz.github.io/united-dialog-archive/img/profile.jpg"
+    return BANNER_PROFILE
 
 # ============ ТЕКСТЫ ============
 def txt_start_connected():
@@ -1292,19 +1297,31 @@ async def pm_redeem(m: Message):
     else:
         await m.answer("✅ <b>Промокод активирован!</b>" + NL + NL + q("United Love до " + until.strftime("%d.%m.%Y")))
 
-async def _edit(c, text, kb=None):
-    msg = c.message
-    if msg is None: return
-    if getattr(msg, "photo", None):      # редактировать текстом фото нельзя
-        try: await msg.delete()
-        except Exception: pass
-        await bot.send_message(c.from_user.id, text, reply_markup=kb)
-        return
+async def _edit(c, text, kb=None, photo=None):
+    """Шлёт фото + подпись. Фолбэк на текст."""
+    banner = photo or BANNER_BACK
+    if c.message and getattr(c.message, "photo", None):
+        try:
+            await c.message.edit_caption(caption=text, reply_markup=kb)
+            return
+        except TelegramAPIError as e:
+            if "not modified" in str(e).lower():
+                return
     try:
-        await msg.edit_text(text, reply_markup=kb)
-    except TelegramAPIError as e:
-        if "not modified" in str(e).lower(): return
-        await msg.answer(text, reply_markup=kb)
+        await c.message.delete()
+    except Exception:
+        pass
+    try:
+        await bot.send_photo(chat_id=c.from_user.id, photo=banner,
+                             caption=text, reply_markup=kb)
+        return
+    except Exception as e:
+        log.warning(f"_edit photo fail: {e}")
+    try:
+        await bot.send_message(c.from_user.id, text, reply_markup=kb)
+    except TelegramAPIError:
+        pass
+
 
 @dp.callback_query(F.data.startswith("m_"))
 async def on_menu_cb(c: CallbackQuery):
@@ -1315,7 +1332,7 @@ async def on_menu_cb(c: CallbackQuery):
     u = get_user(c.from_user.id, c.from_user.username, c.from_user.full_name, int(bool(c.from_user.is_premium)))
 
     if d == "m_main":
-        await _edit(c, txt_start_connected() if user_has_active_connection(u["id"]) else txt_start_new(), kb_main())
+        await _edit(c, txt_start_connected() if user_has_active_connection(u["id"]) else txt_start_new(), kb_main(), photo=BANNER_MAIN)
     if d == "m_archive":
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [B("🌐 Открыть архив", url=archive_url_for_user(u["id"]), style="success")],
@@ -3001,6 +3018,11 @@ async def _archive_generate():
     src_idx = os.path.join(ARCHIVE_DIR, "index.html")
     if os.path.exists(src_idx):
         shutil.copy(src_idx, os.path.join(web_dir, "index.html"))
+    # Картинки — чтобы git push --force их не удалял
+    for _img in ("glavnoe.jpg", "nazad.jpg", "profile.jpg", "web.jpg"):
+        _src = os.path.join(ARCHIVE_DIR, _img)
+        if os.path.exists(_src):
+            shutil.copy(_src, os.path.join(web_dir, _img))
     open(os.path.join(web_dir, ".nojekyll"), "w").close()
 
     if not os.path.isdir(os.path.join(web_dir, ".git")):
