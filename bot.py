@@ -132,12 +132,9 @@ class _RichHTML(_HP):
         if etype:
             self.entities.append(_ME(type=etype, offset=offset, length=length))
         elif tag == "blockquote":
-            if "expandable" in attrs:
-                self.entities.append(_ME(type="expandable_blockquote",
-                                          offset=offset, length=length))
-            else:
-                self.entities.append(_ME(type="blockquote",
-                                          offset=offset, length=length))
+            # всегда expandable → скруглённый серый блок с кавычками (как HTML parse_mode)
+            self.entities.append(_ME(type="expandable_blockquote",
+                                      offset=offset, length=length))
     def handle_data(self, data):
         self._add(data)
     def handle_entityref(self, name):
@@ -154,12 +151,15 @@ def html_to_entities(text: str):
 
 
 def _prepare(text):
-    """Обрабатывает HTML → (plain, entities). Возвращает (text, None) если не HTML."""
+    """Сначала pe() оборачивает эмодзи в <tg-emoji>, потом парсим HTML → entities."""
     if not isinstance(text, str):
         return text, None
-    # если нет HTML тегов и нет эмодзи — не трогаем
+    # 1. Оборачиваем эмодзи в <tg-emoji>
+    text = pe(text)
+    # 2. Если нет HTML-тегов — не парсим
     if "<" not in text and ">" not in text and "&" not in text:
         return text, None
+    # 3. Парсим HTML → entities
     try:
         plain, ents = html_to_entities(text)
         return plain, ents
