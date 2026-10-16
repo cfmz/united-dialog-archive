@@ -178,7 +178,8 @@ async def _p_send_message(*args, **kwargs):
     if ents is not None:
         kwargs["text"] = plain; kwargs["entities"] = ents
         kwargs.pop("parse_mode", None)
-        return await _orig_send_message(*args, parse_mode=None, **kwargs)
+        kwargs.pop("parse_mode", None)
+        return await _orig_send_message(*args, **kwargs)
     return await _orig_send_message(*args, text=t, **kwargs)
 bot.send_message = _p_send_message
 
@@ -193,7 +194,8 @@ async def _p_send_photo(*args, **kwargs):
             kwargs["caption"] = plain
             kwargs["caption_entities"] = ents
             kwargs.pop("parse_mode", None)
-            return await _orig_send_photo(*args, parse_mode=None, **kwargs)
+            kwargs.pop("parse_mode", None)
+            return await _orig_send_photo(*args, **kwargs)
     return await _orig_send_photo(*args, **kwargs)
 bot.send_photo = _p_send_photo
 
@@ -206,7 +208,8 @@ async def _p_edit_text(*args, **kwargs):
     if ents is not None:
         kwargs["text"] = plain; kwargs["entities"] = ents
         kwargs.pop("parse_mode", None)
-        return await _orig_edit_text(*args, parse_mode=None, **kwargs)
+        kwargs.pop("parse_mode", None)
+        return await _orig_edit_text(*args, **kwargs)
     return await _orig_edit_text(*args, text=t, **kwargs)
 bot.edit_message_text = _p_edit_text
 
@@ -219,44 +222,14 @@ async def _p_edit_caption(*args, **kwargs):
             kwargs["caption"] = plain
             kwargs["caption_entities"] = ents
             kwargs.pop("parse_mode", None)
-            return await _orig_edit_caption(*args, parse_mode=None, **kwargs)
+            kwargs.pop("parse_mode", None)
+            return await _orig_edit_caption(*args, **kwargs)
     return await _orig_edit_caption(*args, **kwargs)
 bot.edit_message_caption = _p_edit_caption
 # ═══════════════════════════════════════════════════════════════
 
 
-# ─── ГЛОБАЛЬНАЯ ОБЁРТКА pe() ───
-_orig_send_message = bot.send_message
-async def _patched_send_message(*args, **kwargs):
-    if "text" in kwargs and isinstance(kwargs["text"], str):
-        kwargs["text"] = pe(kwargs["text"])
-    elif len(args) >= 2 and isinstance(args[1], str):
-        args = (args[0], pe(args[1])) + args[2:]
-    return await _orig_send_message(*args, **kwargs)
-bot.send_message = _patched_send_message
-
-_orig_send_photo = bot.send_photo
-async def _patched_send_photo(*args, **kwargs):
-    if "caption" in kwargs and isinstance(kwargs["caption"], str):
-        kwargs["caption"] = pe(kwargs["caption"])
-    return await _orig_send_photo(*args, **kwargs)
-bot.send_photo = _patched_send_photo
-
-_orig_edit_caption = bot.edit_message_caption
-async def _patched_edit_caption(*args, **kwargs):
-    if "caption" in kwargs and isinstance(kwargs["caption"], str):
-        kwargs["caption"] = pe(kwargs["caption"])
-    return await _orig_edit_caption(*args, **kwargs)
-bot.edit_message_caption = _patched_edit_caption
-
-_orig_edit_text = bot.edit_message_text
-async def _patched_edit_text(*args, **kwargs):
-    if "text" in kwargs and isinstance(kwargs["text"], str):
-        kwargs["text"] = pe(kwargs["text"])
-    elif len(args) >= 2 and isinstance(args[1], str):
-        args = (args[0], pe(args[1])) + args[2:]
-    return await _orig_edit_text(*args, **kwargs)
-bot.edit_message_text = _patched_edit_text
+# [старый monkeypatch удалён]
 
 _orig_answer_photo = bot.send_photo.__wrapped__ if hasattr(bot.send_photo, "__wrapped__") else None
 # ────────────────────────────────
