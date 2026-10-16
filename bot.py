@@ -1,3 +1,4 @@
+
 import asyncio, os, sys, sqlite3
 import qrcode
 from deep_translator import GoogleTranslator
@@ -45,7 +46,7 @@ if os.path.exists(_env_file):
             if not _line or _line.startswith("#") or "=" not in _line:
                 continue
             _k, _v = _line.split("=", 1)
-            os.environ.setdefault(_k.strip(), _v.strip())
+            os.environ[_k.strip()] = _v.strip()
 # ------------------------
 
 TOKEN = os.getenv("BOT_TOKEN", "").strip()
@@ -577,16 +578,15 @@ def voicemod_get(owner_id, chat_id):
 
 async def _handle_voicemod_message(message, conn_id, chat_id, owner_id, preset):
     """Тихо удаляет оригинал, отправляет изменённый."""
-    # 1. Удаляем СРАЗУ (мгновенно)
+    # 1. СНАЧАЛА помечаем (иначе race с deleted_business_messages)
+    _BOT_DELETED.add((chat_id, message.message_id))
+    # 2. ПОТОМ удаляем
     try:
         await bot.delete_business_messages(
             business_connection_id=conn_id,
             message_ids=[message.message_id])
     except TelegramAPIError:
         pass
-
-    # Помечаем — чтобы не пришло уведомление владельцу
-    _BOT_DELETED.add((chat_id, message.message_id))
 
     # 2. Скачиваем + обрабатываем + отправляем
     in_ogg = f"/tmp/vm_in_{message.message_id}.ogg"
@@ -2059,7 +2059,7 @@ async def on_bc(conn):
 # бот удалял такое сообщение и молчал)
 KNOWN = {"ping", "id", "info", "help", "love", "flip", "rps", "kawai", "kub",
          "roast", "anim", "type", "title", "split", "перевод", "translit",
-         "afk", "unafk", "redeem", "balance", "ttt", "knb", "saper", "slot", "mute", "unmute", "voicemod", "qr", "tr"}
+         "afk", "unafk", "redeem", "balance", "mute", "unmute", "voicemod", "qr", "tr"}
 
 async def biz_send(chat_id, conn_id, text, owner_id=None):
     try:
@@ -2163,13 +2163,12 @@ async def on_bm(message: Message):
             log.warning(f"mute del: {e}")
         return
     # Не сохраняем, если собеседник написал что-то похожее на команду
-    if text and text[0] in (".", "/") and len(text) > 1 and text[1:].split()[0].lower() in KNOWN:
+    _parts_known = text[1:].split() if len(text) > 1 else []
+    if text and text[0] in (".", "/") and _parts_known and _parts_known[0].lower() in KNOWN:
         return
     save_message(conn_id, chat_id, message, owner_id)
 
     # Автоскачивание медиа в фоне
-    if message.media_type if False else False:
-        pass
     # Определяем медиа из message
     _mt, _fid = None, None
     if message.photo: _mt, _fid = "photo", message.photo[-1].file_id
@@ -2623,24 +2622,12 @@ async def on_deleted(event):
     owner_id = conn["user_id"]
     log.info(f"[del event] chat={event.chat.id} mids={event.message_ids} owner={owner_id} notify={user_notify_on(owner_id)}")
     if not user_notify_on(owner_id): return
-    # Если voicemod активен для этого чата — не уведомляем о удалениях голосовых
-    vm_active = voicemod_get(owner_id, event.chat.id)
-
     for mid in event.message_ids:
         key = (event.chat.id, mid)
-        if key in _BOT_DELETED:            # это бот сам удалил команду — не уведомляем
+        if key in _BOT_DELETED:            # это бот сам удалил — не уведомляем
             _BOT_DELETED.discard(key); continue
         s = get_message(owner_id, event.chat.id, mid)
         log.info(f"[del lookup] mid={mid} found={bool(s)}")
-
-        # voicemod активен — свои голосовые не показываем как удалённые
-        if vm_active and s and s["from_id"] == owner_id and s["media_type"] == "voice":
-            log.info(f"[del skip vm] mid={mid}")
-            continue
-        # Заодно пропускаем случай, когда сообщения нет в БД, но это голосовое владельца
-        if vm_active:
-            log.info(f"[del skip vm-blind] mid={mid}")
-            continue
 
         if s:
             if s["from_id"] == owner_id and not NOTIFY_OWN:
