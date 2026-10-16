@@ -23,6 +23,12 @@ from aiogram.exceptions import TelegramAPIError
 from aiogram.client.default import DefaultBotProperties
 
 try:
+    from emojis import pe
+except ImportError:
+    def pe(t: str) -> str:
+        return t
+
+try:
     from aiogram.dispatcher.event.bases import SkipHandler
 except Exception:
     class SkipHandler(Exception):
@@ -2051,7 +2057,7 @@ async def on_bc(conn):
             kb = InlineKeyboardMarkup(inline_keyboard=[
                 [B("🔘 Подключить", url="tg://settings/edit", style="success")],
                 [B("⭐ Оставить отзыв", url=SUPPORT, style="danger")]])
-        await bot.send_message(conn.user_chat_id, text, reply_markup=kb)
+        await bot.send_message(conn.user_chat_id, pe(text), reply_markup=kb)
     except Exception as e:
         log.warning(f"bc notify: {e}")
 
@@ -2063,7 +2069,7 @@ KNOWN = {"ping", "id", "info", "help", "love", "flip", "rps", "kawai", "kub",
 
 async def biz_send(chat_id, conn_id, text, owner_id=None):
     try:
-        await bot.send_message(chat_id=chat_id, text=text, business_connection_id=conn_id)
+        await bot.send_message(chat_id=chat_id, text=pe(text), business_connection_id=conn_id)
         return True
     except TelegramAPIError as e:
         log.warning(f"biz_send: {e}")
@@ -2201,13 +2207,13 @@ async def biz_dispatch(cmd, arg, message, conn_id, chat_id, owner_id):
     log.info(f"[dispatch ENTER] cmd={cmd!r} arg={arg!r} chat={chat_id}")
     async def out(text):
         try:
-            await bot.send_message(chat_id=chat_id, text=text, business_connection_id=conn_id)
+            await bot.send_message(chat_id=chat_id, text=pe(text), business_connection_id=conn_id)
             log.info(f"[out OK] chat={chat_id}")
             return
         except TelegramAPIError as e:
             log.warning(f"[out conn fail] chat={chat_id}: {e}")
         try:
-            await bot.send_message(chat_id=chat_id, text=text)
+            await bot.send_message(chat_id=chat_id, text=pe(text))
             log.info(f"[out plain OK] chat={chat_id}")
         except TelegramAPIError as e2:
             log.error(f"[out plain fail] chat={chat_id}: {e2}")
@@ -2570,10 +2576,10 @@ async def send_notice(chat_id, rich_html, plain_html, kb):
         except Exception as e:
             log.warning(f"send_rich failed: {e}")
     try:
-        await bot.send_message(chat_id, plain_html, reply_markup=kb)
+        await bot.send_message(chat_id, pe(plain_html), reply_markup=kb)
     except TelegramAPIError as e:
         log.warning(f"notice with kb failed: {e}")
-        try: await bot.send_message(chat_id, plain_html)     # без кнопок
+        try: await bot.send_message(chat_id, pe(plain_html))     # без кнопок
         except TelegramAPIError as e2: log.warning(f"notice failed: {e2}")
 
 async def resend_media(chat_id, s):
