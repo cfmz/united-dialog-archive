@@ -79,107 +79,134 @@ log = logging.getLogger("united_dialog")
 
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
-# ═══════════ HTML → Telegram entities (с custom emoji) ═══════════
-from html.parser import HTMLParser as _HP
+# ═══════════ HTML → Telegram entities (regex-парсер) ═══════════
 from aiogram.types import MessageEntity as _ME
+from html import unescape as _unescape
+import re as _re
 
-class _RichHTML(_HP):
-    _MAP = {"b": "bold", "strong": "bold", "i": "italic", "em": "italic",
-            "u": "underline", "s": "strikethrough", "strike": "strikethrough",
-            "del": "strikethrough", "code": "code", "pre": "pre",
-            "tg-spoiler": "spoiler"}
-    def __init__(self):
-        super().__init__(convert_charrefs=False)
-        self.parts = []
-        self.entities = []
-        self.offset = 0
-        self.stack = []
-    def _u16(self, s):
-        return len(s.encode("utf-16-le")) // 2
-    def _add(self, s):
-        self.parts.append(s)
-        self.offset += self._u16(s)
-    def handle_starttag(self, tag, attrs):
-        tag = tag.lower()
+_TAG_RE = _re.compile(
+    r"<(?P<close>/?)(?P<tag>[a-zA-Z][a-zA-Z0-9-]*)"
+    r"(?P<attrs>(?:\s+[a-zA-Z0-9_-]+(?:\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s>]+))?)*)"
+    r"\s*(?P<selfclose>/?)>"
+)
+_ATTR_RE = _re.compile(
+    r"([a-zA-Z0-9_-]+)(?:\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]+)))?"
+)
+_ENTITY_MAP = {
+    "b": "bold", "strong": "bold",
+    "i": "italic", "em": "italic",
+    "u": "underline",
+    "s": "strikethrough", "strike": "strikethrough", "del": "strikethrough",
+    "code": "code", "pre": "pre",
+    "tg-spoiler": "spoiler",
+}
+
+
+def _u16_len(t):
+    return len(t.encode("utf-16-le")) // 2
+
+
+def _attrs_dict(t):
+    d = {}
+    for m in _ATTR_RE.finditer(t or ""):
+        key = m.group(1).lower()
+        val = m.group(2) or m.group(3) or m.group(4) or ""
+        d[key] = val
+    return d
+
+
+def _emit_entity(tag, offset, length, attrs, entities):
+    if length <= 0:
+        return
+    if tag == "tg-emoji":
+        eid = attrs.get("emoji-id") or attrs.get("emoji_id") or ""
+        if eid:
+            entities.append(_ME(type="custom_emoji", offset=offset,
+                                 length=length, custom_emoji_id=str(eid)))
+    elif tag in _ENTITY_MAP:
+        entities.append(_ME(type=_ENTITY_MAP[tag], offset=offset, length=length))
+    elif tag == "a":
+        href = attrs.get("href", "")
+        if href:
+            entities.append(_ME(type="text_link", offset=offset,
+                                 length=length, url=href))
+    elif tag == "blockquote":
+        entities.append(_ME(type="expandable_blockquote",
+                             offset=offset, length=length))
+
+
+def html_to_entities(text):
+    parts = []
+    entities = []
+    offset = 0
+    stack = []
+    pos = 0
+
+    for m in _TAG_RE.finditer(text):
+        if m.start() > pos:
+            chunk = _unescape(text[pos:m.start()])
+            parts.append(chunk)
+            offset += _u16_len(chunk)
+        pos = m.end()
+
+        close = m.group("close") == "/"
+        tag = m.group("tag").lower()
+        attrs_str = m.group("attrs") or ""
+        self_closing = m.group("selfclose") == "/"
+
         if tag == "br":
-            self._add("\n"); return
-        self.stack.append((tag, self.offset, dict(attrs)))
-    def handle_startendtag(self, tag, attrs):
-        self.handle_starttag(tag, attrs); self.handle_endtag(tag)
-    def handle_endtag(self, tag):
-        tag = tag.lower()
-        for i in range(len(self.stack) - 1, -1, -1):
-            if self.stack[i][0] == tag:
-                _, start, attrs = self.stack.pop(i)
-                length = self.offset - start
-                if length <= 0:
-                    return
-                self._emit(tag, start, length, attrs); return
-    def _emit(self, tag, offset, length, attrs):
-        if tag == "tg-emoji":
-            eid = attrs.get("emoji-id") or attrs.get("emoji_id") or ""
-            if eid:
-                self.entities.append(_ME(type="custom_emoji", offset=offset,
-                                          length=length, custom_emoji_id=str(eid)))
-            return
-        if tag == "a":
-            url = attrs.get("href", "")
-            if url:
-                self.entities.append(_ME(type="text_link", offset=offset,
-                                          length=length, url=url))
-            return
-        etype = self._MAP.get(tag)
-        if etype:
-            self.entities.append(_ME(type=etype, offset=offset, length=length))
-        elif tag == "blockquote":
-            # всегда expandable → скруглённый серый блок с кавычками (как HTML parse_mode)
-            self.entities.append(_ME(type="expandable_blockquote",
-                                      offset=offset, length=length))
-    def handle_data(self, data):
-        self._add(data)
-    def handle_entityref(self, name):
-        import html as _h
-        self._add(_h.unescape(f"&{name};"))
-    def handle_charref(self, name):
-        import html as _h
-        self._add(_h.unescape(f"&#{name};"))
+            parts.append("\n")
+            offset += 1
+            continue
 
-def html_to_entities(text: str):
-    p = _RichHTML(); p.feed(text); p.close()
-    p.entities.sort(key=lambda e: (e.offset, -e.length))
-    return "".join(p.parts), p.entities
+        if close:
+            for i in range(len(stack) - 1, -1, -1):
+                if stack[i][0] == tag:
+                    _, start, sattrs = stack.pop(i)
+                    length = offset - start
+                    _emit_entity(tag, start, length, sattrs, entities)
+                    break
+        elif self_closing:
+            _emit_entity(tag, offset, 0, _attrs_dict(attrs_str), entities)
+        else:
+            stack.append((tag, offset, _attrs_dict(attrs_str)))
+
+    if pos < len(text):
+        parts.append(_unescape(text[pos:]))
+
+    entities.sort(key=lambda e: (e.offset, -e.length))
+    return "".join(parts), entities
 
 
 def _prepare(text):
-    """Сначала pe() оборачивает эмодзи в <tg-emoji>, потом парсим HTML → entities."""
     if not isinstance(text, str):
         return text, None
-    # 1. Оборачиваем эмодзи в <tg-emoji>
     text = pe(text)
-    # 2. Если нет HTML-тегов — не парсим
-    if "<" not in text and ">" not in text and "&" not in text:
+    if "<" not in text and ">" not in text:
         return text, None
-    # 3. Парсим HTML → entities
     try:
         plain, ents = html_to_entities(text)
+        if not ents:
+            return plain, None
         return plain, ents
     except Exception as e:
         log.warning(f"html_to_entities: {e}")
         return text, None
 
 
-# Monkeypatch: send_message, send_photo, edit_message_text, edit_message_caption
 _orig_send_message = bot.send_message
 async def _p_send_message(*args, **kwargs):
     t = kwargs.get("text")
     if t is None and len(args) >= 2:
         t = args[1]; args = (args[0],) + args[2:]
     plain, ents = _prepare(t)
-    if ents is not None:
+    if ents:
         kwargs["text"] = plain; kwargs["entities"] = ents
         kwargs.pop("parse_mode", None)
-        kwargs.pop("parse_mode", None)
-        return await _orig_send_message(*args, **kwargs)
+        return await _orig_send_message(*args, parse_mode=None, **kwargs)
+    if isinstance(plain, str) and plain != t:
+        kwargs["text"] = plain; kwargs.pop("parse_mode", None)
+        return await _orig_send_message(*args, parse_mode=None, **kwargs)
     return await _orig_send_message(*args, text=t, **kwargs)
 bot.send_message = _p_send_message
 
@@ -190,12 +217,10 @@ async def _p_send_photo(*args, **kwargs):
         c = args[2]
     if isinstance(c, str):
         plain, ents = _prepare(c)
-        if ents is not None:
-            kwargs["caption"] = plain
-            kwargs["caption_entities"] = ents
+        if ents:
+            kwargs["caption"] = plain; kwargs["caption_entities"] = ents
             kwargs.pop("parse_mode", None)
-            kwargs.pop("parse_mode", None)
-            return await _orig_send_photo(*args, **kwargs)
+            return await _orig_send_photo(*args, parse_mode=None, **kwargs)
     return await _orig_send_photo(*args, **kwargs)
 bot.send_photo = _p_send_photo
 
@@ -205,28 +230,33 @@ async def _p_edit_text(*args, **kwargs):
     if t is None and len(args) >= 2:
         t = args[1]; args = (args[0],) + args[2:]
     plain, ents = _prepare(t)
-    if ents is not None:
+    if ents:
         kwargs["text"] = plain; kwargs["entities"] = ents
         kwargs.pop("parse_mode", None)
-        kwargs.pop("parse_mode", None)
-        return await _orig_edit_text(*args, **kwargs)
+        return await _orig_edit_text(*args, parse_mode=None, **kwargs)
+    if isinstance(plain, str) and plain != t:
+        kwargs["text"] = plain; kwargs.pop("parse_mode", None)
+        return await _orig_edit_text(*args, parse_mode=None, **kwargs)
     return await _orig_edit_text(*args, text=t, **kwargs)
 bot.edit_message_text = _p_edit_text
 
 _orig_edit_caption = bot.edit_message_caption
 async def _p_edit_caption(*args, **kwargs):
     c = kwargs.get("caption")
+    if c is None and len(args) >= 2:
+        for a in args[1:]:
+            if isinstance(a, str):
+                c = a; break
     if isinstance(c, str):
         plain, ents = _prepare(c)
-        if ents is not None:
-            kwargs["caption"] = plain
-            kwargs["caption_entities"] = ents
+        if ents:
+            kwargs["caption"] = plain; kwargs["caption_entities"] = ents
             kwargs.pop("parse_mode", None)
-            kwargs.pop("parse_mode", None)
-            return await _orig_edit_caption(*args, **kwargs)
+            return await _orig_edit_caption(*args, parse_mode=None, **kwargs)
     return await _orig_edit_caption(*args, **kwargs)
 bot.edit_message_caption = _p_edit_caption
 # ═══════════════════════════════════════════════════════════════
+
 
 
 # [старый monkeypatch удалён]
