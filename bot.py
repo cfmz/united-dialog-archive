@@ -78,6 +78,42 @@ logging.basicConfig(level=logging.INFO,
 log = logging.getLogger("united_dialog")
 
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+
+# ─── ГЛОБАЛЬНАЯ ОБЁРТКА pe() ───
+_orig_send_message = bot.send_message
+async def _patched_send_message(*args, **kwargs):
+    if "text" in kwargs and isinstance(kwargs["text"], str):
+        kwargs["text"] = pe(kwargs["text"])
+    elif len(args) >= 2 and isinstance(args[1], str):
+        args = (args[0], pe(args[1])) + args[2:]
+    return await _orig_send_message(*args, **kwargs)
+bot.send_message = _patched_send_message
+
+_orig_send_photo = bot.send_photo
+async def _patched_send_photo(*args, **kwargs):
+    if "caption" in kwargs and isinstance(kwargs["caption"], str):
+        kwargs["caption"] = pe(kwargs["caption"])
+    return await _orig_send_photo(*args, **kwargs)
+bot.send_photo = _patched_send_photo
+
+_orig_edit_caption = bot.edit_message_caption
+async def _patched_edit_caption(*args, **kwargs):
+    if "caption" in kwargs and isinstance(kwargs["caption"], str):
+        kwargs["caption"] = pe(kwargs["caption"])
+    return await _orig_edit_caption(*args, **kwargs)
+bot.edit_message_caption = _patched_edit_caption
+
+_orig_edit_text = bot.edit_message_text
+async def _patched_edit_text(*args, **kwargs):
+    if "text" in kwargs and isinstance(kwargs["text"], str):
+        kwargs["text"] = pe(kwargs["text"])
+    elif len(args) >= 2 and isinstance(args[1], str):
+        args = (args[0], pe(args[1])) + args[2:]
+    return await _orig_edit_text(*args, **kwargs)
+bot.edit_message_text = _patched_edit_text
+
+_orig_answer_photo = bot.send_photo.__wrapped__ if hasattr(bot.send_photo, "__wrapped__") else None
+# ────────────────────────────────
 dp = Dispatcher()
 
 _AFK_LAST = {}
